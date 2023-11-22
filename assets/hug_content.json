@@ -1,0 +1,812 @@
+{
+  "type": "figma-frame",
+  "dimensions": {
+    "self": {
+      "x": -626,
+      "y": 2053,
+      "positioning": "AUTO",
+      "width": 1194,
+      "height": 1003,
+      "min": {
+        "width": null,
+        "height": null
+      },
+      "max": {
+        "width": null,
+        "height": null
+      },
+      "widthMode": "FIXED",
+      "heightMode": "FIXED",
+      "rotation": 0,
+      "constraints": {
+        "horizontal": "MIN",
+        "vertical": "MIN"
+      }
+    },
+    "parent": {
+      "x": null,
+      "y": null,
+      "width": null,
+      "height": null
+    }
+  },
+  "style": {
+    "color": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+    },
+    "opacity": 1,
+    "cornerRadius": {
+      "tl": 0,
+      "tr": 0,
+      "bl": 0,
+      "br": 0
+    }
+  },
+  "layout": {
+    "self": {
+      "layoutMode": "VERTICAL",
+      "paddingLeft": 10,
+      "paddingRight": 10,
+      "paddingTop": 51,
+      "paddingBottom": 51,
+      "counterAxisSizingMode": "FIXED",
+      "primaryAxisSizingMode": "FIXED",
+      "primaryAxisAlignItems": "CENTER",
+      "counterAxisAlignItems": "CENTER",
+      "layoutAlign": "INHERIT",
+      "layoutGrow": 0,
+      "itemSpacing": 10,
+      "layoutPositioning": "AUTO"
+    },
+    "misc": {
+      "layoutWrap": "NO_WRAP",
+      "crossAxisSpacing": 10
+    },
+    "parent": null
+  },
+  "children": [
+    {
+      "type": "figma-frame",
+      "dimensions": {
+        "self": {
+          "x": 405.5,
+          "y": 154.5,
+          "positioning": "AUTO",
+          "width": 383,
+          "height": 383,
+          "min": {
+            "width": null,
+            "height": null
+          },
+          "max": {
+            "width": null,
+            "height": null
+          },
+          "widthMode": "HUG",
+          "heightMode": "HUG",
+          "rotation": 0,
+          "constraints": {
+            "horizontal": "MIN",
+            "vertical": "MIN"
+          }
+        },
+        "parent": {
+          "x": -626,
+          "y": 2053,
+          "width": 1194,
+          "height": 1003
+        }
+      },
+      "style": {
+        "color": {
+          "r": 0.6367616057395935,
+          "g": 0.8208333253860474,
+          "b": 0.11286458373069763
+        },
+        "opacity": 1,
+        "cornerRadius": {
+          "tl": 200,
+          "tr": 200,
+          "bl": 200,
+          "br": 200
+        }
+      },
+      "layout": {
+        "self": {
+          "layoutMode": "VERTICAL",
+          "paddingLeft": 80,
+          "paddingRight": 80,
+          "paddingTop": 87,
+          "paddingBottom": 87,
+          "counterAxisSizingMode": "AUTO",
+          "primaryAxisSizingMode": "AUTO",
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "CENTER",
+          "layoutAlign": "INHERIT",
+          "layoutGrow": 0,
+          "itemSpacing": 35,
+          "layoutPositioning": "AUTO"
+        },
+        "misc": {
+          "layoutWrap": "NO_WRAP",
+          "crossAxisSpacing": 0
+        },
+        "parent": {
+          "layoutMode": "VERTICAL",
+          "paddingLeft": 10,
+          "paddingRight": 10,
+          "paddingTop": 51,
+          "paddingBottom": 51,
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "CENTER",
+          "layoutAlign": "INHERIT",
+          "layoutGrow": 0,
+          "itemSpacing": 10,
+          "layoutPositioning": "AUTO"
+        }
+      },
+      "children": [
+        {
+          "type": "figma-frame",
+          "dimensions": {
+            "self": {
+              "x": 80,
+              "y": 87,
+              "positioning": "AUTO",
+              "width": 223,
+              "height": 80,
+              "min": {
+                "width": null,
+                "height": null
+              },
+              "max": {
+                "width": null,
+                "height": null
+              },
+              "widthMode": "HUG",
+              "heightMode": "HUG",
+              "rotation": 0,
+              "constraints": {
+                "horizontal": "MIN",
+                "vertical": "MIN"
+              }
+            },
+            "parent": {
+              "x": 405.5,
+              "y": 154.5,
+              "width": 383,
+              "height": 383
+            }
+          },
+          "style": {
+            "color": null,
+            "opacity": 1,
+            "cornerRadius": {
+              "tl": 0,
+              "tr": 0,
+              "bl": 0,
+              "br": 0
+            }
+          },
+          "layout": {
+            "self": {
+              "layoutMode": "HORIZONTAL",
+              "paddingLeft": 0,
+              "paddingRight": 0,
+              "paddingTop": 0,
+              "paddingBottom": 0,
+              "counterAxisSizingMode": "AUTO",
+              "primaryAxisSizingMode": "AUTO",
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN",
+              "layoutAlign": "INHERIT",
+              "layoutGrow": 0,
+              "itemSpacing": 63,
+              "layoutPositioning": "AUTO"
+            },
+            "misc": {
+              "layoutWrap": "NO_WRAP",
+              "crossAxisSpacing": 0
+            },
+            "parent": {
+              "layoutMode": "VERTICAL",
+              "paddingLeft": 80,
+              "paddingRight": 80,
+              "paddingTop": 87,
+              "paddingBottom": 87,
+              "counterAxisSizingMode": "AUTO",
+              "primaryAxisSizingMode": "AUTO",
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "CENTER",
+              "layoutAlign": "INHERIT",
+              "layoutGrow": 0,
+              "itemSpacing": 35,
+              "layoutPositioning": "AUTO"
+            }
+          },
+          "children": [
+            {
+              "type": "figma-frame",
+              "dimensions": {
+                "self": {
+                  "x": 0,
+                  "y": 0,
+                  "positioning": "AUTO",
+                  "width": 80,
+                  "height": 80,
+                  "min": {
+                    "width": null,
+                    "height": null
+                  },
+                  "max": {
+                    "width": null,
+                    "height": null
+                  },
+                  "widthMode": "FIXED",
+                  "heightMode": "FIXED",
+                  "rotation": 0,
+                  "constraints": {
+                    "horizontal": "MIN",
+                    "vertical": "MIN"
+                  }
+                },
+                "parent": {
+                  "x": 80,
+                  "y": 87,
+                  "width": 223,
+                  "height": 80
+                }
+              },
+              "style": {
+                "color": {
+                  "r": 0.4828166961669922,
+                  "g": 0.2827083468437195,
+                  "b": 0.737500011920929
+                },
+                "opacity": 1,
+                "cornerRadius": {
+                  "tl": 40,
+                  "tr": 40,
+                  "bl": 40,
+                  "br": 40
+                }
+              },
+              "layout": {
+                "self": null,
+                "misc": {
+                  "layoutWrap": "NO_WRAP",
+                  "crossAxisSpacing": 0
+                },
+                "parent": {
+                  "layoutMode": "HORIZONTAL",
+                  "paddingLeft": 0,
+                  "paddingRight": 0,
+                  "paddingTop": 0,
+                  "paddingBottom": 0,
+                  "counterAxisSizingMode": "AUTO",
+                  "primaryAxisSizingMode": "AUTO",
+                  "primaryAxisAlignItems": "MIN",
+                  "counterAxisAlignItems": "MIN",
+                  "layoutAlign": "INHERIT",
+                  "layoutGrow": 0,
+                  "itemSpacing": 63,
+                  "layoutPositioning": "AUTO"
+                }
+              },
+              "children": []
+            },
+            {
+              "type": "figma-frame",
+              "dimensions": {
+                "self": {
+                  "x": 143,
+                  "y": 0,
+                  "positioning": "AUTO",
+                  "width": 80,
+                  "height": 80,
+                  "min": {
+                    "width": null,
+                    "height": null
+                  },
+                  "max": {
+                    "width": null,
+                    "height": null
+                  },
+                  "widthMode": "FIXED",
+                  "heightMode": "FIXED",
+                  "rotation": 0,
+                  "constraints": {
+                    "horizontal": "MIN",
+                    "vertical": "MIN"
+                  }
+                },
+                "parent": {
+                  "x": 80,
+                  "y": 87,
+                  "width": 223,
+                  "height": 80
+                }
+              },
+              "style": {
+                "color": {
+                  "r": 0.4828166961669922,
+                  "g": 0.2827083468437195,
+                  "b": 0.737500011920929
+                },
+                "opacity": 1,
+                "cornerRadius": {
+                  "tl": 40,
+                  "tr": 40,
+                  "bl": 40,
+                  "br": 40
+                }
+              },
+              "layout": {
+                "self": null,
+                "misc": {
+                  "layoutWrap": "NO_WRAP",
+                  "crossAxisSpacing": 0
+                },
+                "parent": {
+                  "layoutMode": "HORIZONTAL",
+                  "paddingLeft": 0,
+                  "paddingRight": 0,
+                  "paddingTop": 0,
+                  "paddingBottom": 0,
+                  "counterAxisSizingMode": "AUTO",
+                  "primaryAxisSizingMode": "AUTO",
+                  "primaryAxisAlignItems": "MIN",
+                  "counterAxisAlignItems": "MIN",
+                  "layoutAlign": "INHERIT",
+                  "layoutGrow": 0,
+                  "itemSpacing": 63,
+                  "layoutPositioning": "AUTO"
+                }
+              },
+              "children": []
+            }
+          ]
+        },
+        {
+          "type": "figma-frame",
+          "dimensions": {
+            "self": {
+              "x": 143,
+              "y": 202,
+              "positioning": "AUTO",
+              "width": 97,
+              "height": 94,
+              "min": {
+                "width": null,
+                "height": null
+              },
+              "max": {
+                "width": null,
+                "height": null
+              },
+              "widthMode": "FIXED",
+              "heightMode": "FIXED",
+              "rotation": 0,
+              "constraints": {
+                "horizontal": "MIN",
+                "vertical": "MIN"
+              }
+            },
+            "parent": {
+              "x": 405.5,
+              "y": 154.5,
+              "width": 383,
+              "height": 383
+            }
+          },
+          "style": {
+            "color": {
+              "r": 0.4828166961669922,
+              "g": 0.2827083468437195,
+              "b": 0.737500011920929
+            },
+            "opacity": 1,
+            "cornerRadius": {
+              "tl": 30,
+              "tr": 60,
+              "bl": 90,
+              "br": 120
+            }
+          },
+          "layout": {
+            "self": null,
+            "misc": {
+              "layoutWrap": "NO_WRAP",
+              "crossAxisSpacing": 0
+            },
+            "parent": {
+              "layoutMode": "VERTICAL",
+              "paddingLeft": 80,
+              "paddingRight": 80,
+              "paddingTop": 87,
+              "paddingBottom": 87,
+              "counterAxisSizingMode": "AUTO",
+              "primaryAxisSizingMode": "AUTO",
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "CENTER",
+              "layoutAlign": "INHERIT",
+              "layoutGrow": 0,
+              "itemSpacing": 35,
+              "layoutPositioning": "AUTO"
+            }
+          },
+          "children": []
+        }
+      ]
+    },
+    {
+      "type": "figma-frame",
+      "dimensions": {
+        "self": {
+          "x": 238,
+          "y": 547.5,
+          "positioning": "AUTO",
+          "width": 718,
+          "height": 301,
+          "min": {
+            "width": null,
+            "height": null
+          },
+          "max": {
+            "width": null,
+            "height": null
+          },
+          "widthMode": "HUG",
+          "heightMode": "HUG",
+          "rotation": 0,
+          "constraints": {
+            "horizontal": "MIN",
+            "vertical": "MIN"
+          }
+        },
+        "parent": {
+          "x": -626,
+          "y": 2053,
+          "width": 1194,
+          "height": 1003
+        }
+      },
+      "style": {
+        "color": {
+          "r": 0.6367616057395935,
+          "g": 0.8208333253860474,
+          "b": 0.11286458373069763
+        },
+        "opacity": 1,
+        "cornerRadius": {
+          "tl": 200,
+          "tr": 200,
+          "bl": 0,
+          "br": 0
+        }
+      },
+      "layout": {
+        "self": {
+          "layoutMode": "HORIZONTAL",
+          "paddingLeft": 150,
+          "paddingRight": 150,
+          "paddingTop": 150,
+          "paddingBottom": 57,
+          "counterAxisSizingMode": "AUTO",
+          "primaryAxisSizingMode": "AUTO",
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "MIN",
+          "layoutAlign": "INHERIT",
+          "layoutGrow": 0,
+          "itemSpacing": 10,
+          "layoutPositioning": "AUTO"
+        },
+        "misc": {
+          "layoutWrap": "NO_WRAP",
+          "crossAxisSpacing": 0
+        },
+        "parent": {
+          "layoutMode": "VERTICAL",
+          "paddingLeft": 10,
+          "paddingRight": 10,
+          "paddingTop": 51,
+          "paddingBottom": 51,
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "CENTER",
+          "layoutAlign": "INHERIT",
+          "layoutGrow": 0,
+          "itemSpacing": 10,
+          "layoutPositioning": "AUTO"
+        }
+      },
+      "children": [
+        {
+          "type": "figma-frame",
+          "dimensions": {
+            "self": {
+              "x": 150,
+              "y": 150,
+              "positioning": "AUTO",
+              "width": 97,
+              "height": 94,
+              "min": {
+                "width": null,
+                "height": null
+              },
+              "max": {
+                "width": null,
+                "height": null
+              },
+              "widthMode": "FIXED",
+              "heightMode": "FIXED",
+              "rotation": 0,
+              "constraints": {
+                "horizontal": "MIN",
+                "vertical": "MIN"
+              }
+            },
+            "parent": {
+              "x": 238,
+              "y": 547.5,
+              "width": 718,
+              "height": 301
+            }
+          },
+          "style": {
+            "color": {
+              "r": 0.1622389256954193,
+              "g": 0.04090277850627899,
+              "b": 0.3166666626930237
+            },
+            "opacity": 1,
+            "cornerRadius": {
+              "tl": 30,
+              "tr": 60,
+              "bl": 90,
+              "br": 120
+            }
+          },
+          "layout": {
+            "self": null,
+            "misc": {
+              "layoutWrap": "NO_WRAP",
+              "crossAxisSpacing": 0
+            },
+            "parent": {
+              "layoutMode": "HORIZONTAL",
+              "paddingLeft": 150,
+              "paddingRight": 150,
+              "paddingTop": 150,
+              "paddingBottom": 57,
+              "counterAxisSizingMode": "AUTO",
+              "primaryAxisSizingMode": "AUTO",
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN",
+              "layoutAlign": "INHERIT",
+              "layoutGrow": 0,
+              "itemSpacing": 10,
+              "layoutPositioning": "AUTO"
+            }
+          },
+          "children": []
+        },
+        {
+          "type": "figma-frame",
+          "dimensions": {
+            "self": {
+              "x": 257,
+              "y": 150,
+              "positioning": "AUTO",
+              "width": 97,
+              "height": 94,
+              "min": {
+                "width": null,
+                "height": null
+              },
+              "max": {
+                "width": null,
+                "height": null
+              },
+              "widthMode": "FIXED",
+              "heightMode": "FIXED",
+              "rotation": 0,
+              "constraints": {
+                "horizontal": "MIN",
+                "vertical": "MIN"
+              }
+            },
+            "parent": {
+              "x": 238,
+              "y": 547.5,
+              "width": 718,
+              "height": 301
+            }
+          },
+          "style": {
+            "color": {
+              "r": 0.1622389256954193,
+              "g": 0.04090277850627899,
+              "b": 0.3166666626930237
+            },
+            "opacity": 1,
+            "cornerRadius": {
+              "tl": 30,
+              "tr": 60,
+              "bl": 90,
+              "br": 120
+            }
+          },
+          "layout": {
+            "self": null,
+            "misc": {
+              "layoutWrap": "NO_WRAP",
+              "crossAxisSpacing": 0
+            },
+            "parent": {
+              "layoutMode": "HORIZONTAL",
+              "paddingLeft": 150,
+              "paddingRight": 150,
+              "paddingTop": 150,
+              "paddingBottom": 57,
+              "counterAxisSizingMode": "AUTO",
+              "primaryAxisSizingMode": "AUTO",
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN",
+              "layoutAlign": "INHERIT",
+              "layoutGrow": 0,
+              "itemSpacing": 10,
+              "layoutPositioning": "AUTO"
+            }
+          },
+          "children": []
+        },
+        {
+          "type": "figma-frame",
+          "dimensions": {
+            "self": {
+              "x": 364,
+              "y": 150,
+              "positioning": "AUTO",
+              "width": 97,
+              "height": 94,
+              "min": {
+                "width": null,
+                "height": null
+              },
+              "max": {
+                "width": null,
+                "height": null
+              },
+              "widthMode": "FIXED",
+              "heightMode": "FIXED",
+              "rotation": 0,
+              "constraints": {
+                "horizontal": "MIN",
+                "vertical": "MIN"
+              }
+            },
+            "parent": {
+              "x": 238,
+              "y": 547.5,
+              "width": 718,
+              "height": 301
+            }
+          },
+          "style": {
+            "color": {
+              "r": 0.1622389256954193,
+              "g": 0.04090277850627899,
+              "b": 0.3166666626930237
+            },
+            "opacity": 1,
+            "cornerRadius": {
+              "tl": 30,
+              "tr": 60,
+              "bl": 90,
+              "br": 120
+            }
+          },
+          "layout": {
+            "self": null,
+            "misc": {
+              "layoutWrap": "NO_WRAP",
+              "crossAxisSpacing": 0
+            },
+            "parent": {
+              "layoutMode": "HORIZONTAL",
+              "paddingLeft": 150,
+              "paddingRight": 150,
+              "paddingTop": 150,
+              "paddingBottom": 57,
+              "counterAxisSizingMode": "AUTO",
+              "primaryAxisSizingMode": "AUTO",
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN",
+              "layoutAlign": "INHERIT",
+              "layoutGrow": 0,
+              "itemSpacing": 10,
+              "layoutPositioning": "AUTO"
+            }
+          },
+          "children": []
+        },
+        {
+          "type": "figma-frame",
+          "dimensions": {
+            "self": {
+              "x": 471,
+              "y": 150,
+              "positioning": "AUTO",
+              "width": 97,
+              "height": 94,
+              "min": {
+                "width": null,
+                "height": null
+              },
+              "max": {
+                "width": null,
+                "height": null
+              },
+              "widthMode": "FIXED",
+              "heightMode": "FIXED",
+              "rotation": 0,
+              "constraints": {
+                "horizontal": "MIN",
+                "vertical": "MIN"
+              }
+            },
+            "parent": {
+              "x": 238,
+              "y": 547.5,
+              "width": 718,
+              "height": 301
+            }
+          },
+          "style": {
+            "color": {
+              "r": 0.1622389256954193,
+              "g": 0.04090277850627899,
+              "b": 0.3166666626930237
+            },
+            "opacity": 1,
+            "cornerRadius": {
+              "tl": 30,
+              "tr": 60,
+              "bl": 90,
+              "br": 120
+            }
+          },
+          "layout": {
+            "self": null,
+            "misc": {
+              "layoutWrap": "NO_WRAP",
+              "crossAxisSpacing": 0
+            },
+            "parent": {
+              "layoutMode": "HORIZONTAL",
+              "paddingLeft": 150,
+              "paddingRight": 150,
+              "paddingTop": 150,
+              "paddingBottom": 57,
+              "counterAxisSizingMode": "AUTO",
+              "primaryAxisSizingMode": "AUTO",
+              "primaryAxisAlignItems": "MIN",
+              "counterAxisAlignItems": "MIN",
+              "layoutAlign": "INHERIT",
+              "layoutGrow": 0,
+              "itemSpacing": 10,
+              "layoutPositioning": "AUTO"
+            }
+          },
+          "children": []
+        }
+      ]
+    }
+  ]
+}

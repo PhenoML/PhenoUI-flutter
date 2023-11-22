@@ -131,15 +131,6 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
         );
 
       default:
-        var parentLayout = model.layout.parent as FigmaLayoutValuesModel;
-
-        Size size = computeContainerSizeAutoLayout(model.dimensions, const BoxConstraints(
-          minWidth: 0.0,
-          minHeight: 0.0,
-          maxWidth: double.infinity,
-          maxHeight: double.infinity,
-        ));
-
         widget = Container(
           padding: model.layout.self?.padding,
           decoration: BoxDecoration(
@@ -147,18 +138,16 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
           borderRadius: model.style.borderRadius,
           ),
           constraints: model.dimensions.self.sizeConstraints,
-          width: size.width,
-          height: size.height,
           child: childrenContainer,
         );
 
         var (mainAxis, crossAxis) = _discernAxisModes(model);
-        // if (crossAxis == FigmaDimensionsSizing.fixed || crossAxis == FigmaDimensionsSizing.hug) {
-        //   widget = CustomSingleChildLayout(
-        //       delegate: FigmaFrameLayoutDelegate(model: model),
-        //       child: widget,
-        //   );
-        // }
+        if (mainAxis == FigmaDimensionsSizing.fixed || crossAxis == FigmaDimensionsSizing.fixed) {
+          widget = CustomSingleChildLayout(
+              delegate: FigmaFrameLayoutDelegate(model: model),
+              child: widget,
+          );
+        }
 
         if (mainAxis == FigmaDimensionsSizing.fill || (model.layout.self != null && model.layout.self?.grow != 0)) {
           // Future Dario: fill sizing and `Wrap` do not work, I am deciding to

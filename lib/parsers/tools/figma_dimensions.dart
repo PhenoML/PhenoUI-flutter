@@ -44,7 +44,7 @@ double _computeDimensionSizeParentLayoutNone(
 }
 
 BoxConstraints computeConstraintsParentAutoLayout(FigmaDimensionsModel model, BoxConstraints constraints) {
-  if (model.self.widthMode == FigmaDimensionsSizing.fixed) {
+  if (model.self.widthMode == FigmaDimensionsSizing.fixed || model.self.heightMode == FigmaDimensionsSizing.fixed) {
     return BoxConstraints.tight(computeContainerSizeAutoLayout(model, constraints));
   }
   return constraints;

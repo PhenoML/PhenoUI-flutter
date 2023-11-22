@@ -67,10 +67,14 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
       );
     }
 
+    // TODO: This could be wrapped in an opacity widget, but let's wait to see if it's a feature we need.
     return CustomSingleChildLayout(
       delegate: FigmaFrameLayoutDelegate(model: model),
       child: Container(
-        color: model.style.color,
+        decoration: BoxDecoration(
+          color: model.style.color,
+          borderRadius: model.style.borderRadius,
+        ),
       ),
     );
   }

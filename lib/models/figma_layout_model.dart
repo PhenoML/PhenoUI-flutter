@@ -279,7 +279,7 @@ class FigmaLayoutModel {
 
   factory FigmaLayoutModel.fromJson(Map<String, dynamic> json){
     return FigmaLayoutModel(
-      self: FigmaLayoutValuesModel.fromJson(json['self'], json['misc']['layoutWrap'], json['misc']['crossAxisSpacing']?.toDouble()),
+      self: FigmaLayoutValuesModel.fromJson(json['self'], json['misc']?['layoutWrap'], json['misc']?['crossAxisSpacing']?.toDouble()),
       parent: FigmaLayoutValuesModel.fromJson(json['parent'])
     );
   }

@@ -21,7 +21,7 @@ class PhenoUI extends StatelessWidget {
   const PhenoUI({Key? key}) : super(key: key);
 
   Future<Map<String, dynamic>> buildWidget(BuildContext context) async {
-    var jsonString = await DefaultAssetBundle.of(context).loadString('assets/simple_wrap.json', cache: true);
+    var jsonString = await DefaultAssetBundle.of(context).loadString('assets/aligned_column.json', cache: true);
     var json = jsonDecode(jsonString) as Map<String, dynamic>;
     return json;
   }

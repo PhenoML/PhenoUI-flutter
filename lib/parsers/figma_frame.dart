@@ -152,21 +152,26 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
           child: childrenContainer,
         );
 
-        if (model.layout.self != null) {
-          var (mainAxis, crossAxis) = _discernAxisModes(model);
-          if (crossAxis == FigmaDimensionsSizing.fixed || crossAxis == FigmaDimensionsSizing.hug) {
-            widget = CustomSingleChildLayout(
-                delegate: FigmaFrameLayoutDelegate(model: model),
-                child: widget,
-            );
-          }
+        var (mainAxis, crossAxis) = _discernAxisModes(model);
+        // if (crossAxis == FigmaDimensionsSizing.fixed || crossAxis == FigmaDimensionsSizing.hug) {
+        //   widget = CustomSingleChildLayout(
+        //       delegate: FigmaFrameLayoutDelegate(model: model),
+        //       child: widget,
+        //   );
+        // }
 
-          var layout = model.layout.self as FigmaLayoutValuesModel;
-          if (layout.grow != 0.0 || mainAxis == FigmaDimensionsSizing.fill) {
-            widget = Expanded(child: widget);
-          } else if (mainAxis == FigmaDimensionsSizing.hug) {
-            widget = UnconstrainedBox(child: widget);
-          }
+        if (mainAxis == FigmaDimensionsSizing.fill || (model.layout.self != null && model.layout.self?.grow != 0)) {
+          // Future Dario: fill sizing and `Wrap` do not work, I am deciding to
+          // let it crash for now because `Expanded` simply doesn't work in
+          // combination with `Wrap`. Two possible solutions, if we _really_
+          // need to use fill sizing within `Wrap`:
+          // 1. Write a SingleChildLayoutDelegate (or similar) to support the
+          //    use case.
+          // 2. Use the widget referenced in the SO:
+          //    https://stackoverflow.com/questions/74170550/flutter-wrap-row-of-expanded-widgets
+          widget = Expanded(child: widget);
+        } else if (mainAxis == FigmaDimensionsSizing.hug) {
+          widget = UnconstrainedBox(child: widget);
         }
     }
 

@@ -2,11 +2,11 @@
   "type": "figma-frame",
   "dimensions": {
     "self": {
-      "x": -626,
-      "y": -495,
+      "x": 4310,
+      "y": 675,
       "positioning": "AUTO",
       "width": 1194,
-      "height": 795,
+      "height": 1003,
       "min": {
         "width": null,
         "height": null
@@ -45,10 +45,24 @@
     }
   },
   "layout": {
-    "self": null,
+    "self": {
+      "layoutMode": "VERTICAL",
+      "paddingLeft": 10,
+      "paddingRight": 10,
+      "paddingTop": 51,
+      "paddingBottom": 51,
+      "counterAxisSizingMode": "FIXED",
+      "primaryAxisSizingMode": "FIXED",
+      "primaryAxisAlignItems": "CENTER",
+      "counterAxisAlignItems": "CENTER",
+      "layoutAlign": "INHERIT",
+      "layoutGrow": 0,
+      "itemSpacing": 10,
+      "layoutPositioning": "AUTO"
+    },
     "misc": {
       "layoutWrap": "NO_WRAP",
-      "crossAxisSpacing": 81
+      "crossAxisSpacing": 10
     },
     "parent": null
   },
@@ -57,11 +71,11 @@
       "type": "figma-frame",
       "dimensions": {
         "self": {
-          "x": 132.31661987304688,
-          "y": 51.02790832519531,
+          "x": 10,
+          "y": 51,
           "positioning": "AUTO",
-          "width": 335.51715087890625,
-          "height": 226.29766845703125,
+          "width": 1174,
+          "height": 613,
           "min": {
             "width": null,
             "height": null
@@ -70,8 +84,8 @@
             "width": null,
             "height": null
           },
-          "widthMode": "FIXED",
-          "heightMode": "FIXED",
+          "widthMode": "FILL",
+          "heightMode": "FILL",
           "rotation": 0,
           "constraints": {
             "horizontal": "MIN",
@@ -79,24 +93,24 @@
           }
         },
         "parent": {
-          "x": -626,
-          "y": -495,
+          "x": 4310,
+          "y": 675,
           "width": 1194,
-          "height": 795
+          "height": 1003
         }
       },
       "style": {
         "color": {
-          "r": 1,
-          "g": 0,
-          "b": 0
+          "r": 0.1549694538116455,
+          "g": 0.3916666805744171,
+          "b": 0.15013888478279114
         },
         "opacity": 1,
         "cornerRadius": {
-          "tl": 0,
-          "tr": 0,
-          "bl": 0,
-          "br": 0
+          "tl": 30,
+          "tr": 60,
+          "bl": 90,
+          "br": 120
         }
       },
       "layout": {
@@ -105,7 +119,21 @@
           "layoutWrap": "NO_WRAP",
           "crossAxisSpacing": 0
         },
-        "parent": null
+        "parent": {
+          "layoutMode": "VERTICAL",
+          "paddingLeft": 10,
+          "paddingRight": 10,
+          "paddingTop": 51,
+          "paddingBottom": 51,
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "CENTER",
+          "layoutAlign": "INHERIT",
+          "layoutGrow": 0,
+          "itemSpacing": 10,
+          "layoutPositioning": "AUTO"
+        }
       },
       "children": []
     },
@@ -113,11 +141,11 @@
       "type": "figma-frame",
       "dimensions": {
         "self": {
-          "x": 584.3984375,
-          "y": 51.02790832519531,
+          "x": 454,
+          "y": 674,
           "positioning": "AUTO",
-          "width": 477.28497314453125,
-          "height": 354.97674560546875,
+          "width": 286,
+          "height": 278,
           "min": {
             "width": null,
             "height": null
@@ -135,24 +163,24 @@
           }
         },
         "parent": {
-          "x": -626,
-          "y": -495,
+          "x": 4310,
+          "y": 675,
           "width": 1194,
-          "height": 795
+          "height": 1003
         }
       },
       "style": {
         "color": {
-          "r": 0,
-          "g": 1,
-          "b": 0
+          "r": 0.4828166961669922,
+          "g": 0.2827083468437195,
+          "b": 0.737500011920929
         },
         "opacity": 1,
         "cornerRadius": {
-          "tl": 0,
-          "tr": 0,
-          "bl": 0,
-          "br": 0
+          "tl": 30,
+          "tr": 60,
+          "bl": 90,
+          "br": 120
         }
       },
       "layout": {
@@ -160,64 +188,22 @@
         "misc": {
           "layoutWrap": "NO_WRAP",
           "crossAxisSpacing": 0
-        },
-        "parent": null
-      },
-      "children": []
-    },
-    {
-      "type": "figma-frame",
-      "dimensions": {
-        "self": {
-          "x": 132.31661987304688,
-          "y": 465.906982421875,
-          "positioning": "AUTO",
-          "width": 929.3667602539062,
-          "height": 278.06512451171875,
-          "min": {
-            "width": null,
-            "height": null
-          },
-          "max": {
-            "width": null,
-            "height": null
-          },
-          "widthMode": "FIXED",
-          "heightMode": "FIXED",
-          "rotation": 0,
-          "constraints": {
-            "horizontal": "MIN",
-            "vertical": "MIN"
-          }
         },
         "parent": {
-          "x": -626,
-          "y": -495,
-          "width": 1194,
-          "height": 795
+          "layoutMode": "VERTICAL",
+          "paddingLeft": 10,
+          "paddingRight": 10,
+          "paddingTop": 51,
+          "paddingBottom": 51,
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "CENTER",
+          "counterAxisAlignItems": "CENTER",
+          "layoutAlign": "INHERIT",
+          "layoutGrow": 0,
+          "itemSpacing": 10,
+          "layoutPositioning": "AUTO"
         }
-      },
-      "style": {
-        "color": {
-          "r": 0,
-          "g": 0,
-          "b": 1
-        },
-        "opacity": 1,
-        "cornerRadius": {
-          "tl": 0,
-          "tr": 0,
-          "bl": 0,
-          "br": 0
-        }
-      },
-      "layout": {
-        "self": null,
-        "misc": {
-          "layoutWrap": "NO_WRAP",
-          "crossAxisSpacing": 0
-        },
-        "parent": null
       },
       "children": []
     }

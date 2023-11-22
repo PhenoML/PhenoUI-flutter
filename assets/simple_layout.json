@@ -1,0 +1,270 @@
+{
+  "type": "figma-frame",
+  "dimensions": {
+    "self": {
+      "x": -626,
+      "y": -495,
+      "positioning": "AUTO",
+      "width": 773,
+      "height": 1126,
+      "min": {
+        "width": null,
+        "height": null
+      },
+      "max": {
+        "width": null,
+        "height": null
+      },
+      "widthMode": "FIXED",
+      "heightMode": "FIXED",
+      "rotation": 0,
+      "constraints": {
+        "horizontal": "MIN",
+        "vertical": "MIN"
+      }
+    },
+    "parent": {
+      "x": null,
+      "y": null,
+      "positioning": null,
+      "width": null,
+      "height": null,
+      "min": {
+        "width": null,
+        "height": null
+      },
+      "max": {
+        "width": null,
+        "height": null
+      },
+      "widthMode": null,
+      "heightMode": null,
+      "rotation": null,
+      "constraints": null
+    }
+  },
+  "style": {
+    "color": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+    },
+    "opacity": 1,
+    "cornerRadius": {
+      "tl": 0,
+      "tr": 0,
+      "bl": 0,
+      "br": 0
+    }
+  },
+  "layout": {
+    "self": null,
+    "parent": null
+  },
+  "children": [
+    {
+      "type": "figma-frame",
+      "dimensions": {
+        "self": {
+          "x": 99,
+          "y": 120,
+          "positioning": "AUTO",
+          "width": 213,
+          "height": 306,
+          "min": {
+            "width": null,
+            "height": null
+          },
+          "max": {
+            "width": null,
+            "height": null
+          },
+          "widthMode": "FIXED",
+          "heightMode": "FIXED",
+          "rotation": 0,
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "SCALE"
+          }
+        },
+        "parent": {
+          "x": -626,
+          "y": -495,
+          "positioning": "AUTO",
+          "width": 773,
+          "height": 1126,
+          "min": {
+            "width": null,
+            "height": null
+          },
+          "max": {
+            "width": null,
+            "height": null
+          },
+          "widthMode": "FIXED",
+          "heightMode": "FIXED",
+          "rotation": 0,
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "SCALE"
+          }
+        }
+      },
+      "style": {
+        "color": {
+          "r": 1,
+          "g": 0,
+          "b": 0
+        },
+        "opacity": 1,
+        "cornerRadius": {
+          "tl": 0,
+          "tr": 0,
+          "bl": 0,
+          "br": 0
+        }
+      },
+      "layout": {
+        "self": null,
+        "parent": null
+      },
+      "children": []
+    },
+    {
+      "type": "figma-frame",
+      "dimensions": {
+        "self": {
+          "x": 386,
+          "y": 120,
+          "positioning": "AUTO",
+          "width": 303,
+          "height": 480,
+          "min": {
+            "width": null,
+            "height": null
+          },
+          "max": {
+            "width": null,
+            "height": null
+          },
+          "widthMode": "FIXED",
+          "heightMode": "FIXED",
+          "rotation": 0,
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "SCALE"
+          }
+        },
+        "parent": {
+          "x": -626,
+          "y": -495,
+          "positioning": "AUTO",
+          "width": 773,
+          "height": 1126,
+          "min": {
+            "width": null,
+            "height": null
+          },
+          "max": {
+            "width": null,
+            "height": null
+          },
+          "widthMode": "FIXED",
+          "heightMode": "FIXED",
+          "rotation": 0,
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "SCALE"
+          }
+        }
+      },
+      "style": {
+        "color": {
+          "r": 0,
+          "g": 1,
+          "b": 0
+        },
+        "opacity": 1,
+        "cornerRadius": {
+          "tl": 0,
+          "tr": 0,
+          "bl": 0,
+          "br": 0
+        }
+      },
+      "layout": {
+        "self": null,
+        "parent": null
+      },
+      "children": []
+    },
+    {
+      "type": "figma-frame",
+      "dimensions": {
+        "self": {
+          "x": 99,
+          "y": 681,
+          "positioning": "AUTO",
+          "width": 590,
+          "height": 376,
+          "min": {
+            "width": null,
+            "height": null
+          },
+          "max": {
+            "width": null,
+            "height": null
+          },
+          "widthMode": "FIXED",
+          "heightMode": "FIXED",
+          "rotation": 0,
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "SCALE"
+          }
+        },
+        "parent": {
+          "x": -626,
+          "y": -495,
+          "positioning": "AUTO",
+          "width": 773,
+          "height": 1126,
+          "min": {
+            "width": null,
+            "height": null
+          },
+          "max": {
+            "width": null,
+            "height": null
+          },
+          "widthMode": "FIXED",
+          "heightMode": "FIXED",
+          "rotation": 0,
+          "constraints": {
+            "horizontal": "SCALE",
+            "vertical": "SCALE"
+          }
+        }
+      },
+      "style": {
+        "color": {
+          "r": 0,
+          "g": 0,
+          "b": 1
+        },
+        "opacity": 1,
+        "cornerRadius": {
+          "tl": 0,
+          "tr": 0,
+          "bl": 0,
+          "br": 0
+        }
+      },
+      "layout": {
+        "self": null,
+        "parent": null
+      },
+      "children": []
+    }
+  ]
+}

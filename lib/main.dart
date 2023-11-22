@@ -1,26 +1,30 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mirai/mirai.dart';
-import 'package:screen_builder_test/parsers/AutoLayout.dart';
-import 'package:screen_builder_test/parsers/wrap.dart';
+import 'package:phenoui_flutter/parsers/auto_layout.dart';
+import 'package:phenoui_flutter/parsers/figma_frame.dart';
+import 'package:phenoui_flutter/parsers/wrap.dart';
 
 void main() async {
   await Mirai.initialize(
     parsers: [
       const WrapParser(),
       const AutoLayoutParser(),
+      const FigmaFrameParser(),
     ]
   );
 
-  runApp(const MyApp());
+  runApp(const PhenoUI());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+class PhenoUI extends StatelessWidget {
+  const PhenoUI({Key? key}) : super(key: key);
 
   Future<Map<String, dynamic>> buildWidget(BuildContext context) async {
-    var json = await DefaultAssetBundle.of(context).loadString('assets/responsive.json', cache: true);
-    return jsonDecode(json) as Map<String, dynamic>;
+    var jsonString = await DefaultAssetBundle.of(context).loadString('assets/simple_layout.json', cache: true);
+    var json = jsonDecode(jsonString) as Map<String, dynamic>;
+    json['__isRoot'] = true;
+    return json;
   }
 
   @override

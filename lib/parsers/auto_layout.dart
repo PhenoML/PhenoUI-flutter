@@ -1,18 +1,28 @@
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:mirai/mirai.dart';
-import 'package:screen_builder_test/parsers/tools/enum.dart';
+import 'package:phenoui_flutter/parsers/tools/figma_enum.dart';
 
-enum AutoLayoutLayout {
+enum AutoLayoutLayout with FigmaEnum {
   horizontal,
   vertical,
   wrap,
+  ;
+  @override
+  get figmaName => _figmaName;
+  final String? _figmaName;
+  const AutoLayoutLayout([this._figmaName]);
 }
 
-enum DimensionSizing {
+enum DimensionSizing with FigmaEnum {
   fixed,
   hug,
   fill,
+  ;
+  @override
+  get figmaName => _figmaName;
+  final String? _figmaName;
+  const DimensionSizing([this._figmaName]);
 }
 
 class AutoLayoutModel {
@@ -40,13 +50,13 @@ class AutoLayoutModel {
 
   factory AutoLayoutModel.fromJson(Map<String, dynamic> json) =>
     AutoLayoutModel(
-      layout: decodeEnumValue(AutoLayoutLayout.values, json['layout'], AutoLayoutLayout.horizontal),
-      mainAxisAlignment: decodeEnumValue(MainAxisAlignment.values, json['mainAxisAlignment'], MainAxisAlignment.start),
-      crossAxisAlignment: decodeEnumValue(CrossAxisAlignment.values, json['crossAxisAlignment'], CrossAxisAlignment.start),
+      layout: AutoLayoutLayout.values.byNameDefault(json['layout'], AutoLayoutLayout.horizontal),
+      mainAxisAlignment: MainAxisAlignment.values.byNameDefault(json['mainAxisAlignment'], MainAxisAlignment.start),
+      crossAxisAlignment: CrossAxisAlignment.values.byNameDefault(json['crossAxisAlignment'], CrossAxisAlignment.start),
       spacing: (json['spacing'] as num?)?.toDouble() ?? 0.0,
       crossSpacing: (json['crossSpacing'] as num?)?.toDouble() ?? 0.0,
-      widthMode: decodeEnumValue(DimensionSizing.values, json['widthMode'], DimensionSizing.hug),
-      heightMode: decodeEnumValue(DimensionSizing.values, json['heightMode'], DimensionSizing.hug),
+      widthMode: DimensionSizing.values.byNameDefault(json['widthMode'], DimensionSizing.hug),
+      heightMode: DimensionSizing.values.byNameDefault(json['heightMode'], DimensionSizing.hug),
       containerModel: MiraiContainer.fromJson(json),
       children: (json['children'] as List<dynamic>?)
           ?.map((e) => e as Map<String, dynamic>)
@@ -73,9 +83,9 @@ class AutoLayoutParser extends MiraiParser<AutoLayoutModel> {
         child = miraiChild;
         // ugh this is done this way for readability... or... is it?!
         if (
-          model.layout == AutoLayoutLayout.vertical && decodeEnumValue(DimensionSizing.values, json['heightMode'], DimensionSizing.fixed) == DimensionSizing.fill
+          model.layout == AutoLayoutLayout.vertical && DimensionSizing.values.byNameDefault(json['heightMode'], DimensionSizing.fixed) == DimensionSizing.fill
           ||
-          model.layout != AutoLayoutLayout.vertical && decodeEnumValue(DimensionSizing.values, json['widthMode'], DimensionSizing.fixed) == DimensionSizing.fill
+          model.layout != AutoLayoutLayout.vertical && DimensionSizing.values.byNameDefault(json['widthMode'], DimensionSizing.fixed) == DimensionSizing.fill
         ) {
           child = Expanded(child: child);
         }
@@ -109,8 +119,8 @@ class AutoLayoutParser extends MiraiParser<AutoLayoutModel> {
       );
     } else {
       child = Wrap(
-        alignment: WrapAlignment.values.byName(model.mainAxisAlignment.name),
-        crossAxisAlignment: WrapCrossAlignment.values.byName(model.crossAxisAlignment.name),
+        alignment: WrapAlignment.values.byNameDefault(model.mainAxisAlignment.name, WrapAlignment.start),
+        crossAxisAlignment: WrapCrossAlignment.values.byNameDefault(model.crossAxisAlignment.name, WrapCrossAlignment.start),
         spacing: model.spacing,
         runSpacing: model.crossSpacing,
         children: children,

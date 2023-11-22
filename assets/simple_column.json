@@ -1,0 +1,265 @@
+{
+  "type": "figma-frame",
+  "dimensions": {
+    "self": {
+      "x": 1842,
+      "y": -495,
+      "positioning": "AUTO",
+      "width": 1194,
+      "height": 1003,
+      "min": {
+        "width": null,
+        "height": null
+      },
+      "max": {
+        "width": null,
+        "height": null
+      },
+      "widthMode": "FIXED",
+      "heightMode": "FIXED",
+      "rotation": 0,
+      "constraints": {
+        "horizontal": "MIN",
+        "vertical": "MIN"
+      }
+    },
+    "parent": {
+      "x": null,
+      "y": null,
+      "width": null,
+      "height": null
+    }
+  },
+  "style": {
+    "color": {
+      "r": 1,
+      "g": 1,
+      "b": 1
+    },
+    "opacity": 1,
+    "cornerRadius": {
+      "tl": 0,
+      "tr": 0,
+      "bl": 0,
+      "br": 0
+    }
+  },
+  "layout": {
+    "self": {
+      "layoutMode": "VERTICAL",
+      "paddingLeft": 132,
+      "paddingRight": 132,
+      "paddingTop": 51,
+      "paddingBottom": 51,
+      "counterAxisSizingMode": "FIXED",
+      "primaryAxisSizingMode": "FIXED",
+      "primaryAxisAlignItems": "MIN",
+      "counterAxisAlignItems": "MIN",
+      "layoutAlign": "INHERIT",
+      "layoutGrow": 0,
+      "itemSpacing": 10,
+      "layoutPositioning": "AUTO"
+    },
+    "parent": null
+  },
+  "children": [
+    {
+      "type": "figma-frame",
+      "dimensions": {
+        "self": {
+          "x": 132,
+          "y": 51,
+          "positioning": "AUTO",
+          "width": 929.3667602539062,
+          "height": 278.06512451171875,
+          "min": {
+            "width": null,
+            "height": null
+          },
+          "max": {
+            "width": null,
+            "height": null
+          },
+          "widthMode": "FIXED",
+          "heightMode": "FIXED",
+          "rotation": 0,
+          "constraints": {
+            "horizontal": "MIN",
+            "vertical": "MIN"
+          }
+        },
+        "parent": {
+          "x": 1842,
+          "y": -495,
+          "width": 1194,
+          "height": 1003
+        }
+      },
+      "style": {
+        "color": {
+          "r": 0,
+          "g": 0,
+          "b": 1
+        },
+        "opacity": 1,
+        "cornerRadius": {
+          "tl": 30,
+          "tr": 60,
+          "bl": 90,
+          "br": 120
+        }
+      },
+      "layout": {
+        "self": null,
+        "parent": {
+          "layoutMode": "VERTICAL",
+          "paddingLeft": 132,
+          "paddingRight": 132,
+          "paddingTop": 51,
+          "paddingBottom": 51,
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "MIN",
+          "layoutAlign": "INHERIT",
+          "layoutGrow": 0,
+          "itemSpacing": 10,
+          "layoutPositioning": "AUTO"
+        }
+      },
+      "children": []
+    },
+    {
+      "type": "figma-frame",
+      "dimensions": {
+        "self": {
+          "x": 132,
+          "y": 339.06512451171875,
+          "positioning": "AUTO",
+          "width": 929.3667602539062,
+          "height": 278.06512451171875,
+          "min": {
+            "width": null,
+            "height": null
+          },
+          "max": {
+            "width": null,
+            "height": null
+          },
+          "widthMode": "FIXED",
+          "heightMode": "FIXED",
+          "rotation": 0,
+          "constraints": {
+            "horizontal": "MIN",
+            "vertical": "MIN"
+          }
+        },
+        "parent": {
+          "x": 1842,
+          "y": -495,
+          "width": 1194,
+          "height": 1003
+        }
+      },
+      "style": {
+        "color": {
+          "r": 0,
+          "g": 0,
+          "b": 1
+        },
+        "opacity": 1,
+        "cornerRadius": {
+          "tl": 30,
+          "tr": 60,
+          "bl": 90,
+          "br": 120
+        }
+      },
+      "layout": {
+        "self": null,
+        "parent": {
+          "layoutMode": "VERTICAL",
+          "paddingLeft": 132,
+          "paddingRight": 132,
+          "paddingTop": 51,
+          "paddingBottom": 51,
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "MIN",
+          "layoutAlign": "INHERIT",
+          "layoutGrow": 0,
+          "itemSpacing": 10,
+          "layoutPositioning": "AUTO"
+        }
+      },
+      "children": []
+    },
+    {
+      "type": "figma-frame",
+      "dimensions": {
+        "self": {
+          "x": 132,
+          "y": 627.1302490234375,
+          "positioning": "AUTO",
+          "width": 929.3667602539062,
+          "height": 278.06512451171875,
+          "min": {
+            "width": null,
+            "height": null
+          },
+          "max": {
+            "width": null,
+            "height": null
+          },
+          "widthMode": "FIXED",
+          "heightMode": "FIXED",
+          "rotation": 0,
+          "constraints": {
+            "horizontal": "MIN",
+            "vertical": "MIN"
+          }
+        },
+        "parent": {
+          "x": 1842,
+          "y": -495,
+          "width": 1194,
+          "height": 1003
+        }
+      },
+      "style": {
+        "color": {
+          "r": 0,
+          "g": 0,
+          "b": 1
+        },
+        "opacity": 1,
+        "cornerRadius": {
+          "tl": 30,
+          "tr": 60,
+          "bl": 90,
+          "br": 120
+        }
+      },
+      "layout": {
+        "self": null,
+        "parent": {
+          "layoutMode": "VERTICAL",
+          "paddingLeft": 132,
+          "paddingRight": 132,
+          "paddingTop": 51,
+          "paddingBottom": 51,
+          "counterAxisSizingMode": "FIXED",
+          "primaryAxisSizingMode": "FIXED",
+          "primaryAxisAlignItems": "MIN",
+          "counterAxisAlignItems": "MIN",
+          "layoutAlign": "INHERIT",
+          "layoutGrow": 0,
+          "itemSpacing": 10,
+          "layoutPositioning": "AUTO"
+        }
+      },
+      "children": []
+    }
+  ]
+}

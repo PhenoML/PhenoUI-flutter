@@ -1,7 +1,24 @@
-import 'dart:math';
+  import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:phenoui_flutter/models/figma_dimensions_model.dart';
+
+double _computeContainerDimension(FigmaDimensionsSizing type, double selfValue, double min, double max) {
+  switch (type) {
+    case FigmaDimensionsSizing.fixed:
+      return selfValue;
+
+    case FigmaDimensionsSizing.hug:
+    case FigmaDimensionsSizing.fill:
+      return max;
+  }
+}
+
+Size computeContainerSizeAutoLayout(FigmaDimensionsModel model, BoxConstraints constraints) {
+  double width = _computeContainerDimension(model.self.widthMode, model.self.width, constraints.minWidth, constraints.maxWidth);
+  double height = _computeContainerDimension(model.self.heightMode, model.self.height, constraints.minHeight, constraints.maxHeight);
+  return Size(width, height);
+}
 
 double _computeDimensionSizeParentLayoutNone(
   FigmaDimensionsConstraintType type,
@@ -24,6 +41,13 @@ double _computeDimensionSizeParentLayoutNone(
     case FigmaDimensionsConstraintType.center:
       return selfSize;
   }
+}
+
+BoxConstraints computeConstraintsParentAutoLayout(FigmaDimensionsModel model, BoxConstraints constraints) {
+  if (model.self.widthMode == FigmaDimensionsSizing.fixed) {
+    return BoxConstraints.tight(computeContainerSizeAutoLayout(model, constraints));
+  }
+  return constraints;
 }
 
 BoxConstraints computeConstraintsParentLayoutNone(FigmaDimensionsModel model, BoxConstraints constraints) {

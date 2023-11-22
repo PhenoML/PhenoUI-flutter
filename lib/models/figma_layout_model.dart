@@ -82,11 +82,11 @@ enum FigmaLayoutAxisSizing with FigmaEnum {
 //     "BASELINE" can only be set on horizontal auto-layout frames, and aligns
 //     all children along the text baseline.
 enum FigmaLayoutAxisAlignItems with FigmaEnum {
-  min('MIN'),
-  max('MAX'),
+  start('MIN'),
+  end('MAX'),
   center('CENTER'),
   spaceBetween('SPACE_BETWEEN'),
-  baseline('BASELINE'),
+  baseline('BASELINE'), // not supported in Flutter by default // future Dario, you know what to do!
   ;
   @override
   get figmaName => _figmaName;
@@ -116,7 +116,7 @@ enum FigmaLayoutAxisAlignItems with FigmaEnum {
 ///             taller than the height of the auto-layout frame, the spacing
 ///             will be 0.
 enum FigmaLayoutAxisAlignContent with FigmaEnum {
-  auto('AUTO'),
+  auto('AUTO'), // not supported natively // Sorry future Dario
   spaceBetween('SPACE_BETWEEN'),
   ;
   @override
@@ -182,9 +182,9 @@ enum FigmaLayoutPositioning with FigmaEnum {
 class FigmaLayoutValuesModel {
   final FigmaLayoutMode mode;
   final FigmaLayoutWrap wrap;
-  final FigmaLayoutAxisSizing primaryAxisSizing;
+  final FigmaLayoutAxisSizing mainAxisSizing;
   final FigmaLayoutAxisSizing crossAxisSizing;
-  final FigmaLayoutAxisAlignItems primaryAxisAlignItems;
+  final FigmaLayoutAxisAlignItems mainAxisAlignItems;
   final FigmaLayoutAxisAlignItems crossAxisAlignItems;
   final FigmaLayoutAxisAlignContent crossAxisAlignContent;
   final FigmaLayoutAlign align;
@@ -194,11 +194,11 @@ class FigmaLayoutValuesModel {
   final EdgeInsets padding;
   /// Applicable only on auto-layout frames. Determines distance between
   /// children of the frame.
-  final int itemSpacing;
+  final double itemSpacing;
   /// Applicable only on auto-layout frames with layoutWrap set to "WRAP".
   /// Determines the distance between wrapped tracks. The value must be
   /// positive.
-  final int? crossAxisSpacing;
+  final double? crossAxisSpacing;
   /// Applicable only on auto-layout frames. Determines the canvas stacking
   /// order of layers in this frame. When true, the first layer will be draw on
   /// top.
@@ -210,16 +210,16 @@ class FigmaLayoutValuesModel {
   /// This property is applicable only for direct children of auto-layout
   /// frames. Determines whether a layer should stretch along the parent’s
   /// primary axis. 0 corresponds to a fixed size and 1 corresponds to stretch.
-  final double grow;
+  final int grow;
 
 
   FigmaLayoutValuesModel({
     required this.mode,
     required this.wrap,
     required this.padding,
-    required this.primaryAxisSizing,
+    required this.mainAxisSizing,
     required this.crossAxisSizing,
-    required this.primaryAxisAlignItems,
+    required this.mainAxisAlignItems,
     required this.crossAxisAlignItems,
     required this.crossAxisAlignContent,
     required this.itemSpacing,
@@ -240,26 +240,26 @@ class FigmaLayoutValuesModel {
     );
   }
 
-  static FigmaLayoutValuesModel? fromJson(Map<String, dynamic>? json) {
+  static FigmaLayoutValuesModel? fromJson([Map<String, dynamic>? json, String? wrap, double? crossAxisSpacing]) {
     if (json == null) {
       return null;
     }
 
     return FigmaLayoutValuesModel(
       mode: FigmaLayoutMode.values.byNameDefault(json['layoutMode'], FigmaLayoutMode.none),
-      wrap: FigmaLayoutWrap.values.byNameDefault(json['layoutWrap'], FigmaLayoutWrap.noWrap),
+      wrap: FigmaLayoutWrap.values.byNameDefault(wrap ?? json['layoutWrap'], FigmaLayoutWrap.noWrap),
       padding: _parsePadding(json),
-      primaryAxisSizing: FigmaLayoutAxisSizing.values.byNameDefault(json['primaryAxisSizingMode'], FigmaLayoutAxisSizing.fixed),
+      mainAxisSizing: FigmaLayoutAxisSizing.values.byNameDefault(json['primaryAxisSizingMode'], FigmaLayoutAxisSizing.fixed),
       crossAxisSizing: FigmaLayoutAxisSizing.values.byNameDefault(json['counterAxisSizingMode'], FigmaLayoutAxisSizing.fixed),
-      primaryAxisAlignItems: FigmaLayoutAxisAlignItems.values.byNameDefault(json['primaryAxisAlignItems'], FigmaLayoutAxisAlignItems.min),
-      crossAxisAlignItems: FigmaLayoutAxisAlignItems.values.byNameDefault(json['counterAxisAlignItems'], FigmaLayoutAxisAlignItems.min),
+      mainAxisAlignItems: FigmaLayoutAxisAlignItems.values.byNameDefault(json['primaryAxisAlignItems'], FigmaLayoutAxisAlignItems.start),
+      crossAxisAlignItems: FigmaLayoutAxisAlignItems.values.byNameDefault(json['counterAxisAlignItems'], FigmaLayoutAxisAlignItems.start),
       crossAxisAlignContent: FigmaLayoutAxisAlignContent.values.byNameDefault(json['counterAxisAlignContent'], FigmaLayoutAxisAlignContent.auto),
-      itemSpacing: json['itemSpacing'].toInt(),
-      crossAxisSpacing: json['counterAxisSpacing']?.toInt(),
-      itemReverseZIndex: json['itemReverseZIndex'],
-      strokesIncludedInLayout: json['strokesIncludedInLayout'],
+      itemSpacing: json['itemSpacing'].toDouble(),
+      crossAxisSpacing: crossAxisSpacing ?? json['counterAxisSpacing']?.toDouble(),
+      itemReverseZIndex: json['itemReverseZIndex'] ?? false,
+      strokesIncludedInLayout: json['strokesIncludedInLayout'] ?? false,
       align: FigmaLayoutAlign.values.byNameDefault(json['layoutAlign'], FigmaLayoutAlign.inherit),
-      grow: json['layoutGrow'].toDouble(),
+      grow: json['layoutGrow'].toInt(),
       positioning: FigmaLayoutPositioning.values.byNameDefault(json['layoutPositioning'], FigmaLayoutPositioning.auto),
     );
   }
@@ -279,7 +279,7 @@ class FigmaLayoutModel {
 
   factory FigmaLayoutModel.fromJson(Map<String, dynamic> json){
     return FigmaLayoutModel(
-      self: FigmaLayoutValuesModel.fromJson(json['self']),
+      self: FigmaLayoutValuesModel.fromJson(json['self'], json['misc']['layoutWrap'], json['misc']['crossAxisSpacing']?.toDouble()),
       parent: FigmaLayoutValuesModel.fromJson(json['parent'])
     );
   }

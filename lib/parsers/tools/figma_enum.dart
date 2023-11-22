@@ -29,12 +29,19 @@ extension EnumValue<T extends Enum> on Iterable<T> {
     if (name == null) {
       return fallback;
     }
-
     try {
       return byName(name);
     } catch (_) {
       return fallback;
     }
+  }
+
+  T convert<K extends Enum>(K source) {
+    return byName(source.name);
+  }
+
+  T convertDefault<K extends Enum>(K source, T fallback) {
+    return byNameDefault(source.name, fallback);
   }
 }
 

@@ -21,7 +21,7 @@ enum FigmaDimensionsPositioning with FigmaEnum {
 enum FigmaDimensionsSizing with FigmaEnum {
   fixed('FIXED'),
   hug('HUG'),
-  constraint('CONSTRAINT'),
+  fill('FILL'),
   ;
   @override
   get figmaName => _figmaName;

@@ -15,6 +15,7 @@ class FigmaFrameLayoutDelegate extends SingleChildLayoutDelegate {
 
   @override
   Size getSize(BoxConstraints constraints) {
+    // print('getSize:$constraints');
     if (model.layout.parentLayoutMode == FigmaLayoutMode.none) {
       return constraints.biggest;
     }
@@ -23,6 +24,7 @@ class FigmaFrameLayoutDelegate extends SingleChildLayoutDelegate {
 
   @override
   BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
+    // print('getConstraintsForChild:$constraints');
     if (model.dimensions.parent == null) {
       return constraints;
     }
@@ -38,6 +40,7 @@ class FigmaFrameLayoutDelegate extends SingleChildLayoutDelegate {
 
   @override
   Offset getPositionForChild(Size size, Size childSize) {
+    // print('getPositionForChild size:$size childSize:$childSize');
     if (model.dimensions.parent == null) {
       return Offset.zero;
     }
@@ -111,36 +114,38 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
         }
 
       default:
-        throw 'Layout mode ${model.layout.self?.mode} not implemented';
+        throw 'Layout mode ${model.layout.self.mode} not implemented';
     }
 
-    Widget widget;
+    Widget widget = Container(
+      padding: model.layout.self.padding,
+      decoration: BoxDecoration(
+        color: model.style.color,
+        borderRadius: model.style.borderRadius,
+      ),
+      constraints: model.dimensions.self.sizeConstraints,
+      child: childrenContainer,
+    );
+
     switch (model.layout.parentLayoutMode) {
       case FigmaLayoutMode.none:
-        widget = CustomSingleChildLayout(
-          delegate: FigmaFrameLayoutDelegate(model: model),
-          child: Container(
-            padding: model.layout.self?.padding,
-            decoration: BoxDecoration(
-              color: model.style.color,
-              borderRadius: model.style.borderRadius,
-            ),
-            constraints: model.dimensions.self.sizeConstraints,
-            child: childrenContainer,
-          ),
-        );
+        if (model.dimensions.parent != null && (model.dimensions.self.widthMode == FigmaDimensionsSizing.hug || model.dimensions.self.heightMode == FigmaDimensionsSizing.hug)) {
+          Axis? axis;
+          if (model.dimensions.self.widthMode != FigmaDimensionsSizing.hug) {
+            axis = Axis.horizontal;
+          } else if (model.dimensions.self.heightMode != FigmaDimensionsSizing.hug) {
+            axis = Axis.vertical;
+          }
+          widget = UnconstrainedBox(constrainedAxis: axis, child: widget);
+        } else {
+          widget = CustomSingleChildLayout(
+            delegate: FigmaFrameLayoutDelegate(model: model),
+            child: widget,
+          );
+        }
+        break;
 
       default:
-        widget = Container(
-          padding: model.layout.self?.padding,
-          decoration: BoxDecoration(
-          color: model.style.color,
-          borderRadius: model.style.borderRadius,
-          ),
-          constraints: model.dimensions.self.sizeConstraints,
-          child: childrenContainer,
-        );
-
         var (mainAxis, crossAxis) = _discernAxisModes(model);
         if (mainAxis == FigmaDimensionsSizing.fixed || crossAxis == FigmaDimensionsSizing.fixed) {
           widget = CustomSingleChildLayout(
@@ -149,7 +154,7 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
           );
         }
 
-        if (mainAxis == FigmaDimensionsSizing.fill || (model.layout.self != null && model.layout.self?.grow != 0)) {
+        if (mainAxis == FigmaDimensionsSizing.fill || model.layout.self.grow != 0) {
           // Future Dario: fill sizing and `Wrap` do not work, I am deciding to
           // let it crash for now because `Expanded` simply doesn't work in
           // combination with `Wrap`. Two possible solutions, if we _really_
@@ -160,8 +165,15 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
           //    https://stackoverflow.com/questions/74170550/flutter-wrap-row-of-expanded-widgets
           widget = Expanded(child: widget);
         } else if (mainAxis == FigmaDimensionsSizing.hug) {
-          widget = UnconstrainedBox(child: widget);
+          Axis? axis;
+          if (model.dimensions.self.widthMode != FigmaDimensionsSizing.hug) {
+            axis = Axis.horizontal;
+          } else if (model.dimensions.self.heightMode != FigmaDimensionsSizing.hug) {
+            axis = Axis.vertical;
+          }
+          widget = UnconstrainedBox(constrainedAxis: axis, child: widget);
         }
+        break;
     }
 
     return widget;

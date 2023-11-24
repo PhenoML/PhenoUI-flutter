@@ -1,9 +1,7 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mirai/mirai.dart';
-import 'package:phenoui_flutter/parsers/auto_layout.dart';
 import 'package:phenoui_flutter/parsers/figma_frame.dart';
-import 'package:phenoui_flutter/parsers/wrap.dart';
 import 'package:phenoui_flutter/pheno/strapi.dart';
 import 'package:phenoui_flutter/widgets/category_picker.dart';
 
@@ -12,8 +10,6 @@ Strapi kStrapi = Strapi();
 void main() async {
   await Mirai.initialize(
     parsers: [
-      const WrapParser(),
-      const AutoLayoutParser(),
       const FigmaFrameParser(),
     ]
   );

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mirai/mirai.dart';
 import 'package:phenoui_flutter/parsers/figma_frame.dart';
+import 'package:phenoui_flutter/parsers/figma_text.dart';
 import 'package:phenoui_flutter/pheno/strapi.dart';
 import 'package:phenoui_flutter/widgets/category_picker.dart';
 
@@ -11,6 +12,7 @@ void main() async {
   await Mirai.initialize(
     parsers: [
       const FigmaFrameParser(),
+      const FigmaTextParser(),
     ]
   );
 
@@ -36,6 +38,7 @@ class PhenoUI extends StatelessWidget {
     return  MiraiApp(
       title: 'PhenoUI Demo',
       homeBuilder: (context) => const CategoryPicker(),
+      // homeBuilder: (context) => Container(color: Colors.red),
     );
     // return MiraiApp(
     //   title: 'PhenoUI Demo',

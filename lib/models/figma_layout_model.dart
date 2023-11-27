@@ -179,8 +179,17 @@ enum FigmaLayoutPositioning with FigmaEnum {
   const FigmaLayoutPositioning([this._figmaName]);
 }
 
-class FigmaLayoutValuesModel {
+class FigmaLayoutParentValuesModel {
   final FigmaLayoutMode mode;
+
+  FigmaLayoutParentValuesModel._fromJson(Map<String, dynamic> json):
+      mode = FigmaLayoutMode.values.byNameDefault(json['layoutMode'], FigmaLayoutMode.none);
+
+  factory FigmaLayoutParentValuesModel.fromJson(Map<String, dynamic> json) =>
+      FigmaLayoutParentValuesModel._fromJson(json);
+}
+
+class FigmaLayoutValuesModel extends FigmaLayoutParentValuesModel {
   final FigmaLayoutWrap wrap;
   final FigmaLayoutAxisSizing mainAxisSizing;
   final FigmaLayoutAxisSizing crossAxisSizing;
@@ -212,24 +221,22 @@ class FigmaLayoutValuesModel {
   /// primary axis. 0 corresponds to a fixed size and 1 corresponds to stretch.
   final int grow;
 
-
-  FigmaLayoutValuesModel({
-    required this.mode,
-    required this.wrap,
-    required this.padding,
-    required this.mainAxisSizing,
-    required this.crossAxisSizing,
-    required this.mainAxisAlignItems,
-    required this.crossAxisAlignItems,
-    required this.crossAxisAlignContent,
-    required this.itemSpacing,
-    required this.crossAxisSpacing,
-    required this.itemReverseZIndex,
-    required this.strokesIncludedInLayout,
-    required this.align,
-    required this.grow,
-    required this.positioning,
-  });
+  FigmaLayoutValuesModel._fromJson(super.json):
+    wrap = FigmaLayoutWrap.values.byNameDefault(json['layoutWrap'], FigmaLayoutWrap.noWrap),
+    padding = _parsePadding(json),
+    mainAxisSizing = FigmaLayoutAxisSizing.values.byNameDefault(json['primaryAxisSizingMode'], FigmaLayoutAxisSizing.fixed),
+    crossAxisSizing = FigmaLayoutAxisSizing.values.byNameDefault(json['counterAxisSizingMode'], FigmaLayoutAxisSizing.fixed),
+    mainAxisAlignItems = FigmaLayoutAxisAlignItems.values.byNameDefault(json['primaryAxisAlignItems'], FigmaLayoutAxisAlignItems.start),
+    crossAxisAlignItems = FigmaLayoutAxisAlignItems.values.byNameDefault(json['counterAxisAlignItems'], FigmaLayoutAxisAlignItems.start),
+    crossAxisAlignContent = FigmaLayoutAxisAlignContent.values.byNameDefault(json['counterAxisAlignContent'], FigmaLayoutAxisAlignContent.auto),
+    itemSpacing = json['itemSpacing'].toDouble(),
+    crossAxisSpacing = json['counterAxisSpacing']?.toDouble(),
+    itemReverseZIndex = json['itemReverseZIndex'] ?? false,
+    strokesIncludedInLayout = json['strokesIncludedInLayout'] ?? false,
+    align = FigmaLayoutAlign.values.byNameDefault(json['layoutAlign'], FigmaLayoutAlign.inherit),
+    grow = json['layoutGrow'].toInt(),
+    positioning = FigmaLayoutPositioning.values.byNameDefault(json['layoutPositioning'], FigmaLayoutPositioning.auto),
+    super._fromJson();
 
   static EdgeInsets _parsePadding(Map<String, dynamic> json) {
     return EdgeInsets.fromLTRB(
@@ -240,50 +247,23 @@ class FigmaLayoutValuesModel {
     );
   }
 
-  static FigmaLayoutValuesModel fromJson(Map<String, dynamic> json) {
-    return FigmaLayoutValuesModel(
-      mode: FigmaLayoutMode.values.byNameDefault(json['layoutMode'], FigmaLayoutMode.none),
-      wrap: FigmaLayoutWrap.values.byNameDefault(json['layoutWrap'], FigmaLayoutWrap.noWrap),
-      padding: _parsePadding(json),
-      mainAxisSizing: FigmaLayoutAxisSizing.values.byNameDefault(json['primaryAxisSizingMode'], FigmaLayoutAxisSizing.fixed),
-      crossAxisSizing: FigmaLayoutAxisSizing.values.byNameDefault(json['counterAxisSizingMode'], FigmaLayoutAxisSizing.fixed),
-      mainAxisAlignItems: FigmaLayoutAxisAlignItems.values.byNameDefault(json['primaryAxisAlignItems'], FigmaLayoutAxisAlignItems.start),
-      crossAxisAlignItems: FigmaLayoutAxisAlignItems.values.byNameDefault(json['counterAxisAlignItems'], FigmaLayoutAxisAlignItems.start),
-      crossAxisAlignContent: FigmaLayoutAxisAlignContent.values.byNameDefault(json['counterAxisAlignContent'], FigmaLayoutAxisAlignContent.auto),
-      itemSpacing: json['itemSpacing'].toDouble(),
-      crossAxisSpacing: json['counterAxisSpacing']?.toDouble(),
-      itemReverseZIndex: json['itemReverseZIndex'] ?? false,
-      strokesIncludedInLayout: json['strokesIncludedInLayout'] ?? false,
-      align: FigmaLayoutAlign.values.byNameDefault(json['layoutAlign'], FigmaLayoutAlign.inherit),
-      grow: json['layoutGrow'].toInt(),
-      positioning: FigmaLayoutPositioning.values.byNameDefault(json['layoutPositioning'], FigmaLayoutPositioning.auto),
-    );
-  }
-
-  static FigmaLayoutValuesModel? tryFromJson(Map<String, dynamic> json) {
-    if (json['layoutMode'] == null) {
-      return null;
-    }
-    return fromJson(json);
-  }
+  static FigmaLayoutValuesModel fromJson(Map<String, dynamic> json) =>
+    FigmaLayoutValuesModel._fromJson(json);
 }
 
 class FigmaLayoutModel {
   final FigmaLayoutValuesModel self;
-  final FigmaLayoutValuesModel? parent;
+  final FigmaLayoutParentValuesModel parent;
 
   FigmaLayoutModel({
     required this.self,
     required this.parent
   });
 
-  get layoutMode => self.mode;
-  get parentLayoutMode => parent == null ? FigmaLayoutMode.none : parent?.mode;
-
-  factory FigmaLayoutModel.fromJson(Map<String, dynamic> json){
+  factory FigmaLayoutModel.fromJson(Map<String, dynamic> json) {
     return FigmaLayoutModel(
       self: FigmaLayoutValuesModel.fromJson(json['self']),
-      parent: FigmaLayoutValuesModel.tryFromJson(json['parent'])
+      parent: FigmaLayoutParentValuesModel.fromJson(json['parent'])
     );
   }
 }

@@ -96,14 +96,14 @@ class FigmaDimensionsSelfModel extends FigmaDimensionsParentModel {
   final double rotation;
   final FigmaDimensionsConstraints constraints;
 
-  FigmaDimensionsSelfModel._fromJson(Map<String, dynamic> json):
+  FigmaDimensionsSelfModel._fromJson(super.json):
     positioning = FigmaDimensionsPositioning.values.byNameDefault(json['positioning'], FigmaDimensionsPositioning.auto),
     sizeConstraints = _parseSizeConstraints(json),
     widthMode = FigmaDimensionsSizing.values.byNameDefault(json['widthMode'], FigmaDimensionsSizing.fixed),
     heightMode = FigmaDimensionsSizing.values.byNameDefault(json['heightMode'], FigmaDimensionsSizing.fixed),
     rotation = json['rotation'].toDouble(),
     constraints = FigmaDimensionsConstraints.fromJson(json['constraints']),
-    super._fromJson(json);
+    super._fromJson();
 
   factory FigmaDimensionsSelfModel.fromJson(Map<String, dynamic> json) =>
     FigmaDimensionsSelfModel._fromJson(json);

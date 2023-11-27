@@ -16,7 +16,7 @@ class FigmaFrameLayoutDelegate extends SingleChildLayoutDelegate {
   @override
   Size getSize(BoxConstraints constraints) {
     // print('getSize:$constraints');
-    if (model.layout.parentLayoutMode == FigmaLayoutMode.none) {
+    if (model.layout.parent.mode == FigmaLayoutMode.none) {
       return constraints.biggest;
     }
     return computeContainerSizeAutoLayout(model.dimensions, constraints);
@@ -29,7 +29,7 @@ class FigmaFrameLayoutDelegate extends SingleChildLayoutDelegate {
       return constraints;
     }
 
-    switch (model.layout.parentLayoutMode) {
+    switch (model.layout.parent.mode) {
       case FigmaLayoutMode.none:
         return computeConstraintsParentLayoutNone(model.dimensions, constraints);
 
@@ -45,7 +45,7 @@ class FigmaFrameLayoutDelegate extends SingleChildLayoutDelegate {
       return Offset.zero;
     }
 
-    switch (model.layout.parentLayoutMode) {
+    switch (model.layout.parent.mode) {
       case FigmaLayoutMode.none:
         return computeOffsetParentLayoutNone(model.dimensions, size, childSize);
 
@@ -72,13 +72,13 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
     List<Widget> children = model.children.map((value) => Mirai.fromJson(value, context) ?? const SizedBox()).toList();
 
     Widget childrenContainer;
-    switch (model.layout.layoutMode) {
+    switch (model.layout.self.mode) {
       case FigmaLayoutMode.none:
         childrenContainer = Stack(children: children);
         break;
 
       case FigmaLayoutMode.vertical:
-        var layout = model.layout.self as FigmaLayoutValuesModel;
+        var layout = model.layout.self;
         if (layout.itemSpacing != 0.0) {
           children = _addSpacers(children, 0.0, layout.itemSpacing);
         }
@@ -91,7 +91,7 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
         break;
 
       case FigmaLayoutMode.horizontal:
-        var layout = model.layout.self as FigmaLayoutValuesModel;
+        var layout = model.layout.self;
         if (layout.wrap == FigmaLayoutWrap.wrap) {
           childrenContainer = Wrap(
             alignment: WrapAlignment.values.convertDefault(layout.mainAxisAlignItems, WrapAlignment.start),
@@ -127,7 +127,7 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
       child: childrenContainer,
     );
 
-    switch (model.layout.parentLayoutMode) {
+    switch (model.layout.parent.mode) {
       case FigmaLayoutMode.none:
         if (model.dimensions.parent != null && (model.dimensions.self.widthMode == FigmaDimensionsSizing.hug || model.dimensions.self.heightMode == FigmaDimensionsSizing.hug)) {
           Axis? axis;
@@ -180,7 +180,7 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
   }
 
   (FigmaDimensionsSizing, FigmaDimensionsSizing) _discernAxisModes(FigmaFrameModel model) {
-    if (model.layout.parent?.mode == FigmaLayoutMode.vertical) {
+    if (model.layout.parent.mode == FigmaLayoutMode.vertical) {
       return (model.dimensions.self.heightMode, model.dimensions.self.widthMode);
     }
     return (model.dimensions.self.widthMode, model.dimensions.self.heightMode);

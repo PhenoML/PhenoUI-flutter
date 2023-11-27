@@ -6,9 +6,9 @@ import 'package:phenoui_flutter/models/figma_style_model.dart';
 import 'figma_dimensions_model.dart';
 
 class FigmaFrameModel {
-  FigmaDimensionsModel dimensions;
-  FigmaStyleModel style;
-  FigmaLayoutModel layout;
+  final FigmaDimensionsModel dimensions;
+  final FigmaStyleModel style;
+  final FigmaLayoutModel layout;
   final List<Map<String, dynamic>> children;
 
   FigmaFrameModel({

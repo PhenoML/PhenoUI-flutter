@@ -146,7 +146,7 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
         break;
 
       default:
-        var (mainAxis, crossAxis) = _discernAxisModes(model);
+        var (mainAxis, crossAxis) = discernAxisModes(model.dimensions, model.layout.parent.mode);
         if (mainAxis == FigmaDimensionsSizing.fixed || crossAxis == FigmaDimensionsSizing.fixed) {
           widget = CustomSingleChildLayout(
               delegate: FigmaFrameLayoutDelegate(model: model),
@@ -177,13 +177,6 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
     }
 
     return widget;
-  }
-
-  (FigmaDimensionsSizing, FigmaDimensionsSizing) _discernAxisModes(FigmaFrameModel model) {
-    if (model.layout.parent.mode == FigmaLayoutMode.vertical) {
-      return (model.dimensions.self.heightMode, model.dimensions.self.widthMode);
-    }
-    return (model.dimensions.self.widthMode, model.dimensions.self.heightMode);
   }
 
   List<Widget> _addSpacers(List<Widget> widgets, double width, double height) {

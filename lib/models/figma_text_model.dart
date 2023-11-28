@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import '../parsers/tools/figma_enum.dart';
 import 'figma_dimensions_model.dart';
+import 'figma_layout_model.dart';
 
 /// The horizontal alignment of the text with respect to the textbox. Setting
 /// this property requires the font the be loaded.
@@ -303,6 +304,7 @@ class FigmaTextModel {
   final FigmaTextAutoResize autoResize;
   final FigmaTextTruncation truncation;
   final List<FigmaTextSegmentModel> segments;
+  final FigmaLayoutParentValuesModel parentLayout;
 
   FigmaTextModel(
     this.dimensions,
@@ -312,6 +314,7 @@ class FigmaTextModel {
     this.autoResize,
     this.truncation,
     this.segments,
+    this.parentLayout,
   );
 
   factory FigmaTextModel.fromJson(Map<String, dynamic> json) {
@@ -324,6 +327,7 @@ class FigmaTextModel {
         FigmaTextAutoResize.values.byNameDefault(json['textAutoResize'], FigmaTextAutoResize.none),
         FigmaTextTruncation.values.byNameDefault(json['textTruncation'], FigmaTextTruncation.disabled ),
         segments,
+        FigmaLayoutParentValuesModel.fromJson(json['parentLayout']),
     );
   }
 }

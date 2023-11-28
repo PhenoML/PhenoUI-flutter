@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:phenoui_flutter/models/figma_dimensions_model.dart';
+import 'package:phenoui_flutter/models/figma_layout_model.dart';
 
 double _computeContainerDimension(FigmaDimensionsSizing type, double selfValue, double min, double max) {
   switch (type) {
@@ -133,5 +134,12 @@ Offset computeOffsetParentLayoutNone(FigmaDimensionsModel model, Size size, Size
 
   return Offset(x, y);
 }
+
+  (FigmaDimensionsSizing, FigmaDimensionsSizing) discernAxisModes(FigmaDimensionsModel dimensions, FigmaLayoutMode parentLayoutMode) {
+    if (parentLayoutMode == FigmaLayoutMode.vertical) {
+      return (dimensions.self.heightMode, dimensions.self.widthMode);
+    }
+    return (dimensions.self.widthMode, dimensions.self.heightMode);
+  }
 
 

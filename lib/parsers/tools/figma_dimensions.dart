@@ -135,11 +135,57 @@ Offset computeOffsetParentLayoutNone(FigmaDimensionsModel model, Size size, Size
   return Offset(x, y);
 }
 
-  (FigmaDimensionsSizing, FigmaDimensionsSizing) discernAxisModes(FigmaDimensionsModel dimensions, FigmaLayoutMode parentLayoutMode) {
-    if (parentLayoutMode == FigmaLayoutMode.vertical) {
-      return (dimensions.self.heightMode, dimensions.self.widthMode);
-    }
-    return (dimensions.self.widthMode, dimensions.self.heightMode);
+(FigmaDimensionsSizing, FigmaDimensionsSizing) discernAxisModes(FigmaDimensionsModel dimensions, FigmaLayoutMode parentLayoutMode) {
+  if (parentLayoutMode == FigmaLayoutMode.vertical) {
+    return (dimensions.self.heightMode, dimensions.self.widthMode);
   }
+  return (dimensions.self.widthMode, dimensions.self.heightMode);
+}
+
+Widget dimensionWrapWidget(Widget widget, FigmaDimensionsModel dimensions, FigmaLayoutParentValuesModel parentLayout) {
+  var mode = parentLayout.mode;
+
+  var width = switch (dimensions.self.widthMode) {
+    FigmaDimensionsSizing.fixed => dimensions.self.width,
+    FigmaDimensionsSizing.fill => mode == FigmaLayoutMode.horizontal ? null : double.infinity,
+    _ => null
+  };
+
+  var height = switch (dimensions.self.heightMode) {
+    FigmaDimensionsSizing.fixed => dimensions.self.height,
+    FigmaDimensionsSizing.fill => mode == FigmaLayoutMode.vertical ? null : double.infinity,
+    _ => null
+  };
+
+  if (width != null || height != null) {
+    widget = SizedBox(
+      width: width,
+      height: height,
+      child: widget,
+    );
+  }
+
+  if (dimensions.self.widthMode == FigmaDimensionsSizing.hug || dimensions.self.heightMode == FigmaDimensionsSizing.hug) {
+    Axis? constrained;
+    if (dimensions.self.widthMode != FigmaDimensionsSizing.hug) {
+      constrained = Axis.horizontal;
+    } else if (dimensions.self.heightMode != FigmaDimensionsSizing.hug) {
+      constrained = Axis.vertical;
+    }
+    widget = UnconstrainedBox(
+      constrainedAxis: constrained,
+      child: widget,
+    );
+  }
+
+  if (
+  (dimensions.self.widthMode == FigmaDimensionsSizing.fill && mode == FigmaLayoutMode.horizontal)
+      || (dimensions.self.heightMode == FigmaDimensionsSizing.fill && mode == FigmaLayoutMode.vertical)
+  ) {
+    widget = Expanded(child: widget);
+  }
+
+  return widget;
+}
 
 

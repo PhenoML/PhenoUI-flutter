@@ -4,6 +4,7 @@ import 'package:mirai/mirai.dart';
 import 'package:phenoui_flutter/models/figma_dimensions_model.dart';
 import 'package:phenoui_flutter/models/figma_layout_model.dart';
 import 'package:phenoui_flutter/models/figma_text_model.dart';
+import 'package:phenoui_flutter/parsers/tools/figma_dimensions.dart';
 import 'package:phenoui_flutter/parsers/tools/figma_enum.dart';
 
 
@@ -71,49 +72,6 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
       overflow: TextOverflow.visible,
     );
 
-    var dimensions = model.dimensions.self;
-    var mode = model.parentLayout.mode;
-
-    var width = switch (dimensions.widthMode) {
-      FigmaDimensionsSizing.fixed => dimensions.width,
-      FigmaDimensionsSizing.fill => mode == FigmaLayoutMode.horizontal ? null : double.infinity,
-      _ => null
-    };
-
-    var height = switch (dimensions.heightMode) {
-      FigmaDimensionsSizing.fixed => dimensions.height,
-      FigmaDimensionsSizing.fill => mode == FigmaLayoutMode.vertical ? null : double.infinity,
-      _ => null
-    };
-
-    if (width != null || height != null) {
-      widget = SizedBox(
-        width: width,
-        height: height,
-        child: widget,
-      );
-    }
-
-    if (dimensions.widthMode == FigmaDimensionsSizing.hug || dimensions.heightMode == FigmaDimensionsSizing.hug) {
-      Axis? constrained;
-      if (dimensions.widthMode != FigmaDimensionsSizing.hug) {
-        constrained = Axis.horizontal;
-      } else if (dimensions.heightMode != FigmaDimensionsSizing.hug) {
-        constrained = Axis.vertical;
-      }
-      widget = UnconstrainedBox(
-        constrainedAxis: constrained,
-        child: widget,
-      );
-    }
-
-    if (
-          (dimensions.widthMode == FigmaDimensionsSizing.fill && mode == FigmaLayoutMode.horizontal)
-          || (dimensions.heightMode == FigmaDimensionsSizing.fill && mode == FigmaLayoutMode.vertical)
-    ) {
-      widget = Expanded(child: widget);
-    }
-
-    return widget;
+    return dimensionWrapWidget(widget, model.dimensions, model.parentLayout);
   }
 }

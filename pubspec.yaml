@@ -38,6 +38,7 @@ dependencies:
   mirai: ^0.5.1
   http: ^1.1.0
   google_fonts: ^6.1.0
+  flutter_svg: ^2.0.9
 
 dev_dependencies:
   flutter_test:

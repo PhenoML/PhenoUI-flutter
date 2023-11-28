@@ -9,7 +9,7 @@ extension FigmaEnumValue<T extends FigmaEnum> on Iterable<T> {
     if (name != null) {
       for (var value in this) {
         String figmaName = value.figmaName ?? value.name;
-        if (value.figmaName == name) return value;
+        if (figmaName == name) return value;
       }
     }
     return null;

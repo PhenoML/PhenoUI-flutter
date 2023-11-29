@@ -18,8 +18,8 @@ class FigmaImageParser extends MiraiParser<FigmaImageModel> {
   @override
   Widget parse(BuildContext context, FigmaImageModel model) {
     Widget widget = switch (model.format) {
-      FigmaImageFormat.png => Image.memory(base64Decode(model.data)),
-      FigmaImageFormat.svg => SvgPicture.string(model.data),
+      FigmaImageFormat.png => Image.memory(base64Decode(model.data), fit: model.fit),
+      FigmaImageFormat.svg => SvgPicture.string(model.data, fit: model.fit),
       _ => throw 'ERROR: Unknown image format [${model.format.name}]',
     };
 

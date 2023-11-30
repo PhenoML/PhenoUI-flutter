@@ -71,6 +71,7 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
       padding: model.layout.self.padding,
       decoration: BoxDecoration(
         color: model.style.color,
+        border: model.style.border,
         borderRadius: model.style.borderRadius,
       ),
       constraints: model.dimensions.self.sizeConstraints,

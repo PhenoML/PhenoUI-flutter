@@ -8,56 +8,6 @@ import 'package:phenoui_flutter/parsers/tools/figma_dimensions.dart';
 import 'package:phenoui_flutter/parsers/tools/figma_enum.dart';
 import '../models/figma_frame_model.dart';
 
-
-class FigmaFrameLayoutDelegate extends SingleChildLayoutDelegate {
-  FigmaFrameModel model;
-  FigmaFrameLayoutDelegate({required this.model, super.relayout});
-
-  @override
-  Size getSize(BoxConstraints constraints) {
-    // print('getSize:$constraints');
-    if (model.layout.parent.mode == FigmaLayoutMode.none) {
-      return constraints.biggest;
-    }
-    return computeContainerSizeAutoLayout(model.dimensions, constraints);
-  }
-
-  @override
-  BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
-    // print('getConstraintsForChild:$constraints');
-    if (model.dimensions.parent == null) {
-      return constraints;
-    }
-
-    switch (model.layout.parent.mode) {
-      case FigmaLayoutMode.none:
-        return computeConstraintsParentLayoutNone(model.dimensions, constraints);
-
-      default:
-        return computeConstraintsParentAutoLayout(model.dimensions, constraints);
-    }
-  }
-
-  @override
-  Offset getPositionForChild(Size size, Size childSize) {
-    // print('getPositionForChild size:$size childSize:$childSize');
-    if (model.dimensions.parent == null) {
-      return Offset.zero;
-    }
-
-    switch (model.layout.parent.mode) {
-      case FigmaLayoutMode.none:
-        return computeOffsetParentLayoutNone(model.dimensions, size, childSize);
-
-      default:
-        return Offset.zero;
-    }
-  }
-
-  @override
-  bool shouldRelayout(covariant FigmaFrameLayoutDelegate oldDelegate) => oldDelegate.model != model;
-}
-
 class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
   const FigmaFrameParser();
 
@@ -139,7 +89,7 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
           widget = UnconstrainedBox(constrainedAxis: axis, child: widget);
         } else {
           widget = CustomSingleChildLayout(
-            delegate: FigmaFrameLayoutDelegate(model: model),
+            delegate: FigmaLayoutDelegate(dimensions: model.dimensions, parentLayout: model.layout.parent),
             child: widget,
           );
         }
@@ -149,7 +99,7 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
         var (mainAxis, crossAxis) = discernAxisModes(model.dimensions, model.layout.parent.mode);
         if (mainAxis == FigmaDimensionsSizing.fixed || crossAxis == FigmaDimensionsSizing.fixed) {
           widget = CustomSingleChildLayout(
-              delegate: FigmaFrameLayoutDelegate(model: model),
+              delegate: FigmaLayoutDelegate(dimensions: model.dimensions, parentLayout: model.layout.parent),
               child: widget,
           );
         }

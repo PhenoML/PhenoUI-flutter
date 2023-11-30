@@ -4,6 +4,62 @@ import 'package:flutter/material.dart';
 import 'package:phenoui_flutter/models/figma_dimensions_model.dart';
 import 'package:phenoui_flutter/models/figma_layout_model.dart';
 
+class FigmaLayoutDelegate extends SingleChildLayoutDelegate {
+  final FigmaDimensionsModel dimensions;
+  final FigmaLayoutParentValuesModel parentLayout;
+
+  FigmaLayoutDelegate({
+    required this.dimensions,
+    required this.parentLayout,
+    super.relayout
+  });
+
+  @override
+  Size getSize(BoxConstraints constraints) {
+    // print('getSize:$constraints');
+    if (parentLayout.mode == FigmaLayoutMode.none) {
+      return constraints.biggest;
+    }
+    return computeContainerSizeAutoLayout(dimensions, constraints);
+  }
+
+  @override
+  BoxConstraints getConstraintsForChild(BoxConstraints constraints) {
+    // print('getConstraintsForChild:$constraints');
+    if (dimensions.parent == null) {
+      return constraints;
+    }
+
+    switch (parentLayout.mode) {
+      case FigmaLayoutMode.none:
+        return computeConstraintsParentLayoutNone(dimensions, constraints);
+
+      default:
+        return computeConstraintsParentAutoLayout(dimensions, constraints);
+    }
+  }
+
+  @override
+  Offset getPositionForChild(Size size, Size childSize) {
+    // print('getPositionForChild size:$size childSize:$childSize');
+    if (dimensions.parent == null) {
+      return Offset.zero;
+    }
+
+    switch (parentLayout.mode) {
+      case FigmaLayoutMode.none:
+        return computeOffsetParentLayoutNone(dimensions, size, childSize);
+
+      default:
+        return Offset.zero;
+    }
+  }
+
+  @override
+  bool shouldRelayout(covariant FigmaLayoutDelegate oldDelegate) => oldDelegate.dimensions != dimensions && oldDelegate.parentLayout != parentLayout;
+}
+
+
 double _computeContainerDimension(FigmaDimensionsSizing type, double selfValue, double min, double max) {
   switch (type) {
     case FigmaDimensionsSizing.fixed:
@@ -144,6 +200,13 @@ Offset computeOffsetParentLayoutNone(FigmaDimensionsModel model, Size size, Size
 
 Widget dimensionWrapWidget(Widget widget, FigmaDimensionsModel dimensions, FigmaLayoutParentValuesModel parentLayout) {
   var mode = parentLayout.mode;
+
+  if (mode == FigmaLayoutMode.none) {
+    return CustomSingleChildLayout(
+      delegate: FigmaLayoutDelegate(dimensions: dimensions, parentLayout: parentLayout),
+      child: widget,
+    );;
+  }
 
   var width = switch (dimensions.self.widthMode) {
     FigmaDimensionsSizing.fixed => dimensions.self.width,

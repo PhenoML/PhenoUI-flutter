@@ -28,6 +28,28 @@ void main() async {
   runApp(const PhenoUI());
 }
 
+class RouteObserver extends NavigatorObserver {
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    print('didPush ${route.settings.name}');
+  }
+
+  @override
+  void didPop(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    print('didPop ${previousRoute?.settings.name}');
+  }
+
+  @override
+  void didRemove(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    print('didRemove ${route.settings.name}');
+  }
+
+  @override
+  void didReplace({Route<dynamic>? newRoute, Route<dynamic>? oldRoute}) {
+    print('didReplace ${newRoute?.settings.name}');
+  }
+}
+
 class PhenoUI extends StatelessWidget {
   const PhenoUI({Key? key}) : super(key: key);
 
@@ -39,9 +61,11 @@ class PhenoUI extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Navigator.of(context).
     return  MiraiApp(
       title: 'PhenoUI Demo',
       homeBuilder: (context) => const CategoryPicker(),
+      navigatorObservers: [RouteObserver()],
       // homeBuilder: (context) => Container(color: Colors.red),
     );
     // return MiraiApp(

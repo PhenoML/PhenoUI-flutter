@@ -38,7 +38,7 @@ class Strapi {
 
   Strapi._internal() {
     // TODO: Server shouldn't be hardcoded
-    _server = Uri.parse('http://localhost:1337');
+    _server = Uri.parse('https://api.develop.mindora.dev');
   }
 
   void login(Uri server, String user, String password) {
@@ -56,7 +56,7 @@ class Strapi {
 
     var response = await http.get(url);
     var body = jsonDecode(response.body) as Map<String, dynamic>;
-    var entries = body['data'].map((e) => StrapiListEntry(e['id'], e['attributes']['name']));
+    var entries = body['data'].map((e) => StrapiListEntry(e['id'], e['attributes']['uid']));
     var result = List<StrapiListEntry>.from(entries);
     return result;
   }

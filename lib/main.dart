@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mirai/mirai.dart';
 import 'package:phenoui_flutter/parsers/figma_frame.dart';
 import 'package:phenoui_flutter/parsers/figma_image.dart';
+import 'package:phenoui_flutter/parsers/figma_rectangle.dart';
 import 'package:phenoui_flutter/parsers/figma_text.dart';
 import 'package:phenoui_flutter/pheno/strapi.dart';
 import 'package:phenoui_flutter/widgets/category_picker.dart';
@@ -15,6 +16,7 @@ void main() async {
       const FigmaFrameParser(),
       const FigmaTextParser(),
       const FigmaImageParser(),
+      const FigmaRectangleParser(),
     ]
   );
 

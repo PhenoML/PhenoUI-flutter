@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phenoui_flutter/parsers/tools/figma_enum.dart';
+import '../parsers/tools/figma_enum.dart';
 
 /// This property is applicable only for direct children of auto-layout frames.
 /// Determines whether a layer's size and position should be determined by

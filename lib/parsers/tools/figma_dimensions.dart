@@ -191,11 +191,11 @@ Offset computeOffsetParentLayoutNone(FigmaDimensionsModel model, Size size, Size
   return Offset(x, y);
 }
 
-(FigmaDimensionsSizing, FigmaDimensionsSizing) discernAxisModes(FigmaDimensionsModel dimensions, FigmaLayoutMode parentLayoutMode) {
+(FigmaDimensionsSizing, FigmaDimensionsSizing, bool) discernAxisModes(FigmaDimensionsModel dimensions, FigmaLayoutMode parentLayoutMode) {
   if (parentLayoutMode == FigmaLayoutMode.vertical) {
-    return (dimensions.self.heightMode, dimensions.self.widthMode);
+    return (dimensions.self.heightMode, dimensions.self.widthMode, dimensions.self.sizeConstraints.hasBoundedHeight);
   }
-  return (dimensions.self.widthMode, dimensions.self.heightMode);
+  return (dimensions.self.widthMode, dimensions.self.heightMode, dimensions.self.sizeConstraints.hasBoundedWidth);
 }
 
 Widget dimensionWrapWidget(Widget widget, FigmaDimensionsModel dimensions, FigmaLayoutParentValuesModel parentLayout) {

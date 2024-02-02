@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phenoui_flutter/parsers/tools/figma_enum.dart';
+import '../parsers/tools/figma_enum.dart';
 import 'figma_dimensions_model.dart';
 import 'figma_layout_model.dart';
 

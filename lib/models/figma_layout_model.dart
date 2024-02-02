@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:phenoui_flutter/parsers/tools/figma_enum.dart';
+import '../parsers/tools/figma_enum.dart';
 
 /// Determines whether this layer uses auto-layout to position its children.
 /// Defaults to "NONE".

@@ -2,10 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mirai/mirai.dart';
-import 'package:phenoui_flutter/models/figma_dimensions_model.dart';
-import 'package:phenoui_flutter/models/figma_layout_model.dart';
 import 'package:phenoui_flutter/parsers/tools/figma_dimensions.dart';
-import 'package:phenoui_flutter/parsers/tools/figma_enum.dart';
+import '../models/figma_dimensions_model.dart';
+import '../models/figma_layout_model.dart';
+import './tools/figma_enum.dart';
 import '../models/figma_frame_model.dart';
 
 class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
@@ -68,14 +68,14 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
     }
 
     Widget widget = Container(
-      padding: model.layout.self.padding,
+      padding:  model.layout.self.mode == FigmaLayoutMode.none ? null : model.layout.self.padding,
       decoration: BoxDecoration(
         color: model.style.color,
         border: model.style.border,
         borderRadius: model.style.borderRadius,
       ),
       constraints: model.dimensions.self.sizeConstraints,
-      child: childrenContainer,
+      child: model.wrapper(childrenContainer),
     );
 
     switch (model.layout.parent.mode) {
@@ -97,7 +97,7 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
         break;
 
       default:
-        var (mainAxis, crossAxis) = discernAxisModes(model.dimensions, model.layout.parent.mode);
+        var (mainAxis, crossAxis, hasSizeConstraints) = discernAxisModes(model.dimensions, model.layout.parent.mode);
         if (mainAxis == FigmaDimensionsSizing.fixed || crossAxis == FigmaDimensionsSizing.fixed) {
           widget = CustomSingleChildLayout(
               delegate: FigmaLayoutDelegate(dimensions: model.dimensions, parentLayout: model.layout.parent),
@@ -114,7 +114,11 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
           //    use case.
           // 2. Use the widget referenced in the SO:
           //    https://stackoverflow.com/questions/74170550/flutter-wrap-row-of-expanded-widgets
-          widget = Expanded(child: widget);
+          widget = Flexible(
+            flex: hasSizeConstraints ? 0 : 1,
+            fit: FlexFit.tight,
+            child: widget
+          );
         } else if (mainAxis == FigmaDimensionsSizing.hug) {
           Axis? axis;
           if (model.dimensions.self.widthMode != FigmaDimensionsSizing.hug) {

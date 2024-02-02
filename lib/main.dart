@@ -1,8 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:mirai/mirai.dart';
+import 'package:phenoui_flutter/parsers/figma-safe-area.dart';
 import 'package:phenoui_flutter/parsers/figma_frame.dart';
 import 'package:phenoui_flutter/parsers/figma_image.dart';
+import 'package:phenoui_flutter/parsers/figma_nav_button.dart';
 import 'package:phenoui_flutter/parsers/figma_rectangle.dart';
 import 'package:phenoui_flutter/parsers/figma_text.dart';
 import 'package:phenoui_flutter/pheno/strapi.dart';
@@ -17,6 +19,8 @@ void main() async {
       const FigmaTextParser(),
       const FigmaImageParser(),
       const FigmaRectangleParser(),
+      const FigmaSafeAreaParser(),
+      const FigmaNavButtonParser(),
     ]
   );
 

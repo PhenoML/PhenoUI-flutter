@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mirai/mirai.dart';
-import 'package:phenoui_flutter/models/figma_dimensions_model.dart';
-import 'package:phenoui_flutter/models/figma_layout_model.dart';
-import 'package:phenoui_flutter/models/figma_text_model.dart';
 import 'package:phenoui_flutter/parsers/tools/figma_dimensions.dart';
-import 'package:phenoui_flutter/parsers/tools/figma_enum.dart';
+import '../models/figma_text_model.dart';
+import '../parsers/tools/figma_enum.dart';
 
 
 class FigmaTextParser extends MiraiParser<FigmaTextModel> {
@@ -35,13 +33,13 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
 
       var height = switch (m.lineHeight.unit) {
         FigmaTextUnit.pixels => (m.lineHeight.value as double) / m.size,
-        FigmaTextUnit.percent => (m.lineHeight.value as double),
+        FigmaTextUnit.percent => (m.lineHeight.value as double) * 0.01,
         FigmaTextUnit.auto => 1.2 // good enough, sorry future Dario :/
       };
 
       var spacing = switch (m.letterSpacing.unit) {
         FigmaTextUnit.pixels => (m.letterSpacing.value as double),
-        FigmaTextUnit.percent => (m.letterSpacing.value as double) * m.size,
+        FigmaTextUnit.percent => (m.letterSpacing.value as double) * m.size * 0.01,
         FigmaTextUnit.auto => null
       };
 
@@ -65,11 +63,17 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
       );
     }).toList();
 
-    Widget widget = Text.rich(
-      TextSpan(
+    RichText text = RichText(
+      text: TextSpan(
         children: segments,
       ),
       overflow: TextOverflow.visible,
+      textAlign: TextAlign.values.convertDefault(model.alignHorizontal, TextAlign.left),
+    );
+
+    Widget widget = FittedBox(
+      fit: BoxFit.contain,
+      child: text,
     );
 
     return dimensionWrapWidget(widget, model.dimensions, model.parentLayout);

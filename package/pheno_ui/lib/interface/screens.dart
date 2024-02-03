@@ -16,8 +16,8 @@ class FigmaScreens {
 
   FigmaScreens._internal();
 
-  Future<void> init() async {
-    var category = await Strapi().getCategory('dario');
+  Future<void> init([String strapiCategory = 'product']) async {
+    var category = await Strapi().getCategory(strapiCategory);
     print(category.id);
     var screens = await Strapi().getScreenList(category.id);
     for (var screen in screens) {

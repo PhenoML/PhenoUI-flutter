@@ -27,9 +27,12 @@ class StrapiScreenSpec {
 }
 
 class Strapi {
-  Uri? _server;
+  Uri _server;
   String? _user;
   String? _jwt;
+
+  String get server => _server.toString();
+  set server(String value) => _server = Uri.parse(value);
 
   static final Strapi _singleton = Strapi._internal();
 
@@ -37,11 +40,7 @@ class Strapi {
     return _singleton;
   }
 
-  Strapi._internal() {
-    // TODO: Server shouldn't be hardcoded
-    _server = Uri.parse('https://api.develop.mindora.dev');
-    // _server = Uri.parse('http://127.0.0.1:1337');
-  }
+  Strapi._internal() : _server = Uri.parse('http://127.0.0.1:1337');
 
   void login(Uri server, String user, String password) {
     // TODO

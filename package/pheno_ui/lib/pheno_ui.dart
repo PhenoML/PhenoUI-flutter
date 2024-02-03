@@ -8,11 +8,17 @@ import 'package:pheno_ui/parsers/figma_nav_button.dart';
 import 'package:pheno_ui/parsers/figma_rectangle.dart';
 import 'package:pheno_ui/parsers/figma_text.dart';
 
+import 'interface/strapi.dart';
+
 export 'package:mirai/mirai.dart';
 export 'package:pheno_ui/interface/strapi.dart';
 export 'package:pheno_ui/interface/figma_screen_renderer.dart';
 
-Future<void> initializePhenoUi() async {
+Future<void> initializePhenoUi(String? strapiServer) async {
+  if (strapiServer != null) {
+    Strapi().server = strapiServer;
+  }
+
   await Mirai.initialize(
       parsers: [
         const FigmaFrameParser(),

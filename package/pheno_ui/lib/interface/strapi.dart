@@ -3,8 +3,9 @@ import 'package:http/http.dart' as http;
 
 class StrapiListEntry {
   final int id;
-  final String name;
-  const StrapiListEntry(this.id, this.name);
+  final String uid;
+  const StrapiListEntry(this.id, this.uid);
+  String get name => uid;
 }
 
 class StrapiScreenSpec {
@@ -39,11 +40,29 @@ class Strapi {
   Strapi._internal() {
     // TODO: Server shouldn't be hardcoded
     _server = Uri.parse('https://api.develop.mindora.dev');
-    // _server = Uri.parse('http://localhost:1337');
+    // _server = Uri.parse('http://127.0.0.1:1337');
   }
 
   void login(Uri server, String user, String password) {
     // TODO
+  }
+
+  Future<StrapiListEntry> getCategory(String name) async {
+    Uri url = Uri(
+      scheme: _server?.scheme,
+      host: _server?.host,
+      port: _server?.port,
+      path: 'api/screen-categories',
+      queryParameters: {
+        'filters[uid][\$eq]': name,
+      },
+    );
+
+    var response = await http.get(url);
+    var body = jsonDecode(response.body) as Map<String, dynamic>;
+    var data = body['data'][0];
+    var entry = StrapiListEntry(data['id'], data['attributes']['uid']);
+    return entry;
   }
 
   Future<List<StrapiListEntry>> getCategoryList() async {

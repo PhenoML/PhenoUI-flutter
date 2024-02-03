@@ -1,4 +1,4 @@
-package com.phenoml.phenoui_flutter
+package com.example.pheno_ui_tester
 
 import io.flutter.embedding.android.FlutterActivity
 

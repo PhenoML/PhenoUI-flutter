@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mirai/mirai.dart';
-import 'package:phenoui_flutter/parsers/tools/figma_dimensions.dart';
+import './tools/figma_dimensions.dart';
 import '../models/figma_text_model.dart';
 import '../parsers/tools/figma_enum.dart';
 

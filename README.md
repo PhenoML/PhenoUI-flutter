@@ -1,9 +1,6 @@
-# PhenoUI
+# pheno_ui_tester
 
-Code to import PhenoUI layouts into Flutter. Uses JSON to describe the layouts. Will eventually be server driven
-through strapi.
-
-Right now wit's configured as an application for easy testing, but it might become a library in the future.
+A new Flutter project.
 
 ## Getting Started
 

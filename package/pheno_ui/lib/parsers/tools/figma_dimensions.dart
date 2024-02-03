@@ -1,8 +1,8 @@
   import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:phenoui_flutter/models/figma_dimensions_model.dart';
-import 'package:phenoui_flutter/models/figma_layout_model.dart';
+import '../../models/figma_dimensions_model.dart';
+import '../../models/figma_layout_model.dart';
 
 class FigmaLayoutDelegate extends SingleChildLayoutDelegate {
   final FigmaDimensionsModel dimensions;

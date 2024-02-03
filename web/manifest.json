@@ -1,6 +1,6 @@
 {
-    "name": "phenoui_flutter",
-    "short_name": "phenoui_flutter",
+    "name": "pheno_ui_tester",
+    "short_name": "pheno_ui_tester",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

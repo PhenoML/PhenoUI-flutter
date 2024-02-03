@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:mirai/mirai.dart';
-import 'package:phenoui_flutter/models/figma_frame_model.dart';
-
+import '../models/figma_frame_model.dart';
 import '../models/figma_nav_button_model.dart';
 
 class FigmaNavButtonParser extends MiraiParser<FigmaNavButtonModel> {

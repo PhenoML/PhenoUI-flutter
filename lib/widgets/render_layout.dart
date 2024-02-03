@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mirai/mirai.dart';
-import 'package:phenoui_flutter/pheno/strapi.dart';
-import 'package:phenoui_flutter/widgets/loading_screen.dart';
-import 'package:phenoui_flutter/widgets/top_bar.dart';
+import 'package:pheno_ui/pheno_ui.dart';
+import 'package:pheno_ui_tester/widgets/top_bar.dart';
+
+import 'loading_screen.dart';
 
 class RenderLayout extends StatefulWidget {
   final StrapiListEntry entry;

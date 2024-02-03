@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mirai/mirai.dart';
-import 'package:phenoui_flutter/parsers/tools/figma_dimensions.dart';
+import './tools/figma_dimensions.dart';
 import '../models/figma_dimensions_model.dart';
 import '../models/figma_layout_model.dart';
 import './tools/figma_enum.dart';
@@ -75,8 +75,9 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
         borderRadius: model.style.borderRadius,
       ),
       constraints: model.dimensions.self.sizeConstraints,
-      child: model.wrapper(childrenContainer),
+      child: childrenContainer,
     );
+    widget = model.wrapper(widget);
 
     switch (model.layout.parent.mode) {
       case FigmaLayoutMode.none:

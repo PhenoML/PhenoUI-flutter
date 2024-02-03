@@ -1,5 +1,5 @@
-name: phenoui_flutter
-description: A new Flutter project.
+name: pheno_ui_tester
+description: "A new Flutter project."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -19,7 +19,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 version: 1.0.0+1
 
 environment:
-  sdk: '>=3.1.4 <4.0.0'
+  sdk: '>=3.2.6 <4.0.0'
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -30,15 +30,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  pheno_ui:
+    path: package/pheno_ui
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  mirai: ^0.5.1
-  http: ^1.1.0
-  google_fonts: ^6.1.0
-  flutter_svg: ^2.0.9
 
 dev_dependencies:
   flutter_test:
@@ -49,7 +47,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^3.0.1
+  flutter_lints: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -63,8 +61,7 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - assets/
+  # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

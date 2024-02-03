@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:phenoui_flutter/pheno/strapi.dart';
-import 'package:phenoui_flutter/widgets/picker_state.dart';
-import 'package:phenoui_flutter/widgets/render_layout.dart';
+import 'package:pheno_ui/interface/strapi.dart';
+import 'package:pheno_ui_tester/widgets/picker_state.dart';
+import 'package:pheno_ui_tester/widgets/render_layout.dart';
 
 class ScreenPicker extends PickerWidget {
   @override

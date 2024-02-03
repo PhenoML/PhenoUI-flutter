@@ -38,8 +38,8 @@ class Strapi {
 
   Strapi._internal() {
     // TODO: Server shouldn't be hardcoded
-    // _server = Uri.parse('https://api.develop.mindora.dev');
-    _server = Uri.parse('http://localhost:1337');
+    _server = Uri.parse('https://api.develop.mindora.dev');
+    // _server = Uri.parse('http://localhost:1337');
   }
 
   void login(Uri server, String user, String password) {

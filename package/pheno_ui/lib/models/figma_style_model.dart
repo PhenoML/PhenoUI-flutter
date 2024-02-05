@@ -1,5 +1,36 @@
 import 'package:flutter/material.dart';
 
+class FigmaStyleBorder extends Border {
+  const FigmaStyleBorder({
+    BorderSide top = BorderSide.none,
+    BorderSide right = BorderSide.none,
+    BorderSide bottom = BorderSide.none,
+    BorderSide left = BorderSide.none,
+  }) : super(
+    top: top,
+    right: right,
+    bottom: bottom,
+    left: left,
+  );
+
+  @override
+  EdgeInsetsGeometry get dimensions {
+    return const EdgeInsets.all(0.0);
+  }
+
+  factory FigmaStyleBorder.all({
+    Color color = const Color(0xFF000000),
+    double width = 1.0,
+  }) {
+    return FigmaStyleBorder(
+      top: BorderSide(color: color, width: width),
+      right: BorderSide(color: color, width: width),
+      bottom: BorderSide(color: color, width: width),
+      left: BorderSide(color: color, width: width),
+    );
+  }
+}
+
 class FigmaStyleModel {
   final Color? color;
   final double opacity;
@@ -20,7 +51,7 @@ class FigmaStyleModel {
           bottomLeft: Radius.circular(json['border']['radius']['bl'].toDouble()),
           bottomRight: Radius.circular(json['border']['radius']['br'].toDouble())
       ),
-      border = json['border']['color'] == null ? null : Border.all(
+      border = json['border']['color'] == null ? null : FigmaStyleBorder.all(
           color: Color.fromRGBO(
               (json['border']['color']['r'] * 255.0).round(),
               (json['border']['color']['g'] * 255.0).round(),

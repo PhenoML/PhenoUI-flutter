@@ -12,7 +12,7 @@ import 'interface/strapi.dart';
 
 export 'package:mirai/mirai.dart';
 export 'package:pheno_ui/interface/strapi.dart';
-export 'package:pheno_ui/interface/figma_screen_renderer.dart';
+export 'package:pheno_ui/widgets/figma_screen_renderer.dart';
 
 Future<void> initializePhenoUi([String? strapiServer]) async {
   if (strapiServer != null) {

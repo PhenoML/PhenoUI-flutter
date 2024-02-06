@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pheno_ui/interface/strapi.dart';
 
-import 'figma_screen_renderer.dart';
+import '../widgets/figma_screen_renderer.dart';
 
 
 class FigmaScreens {

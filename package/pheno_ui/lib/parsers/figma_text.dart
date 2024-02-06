@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mirai/mirai.dart';
+import 'package:pheno_ui/widgets/figma_node.dart';
 import './tools/figma_dimensions.dart';
 import '../models/figma_text_model.dart';
 import '../parsers/tools/figma_enum.dart';
@@ -71,8 +72,14 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
       textAlign: TextAlign.values.convertDefault(model.alignHorizontal, TextAlign.left),
     );
 
-    Widget widget = FittedBox(
-      fit: BoxFit.contain,
+    // Widget widget = FittedBox(
+    //   fit: BoxFit.contain,
+    //   child: text,
+    // );
+
+    Widget widget = FigmaNode(
+      info: model.info,
+      dimensions: model.dimensions.self,
       child: text,
     );
 

@@ -64,7 +64,7 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
       );
     }).toList();
 
-    RichText text = RichText(
+    Widget widget = RichText(
       text: TextSpan(
         children: segments,
       ),
@@ -72,15 +72,15 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
       textAlign: TextAlign.values.convertDefault(model.alignHorizontal, TextAlign.left),
     );
 
-    // Widget widget = FittedBox(
+    // widget = FittedBox(
     //   fit: BoxFit.contain,
-    //   child: text,
+    //   child: widget,
     // );
 
-    Widget widget = FigmaNode(
+    widget = FigmaNode(
       info: model.info,
       dimensions: model.dimensions.self,
-      child: text,
+      child: widget,
     );
 
     return dimensionWrapWidget(widget, model.dimensions, model.parentLayout);

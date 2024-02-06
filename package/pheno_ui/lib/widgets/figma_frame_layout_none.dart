@@ -68,17 +68,17 @@ class FigmaFrameLayoutNone extends MultiChildLayoutDelegate {
 
         var x = switch (child.dimensions!.constraints.horizontal) {
           FigmaDimensionsConstraintType.min => left,
-          FigmaDimensionsConstraintType.max => size.width - right,
+          FigmaDimensionsConstraintType.max => size.width - right - width,
           FigmaDimensionsConstraintType.center => (left + child.dimensions!.width * 0.5) * widthScale - width * 0.5,
-          FigmaDimensionsConstraintType.stretch => min(left, size.width - right),
+          FigmaDimensionsConstraintType.stretch => min(left, size.width - right - child.dimensions!.width),
           FigmaDimensionsConstraintType.scale => left * widthScale,
         };
 
         var y = switch (child.dimensions!.constraints.vertical) {
           FigmaDimensionsConstraintType.min => top,
-          FigmaDimensionsConstraintType.max => size.height - bottom,
+          FigmaDimensionsConstraintType.max => size.height - bottom - height,
           FigmaDimensionsConstraintType.center => (top + child.dimensions!.height * 0.5) * heightScale - height * 0.5,
-          FigmaDimensionsConstraintType.stretch => min(top, size.height - bottom),
+          FigmaDimensionsConstraintType.stretch => min(top, size.height - bottom - child.dimensions!.height),
           FigmaDimensionsConstraintType.scale => top * heightScale,
         };
 

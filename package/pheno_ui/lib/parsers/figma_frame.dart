@@ -2,6 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mirai/mirai.dart';
+import '../widgets/figma_frame_layout_none.dart';
+import '../widgets/figma_node.dart';
 import './tools/figma_dimensions.dart';
 import '../models/figma_dimensions_model.dart';
 import '../models/figma_layout_model.dart';
@@ -17,15 +19,28 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
   @override
   String get type => 'figma-frame';
 
-  @override
-  Widget parse(BuildContext context, FigmaFrameModel model) {
-    List<Widget> children = model.children.map((value) => Mirai.fromJson(value, context) ?? const SizedBox()).toList();
+  Widget? buildNoneContainer(
+      FigmaDimensionsSelfModel dimensions, List<Widget> children) {
+    if (children.isEmpty) {
+      return null;
+    }
 
-    Widget childrenContainer;
+    if (children.length == 1 && children.first is! FigmaNode) {
+      return children.first;
+    } else if (children.indexWhere((e) => e is FigmaNode) == -1) {
+      return Stack(children: children);
+    }
+
+    return FigmaFrameLayoutNone.layoutWithChildren(dimensions, children);
+  }
+
+  Widget? buildChildrenContainer(BuildContext context, FigmaFrameModel model) {
+    List<Widget> children = model.children
+        .map((value) => Mirai.fromJson(value, context) ?? const SizedBox())
+        .toList();
     switch (model.layout.self.mode) {
       case FigmaLayoutMode.none:
-        childrenContainer = Stack(children: children);
-        break;
+        return buildNoneContainer(model.dimensions.self, children);
 
       case FigmaLayoutMode.vertical:
         var layout = model.layout.self;
@@ -33,20 +48,24 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
           children = _addSpacers(children, 0.0, layout.itemSpacing);
         }
 
-        childrenContainer = Column(
-          mainAxisAlignment: MainAxisAlignment.values.convertDefault(layout.mainAxisAlignItems, MainAxisAlignment.start),
-          crossAxisAlignment: CrossAxisAlignment.values.convertDefault(layout.crossAxisAlignItems, CrossAxisAlignment.start),
+        return Column(
+          mainAxisAlignment: MainAxisAlignment.values.convertDefault(
+              layout.mainAxisAlignItems, MainAxisAlignment.start),
+          crossAxisAlignment: CrossAxisAlignment.values.convertDefault(
+              layout.crossAxisAlignItems, CrossAxisAlignment.start),
           children: children,
         );
-        break;
 
       case FigmaLayoutMode.horizontal:
         var layout = model.layout.self;
         if (layout.wrap == FigmaLayoutWrap.wrap) {
-          childrenContainer = Wrap(
-            alignment: WrapAlignment.values.convertDefault(layout.mainAxisAlignItems, WrapAlignment.start),
-            crossAxisAlignment: WrapCrossAlignment.values.convertDefault(layout.crossAxisAlignItems, WrapCrossAlignment.start),
-            runAlignment: WrapAlignment.values.convertDefault(layout.crossAxisAlignContent, WrapAlignment.start),
+          return Wrap(
+            alignment: WrapAlignment.values
+                .convertDefault(layout.mainAxisAlignItems, WrapAlignment.start),
+            crossAxisAlignment: WrapCrossAlignment.values.convertDefault(
+                layout.crossAxisAlignItems, WrapCrossAlignment.start),
+            runAlignment: WrapAlignment.values.convertDefault(
+                layout.crossAxisAlignContent, WrapAlignment.start),
             spacing: layout.itemSpacing,
             runSpacing: layout.crossAxisSpacing ?? 0.0,
             children: children,
@@ -56,9 +75,11 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
             children = _addSpacers(children, layout.itemSpacing, 0.0);
           }
 
-          childrenContainer = Row(
-            mainAxisAlignment: MainAxisAlignment.values.convertDefault(layout.mainAxisAlignItems, MainAxisAlignment.start),
-            crossAxisAlignment: CrossAxisAlignment.values.convertDefault(layout.crossAxisAlignItems, CrossAxisAlignment.start),
+          return Row(
+            mainAxisAlignment: MainAxisAlignment.values.convertDefault(
+                layout.mainAxisAlignItems, MainAxisAlignment.start),
+            crossAxisAlignment: CrossAxisAlignment.values.convertDefault(
+                layout.crossAxisAlignItems, CrossAxisAlignment.start),
             children: children,
           );
         }
@@ -66,6 +87,11 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
       default:
         throw 'Layout mode ${model.layout.self.mode} not implemented';
     }
+  }
+
+  @override
+  Widget parse(BuildContext context, FigmaFrameModel model) {
+    var childrenContainer = buildChildrenContainer(context, model);
 
     Widget widget = Container(
       padding:  model.layout.self.mode == FigmaLayoutMode.none ? null : model.layout.self.padding,
@@ -81,20 +107,6 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
 
     switch (model.layout.parent.mode) {
       case FigmaLayoutMode.none:
-        if (model.dimensions.parent != null && (model.dimensions.self.widthMode == FigmaDimensionsSizing.hug || model.dimensions.self.heightMode == FigmaDimensionsSizing.hug)) {
-          Axis? axis;
-          if (model.dimensions.self.widthMode != FigmaDimensionsSizing.hug) {
-            axis = Axis.horizontal;
-          } else if (model.dimensions.self.heightMode != FigmaDimensionsSizing.hug) {
-            axis = Axis.vertical;
-          }
-          widget = UnconstrainedBox(constrainedAxis: axis, child: widget);
-        } else {
-          widget = CustomSingleChildLayout(
-            delegate: FigmaLayoutDelegate(dimensions: model.dimensions, parentLayout: model.layout.parent),
-            child: widget,
-          );
-        }
         break;
 
       default:
@@ -132,7 +144,10 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
         break;
     }
 
-    return widget;
+    return FigmaNode(
+      info: model.info,
+      dimensions: model.dimensions.self,
+      child: widget,);
   }
 
   List<Widget> _addSpacers(List<Widget> widgets, double width, double height) {

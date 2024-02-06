@@ -202,10 +202,7 @@ Widget dimensionWrapWidget(Widget widget, FigmaDimensionsModel dimensions, Figma
   var mode = parentLayout.mode;
 
   if (mode == FigmaLayoutMode.none) {
-    return CustomSingleChildLayout(
-      delegate: FigmaLayoutDelegate(dimensions: dimensions, parentLayout: parentLayout),
-      child: widget,
-    );;
+    return widget;
   }
 
   var width = switch (dimensions.self.widthMode) {

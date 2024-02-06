@@ -16,12 +16,9 @@ class FigmaNavButtonModel extends FigmaSimpleChildModel {
   final FigmaNavButtonAction action;
   final String? target;
 
-  FigmaNavButtonModel._fromJson(Map<String, dynamic> json)
+  FigmaNavButtonModel.fromJson(Map<String, dynamic> json)
       :
         action = FigmaNavButtonAction.values.byNameDefault(json['__userData']['action'], FigmaNavButtonAction.pop),
         target = json['__userData']['target'],
-        super(child: json['child'] as Map<String, dynamic>);
-
-  factory FigmaNavButtonModel.fromJson(Map<String, dynamic> json) =>
-      FigmaNavButtonModel._fromJson(json);
+        super.fromJson(json);
 }

@@ -1,13 +1,9 @@
-class FigmaSimpleChildModel {
+import 'figma_node_model.dart';
+
+class FigmaSimpleChildModel extends FigmaNodeModel {
   final Map<String, dynamic> child;
 
-  FigmaSimpleChildModel({
-    required this.child,
-  });
-
-  FigmaSimpleChildModel._fromJson(Map<String, dynamic> json):
-      child = json['child'] as Map<String, dynamic>;
-
-  factory FigmaSimpleChildModel.fromJson(Map<String, dynamic> json) =>
-      FigmaSimpleChildModel._fromJson(json);
+  FigmaSimpleChildModel.fromJson(Map<String, dynamic> json):
+      child = json['child'] as Map<String, dynamic>,
+      super.fromJson(json);
 }

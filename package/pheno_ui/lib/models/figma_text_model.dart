@@ -3,6 +3,7 @@ import 'dart:ui';
 import '../parsers/tools/figma_enum.dart';
 import 'figma_dimensions_model.dart';
 import 'figma_layout_model.dart';
+import 'figma_node_model.dart';
 
 /// The horizontal alignment of the text with respect to the textbox. Setting
 /// this property requires the font the be loaded.
@@ -296,7 +297,7 @@ class FigmaTextSegmentModel {
   }
 }
 
-class FigmaTextModel {
+class FigmaTextModel extends FigmaNodeModel {
   final FigmaDimensionsModel dimensions;
   final double opacity;
   final FigmaTextAlignHorizontal alignHorizontal;
@@ -306,28 +307,14 @@ class FigmaTextModel {
   final List<FigmaTextSegmentModel> segments;
   final FigmaLayoutParentValuesModel parentLayout;
 
-  FigmaTextModel(
-    this.dimensions,
-    this.opacity,
-    this.alignHorizontal,
-    this.alignVertical,
-    this.autoResize,
-    this.truncation,
-    this.segments,
-    this.parentLayout,
-  );
-
-  factory FigmaTextModel.fromJson(Map<String, dynamic> json) {
-    var segments = (json['segments'] as List<dynamic>).map((j) => FigmaTextSegmentModel.fromJson(j as Map<String, dynamic>)).toList();
-    return FigmaTextModel(
-        FigmaDimensionsModel.fromJson(json['dimensions']),
-        json['opacity'].toDouble(),
-        FigmaTextAlignHorizontal.values.byNameDefault(json['textAlignHorizontal'], FigmaTextAlignHorizontal.left),  
-        FigmaTextAlignVertical.values.byNameDefault(json['textAlignVertical'], FigmaTextAlignVertical.top),
-        FigmaTextAutoResize.values.byNameDefault(json['textAutoResize'], FigmaTextAutoResize.none),
-        FigmaTextTruncation.values.byNameDefault(json['textTruncation'], FigmaTextTruncation.disabled ),
-        segments,
-        FigmaLayoutParentValuesModel.fromJson(json['parentLayout']),
-    );
-  }
+  FigmaTextModel.fromJson(Map<String, dynamic> json):
+      dimensions = FigmaDimensionsModel.fromJson(json['dimensions']),
+      opacity = json['opacity'].toDouble(),
+      alignHorizontal = FigmaTextAlignHorizontal.values.byNameDefault(json['textAlignHorizontal'], FigmaTextAlignHorizontal.left),
+      alignVertical = FigmaTextAlignVertical.values.byNameDefault(json['textAlignVertical'], FigmaTextAlignVertical.top),
+      autoResize = FigmaTextAutoResize.values.byNameDefault(json['textAutoResize'], FigmaTextAutoResize.none),
+      truncation = FigmaTextTruncation.values.byNameDefault(json['textTruncation'], FigmaTextTruncation.disabled ),
+      segments = (json['segments'] as List<dynamic>).map((j) => FigmaTextSegmentModel.fromJson(j as Map<String, dynamic>)).toList(),
+      parentLayout = FigmaLayoutParentValuesModel.fromJson(json['parentLayout']),
+      super.fromJson(json);
 }

@@ -7,7 +7,10 @@ import 'loading_screen.dart';
 class RenderLayout extends StatefulWidget {
   final StrapiListEntry entry;
 
-  const RenderLayout({ super.key, required this.entry });
+  const RenderLayout({
+    super.key,
+    required this.entry,
+  });
 
   @override
   State<RenderLayout> createState() => RenderLayoutState();
@@ -16,6 +19,7 @@ class RenderLayout extends StatefulWidget {
 
 class RenderLayoutState extends State<RenderLayout> {
   StrapiScreenSpec? spec;
+  Widget? content;
 
   RenderLayoutState();
 
@@ -27,14 +31,16 @@ class RenderLayoutState extends State<RenderLayout> {
 
   loadContent() {
     spec = null;
-    Strapi().loadScreenLayout(widget.entry.id).then((layout) => setState(() {
-      spec = layout;
+    content = null;
+    Strapi().loadScreenLayout(widget.entry.id).then((spec) => setState(() {
+      this.spec = spec;
+      content = FigmaScreenRenderer.fromSpec(spec);
     }));
   }
 
   @override
   Widget build(BuildContext context) {
-    if (spec == null) {
+    if (content == null) {
       return loadingScreen();
     }
 
@@ -44,7 +50,7 @@ class RenderLayoutState extends State<RenderLayout> {
         children: [
           topBar(context, spec?.name, () => setState(() => loadContent())),
           Expanded(
-            child: Mirai.fromJson(spec?.spec, context) ?? const SizedBox(),
+            child: content!,
           ),
         ],
       ),

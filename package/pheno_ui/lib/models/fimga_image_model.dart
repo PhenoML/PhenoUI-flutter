@@ -17,7 +17,6 @@ enum FigmaImageFormat with FigmaEnum {
 
 class FigmaImageModel extends FigmaNodeModel {
   final FigmaImageFormat format;
-  final FigmaDimensionsModel dimensions;
   final FigmaLayoutParentValuesModel parentLayout;
   final double opacity;
   final BoxFit fit;
@@ -25,7 +24,6 @@ class FigmaImageModel extends FigmaNodeModel {
 
   FigmaImageModel.fromJson(Map<String, dynamic> json):
       format = FigmaImageFormat.values.byNameDefault(json['format'], FigmaImageFormat.unknown),
-      dimensions = FigmaDimensionsModel.fromJson(json['dimensions']),
       parentLayout = FigmaLayoutParentValuesModel.fromJson(json['parentLayout']),
       opacity = json['opacity'].toDouble(),
       fit = BoxFit.values.byNameDefault(json['__userData']['scaling'], BoxFit.none),

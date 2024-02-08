@@ -7,6 +7,7 @@ import 'package:pheno_ui/widgets/figma_node.dart';
 import './tools/figma_dimensions.dart';
 import '../models/figma_text_model.dart';
 import '../parsers/tools/figma_enum.dart';
+import 'figma_component.dart';
 
 
 class FigmaTextParser extends MiraiParser<FigmaTextModel> {
@@ -23,14 +24,26 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
     Widget widget = LayoutBuilder(builder: (BuildContext context, BoxConstraints constraints) {
       double scale = 1.0;
       if (constraints.hasBoundedWidth && constraints.hasBoundedHeight) {
-        scale = min(constraints.maxWidth / model.dimensions.self.width, constraints.maxHeight / model.dimensions.self.height);
+        scale = min(constraints.maxWidth / model.dimensions!.self.width, constraints.maxHeight / model.dimensions!.self.height);
       } else if (constraints.hasBoundedWidth) {
-        scale = constraints.maxWidth / model.dimensions.self.width;
+        scale = constraints.maxWidth / model.dimensions!.self.width;
       } else if (constraints.hasBoundedHeight) {
-        scale = constraints.maxHeight / model.dimensions.self.height;
+        scale = constraints.maxHeight / model.dimensions!.self.height;
       }
 
-      List<TextSpan> segments = model.segments.map((m) {
+      var modelSegments = model.segments;
+
+      if (model.componentRefs != null && model.componentRefs!.containsKey('characters')) {
+        String key = model.componentRefs!['characters']!;
+        var data = FigmaComponentData.of(context);
+        if (data.userData.containsKey(key)) {
+          var characters = data.userData[key];
+          var segment = modelSegments.first;
+          modelSegments = [FigmaTextSegmentModel.copy(segment, characters: characters)];
+        }
+      }
+
+      List<TextSpan> segments = modelSegments.map((m) {
         var text = switch (m.textCase) {
           FigmaTextCase.upper => m.characters.toUpperCase(),
           FigmaTextCase.lower => m.characters.toLowerCase(),
@@ -91,12 +104,11 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
     //   child: widget,
     // );
 
-    widget = FigmaNode(
-      info: model.info,
-      dimensions: model.dimensions.self,
+    widget = FigmaNode.withContext(context,
+      model: model,
       child: widget,
     );
 
-    return dimensionWrapWidget(widget, model.dimensions, model.parentLayout);
+    return dimensionWrapWidget(widget, model.dimensions!, model.parentLayout);
   }
 }

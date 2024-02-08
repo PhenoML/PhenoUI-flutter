@@ -18,6 +18,7 @@ class ScreenPicker extends PickerWidget {
   const ScreenPicker({ super.key, required this.entry });
 
   Widget _builder(StrapiListEntry entry, BuildContext context) {
+    Strapi().category = this.entry.name;
     return RenderLayout(entry: entry);
   }
 

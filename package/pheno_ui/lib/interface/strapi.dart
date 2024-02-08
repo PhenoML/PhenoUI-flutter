@@ -26,10 +26,38 @@ class StrapiScreenSpec {
   }
 }
 
+class StrapiComponentSpec {
+  final int id;
+  final String type;
+  final String defaultVariant;
+  final Map<String, dynamic> variants;
+  final Map<String, dynamic> arguments;
+
+  StrapiComponentSpec(
+      this.id,
+      this.type,
+      this.defaultVariant,
+      this.variants,
+      this.arguments
+  );
+
+  factory StrapiComponentSpec.fromJson(Map<String, dynamic> json) {
+    return StrapiComponentSpec(
+      json['id'].toInt(),
+      json['attributes']['name'],
+      json['attributes']['defaultVariant'],
+      json['attributes']['variants'],
+      json['attributes']['arguments'],
+    );
+  }
+}
+
 class Strapi {
   Uri _server;
   String? _user;
   String? _jwt;
+  
+  String category = 'product';
 
   String get server => _server.toString();
   set server(String value) => _server = Uri.parse(value);
@@ -46,15 +74,13 @@ class Strapi {
     // TODO
   }
 
-  Future<StrapiListEntry> getCategory(String name) async {
+  Future<StrapiListEntry> getCategory(String name, [String collection = 'screen-categories']) async {
     Uri url = Uri(
-      scheme: _server?.scheme,
-      host: _server?.host,
-      port: _server?.port,
-      path: 'api/screen-categories',
-      queryParameters: {
-        'filters[uid][\$eq]': name,
-      },
+      scheme: _server.scheme,
+      host: _server.host,
+      port: _server.port,
+      path: 'api/$collection',
+      query: 'filters[uid][\$eq]=$name',
     );
 
     var response = await http.get(url);
@@ -67,9 +93,9 @@ class Strapi {
   Future<List<StrapiListEntry>> getCategoryList() async {
     // TODO: make sure user is logged in
     Uri url = Uri(
-      scheme: _server?.scheme,
-      host: _server?.host,
-      port: _server?.port,
+      scheme: _server.scheme,
+      host: _server.host,
+      port: _server.port,
       path: 'api/screen-categories',
     );
 
@@ -83,9 +109,9 @@ class Strapi {
   Future<List<StrapiListEntry>> getScreenList(int id) async {
     // TODO: make user is logged in
     Uri url = Uri(
-      scheme: _server?.scheme,
-      host: _server?.host,
-      port: _server?.port,
+      scheme: _server.scheme,
+      host: _server.host,
+      port: _server.port,
       path: 'api/screen-categories/$id',
       query: 'populate[screens][fields][0]=name',
     );
@@ -101,14 +127,33 @@ class Strapi {
   Future<StrapiScreenSpec> loadScreenLayout(int id) async {
     // TODO: make user is logged in
     Uri url = Uri(
-      scheme: _server?.scheme,
-      host: _server?.host,
-      port: _server?.port,
+      scheme: _server.scheme,
+      host: _server.host,
+      port: _server.port,
       path: 'api/screens/$id',
     );
 
     var response = await http.get(url);
     var json = jsonDecode(response.body) as Map<String, dynamic>;
     return StrapiScreenSpec.fromJson(json);
+  }
+
+  Future<StrapiComponentSpec> loadComponentSpec(String category, String name) async {
+    StrapiListEntry entry = await getCategory(category, 'figma-widget-categories');
+
+    Uri url = Uri(
+      scheme: _server.scheme,
+      host: _server.host,
+      port: _server.port,
+      path: 'api/figma-widget-categories/${entry.id}',
+      queryParameters: {
+        'filters[uid][\$eq]': name,
+        'populate': 'figma_widgets',
+      }
+    );
+
+    var response = await http.get(url);
+    var json = jsonDecode(response.body) as Map<String, dynamic>;
+    return StrapiComponentSpec.fromJson(json['data']['attributes']['figma_widgets']['data'][0]);
   }
 }

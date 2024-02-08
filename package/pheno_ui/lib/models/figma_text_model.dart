@@ -259,6 +259,40 @@ class FigmaTextSegmentModel {
       this.hyperlink,
   );
 
+  factory FigmaTextSegmentModel.copy(FigmaTextSegmentModel model, {
+    String? characters,
+    int? start,
+    int? end,
+    double? size,
+    FigmaFontName? name,
+    FontWeight? weight,
+    FigmaTextDecoration? decoration,
+    FigmaTextCase? textCase,
+    FigmaTextValue? lineHeight,
+    FigmaTextValue? letterSpacing,
+    Color? color,
+    FigmaTextListOptionsModel? listOptions,
+    int? indentation,
+    FigmaTextHyperlinkTarget? hyperlink,
+  }) {
+    return FigmaTextSegmentModel(
+      characters ?? model.characters,
+      start ?? model.start,
+      end ?? model.end,
+      size ?? model.size,
+      name ?? model.name,
+      weight ?? model.weight,
+      decoration ?? model.decoration,
+      textCase ?? model.textCase,
+      lineHeight ?? model.lineHeight,
+      letterSpacing ?? model.letterSpacing,
+      color ?? model.color,
+      listOptions ?? model.listOptions,
+      indentation ?? model.indentation,
+      hyperlink ?? model.hyperlink,
+    );
+  }
+
   factory FigmaTextSegmentModel.fromJson(Map<String, dynamic> json) {
     FontWeight weight = switch (json['fontWeight'].toInt()) {
       > 0 && <= 100 => FontWeight.w100,
@@ -298,7 +332,6 @@ class FigmaTextSegmentModel {
 }
 
 class FigmaTextModel extends FigmaNodeModel {
-  final FigmaDimensionsModel dimensions;
   final double opacity;
   final FigmaTextAlignHorizontal alignHorizontal;
   final FigmaTextAlignVertical alignVertical;
@@ -308,7 +341,6 @@ class FigmaTextModel extends FigmaNodeModel {
   final FigmaLayoutParentValuesModel parentLayout;
 
   FigmaTextModel.fromJson(Map<String, dynamic> json):
-      dimensions = FigmaDimensionsModel.fromJson(json['dimensions']),
       opacity = json['opacity'].toDouble(),
       alignHorizontal = FigmaTextAlignHorizontal.values.byNameDefault(json['textAlignHorizontal'], FigmaTextAlignHorizontal.left),
       alignVertical = FigmaTextAlignVertical.values.byNameDefault(json['textAlignVertical'], FigmaTextAlignVertical.top),

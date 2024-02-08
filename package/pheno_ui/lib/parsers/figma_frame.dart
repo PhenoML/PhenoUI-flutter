@@ -40,7 +40,7 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
         .toList();
     switch (model.layout.self.mode) {
       case FigmaLayoutMode.none:
-        return buildNoneContainer(model.dimensions.self, children);
+        return buildNoneContainer(model.dimensions!.self, children);
 
       case FigmaLayoutMode.vertical:
         var layout = model.layout.self;
@@ -100,7 +100,7 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
         border: model.style.border,
         borderRadius: model.style.borderRadius,
       ),
-      constraints: model.dimensions.self.sizeConstraints,
+      constraints: model.dimensions!.self.sizeConstraints,
       child: childrenContainer,
     );
     widget = model.wrapper(widget);
@@ -110,10 +110,10 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
         break;
 
       default:
-        var (mainAxis, crossAxis, hasSizeConstraints) = discernAxisModes(model.dimensions, model.layout.parent.mode);
+        var (mainAxis, crossAxis, hasSizeConstraints) = discernAxisModes(model.dimensions!, model.layout.parent.mode);
         if (mainAxis == FigmaDimensionsSizing.fixed || crossAxis == FigmaDimensionsSizing.fixed) {
           widget = CustomSingleChildLayout(
-              delegate: FigmaLayoutDelegate(dimensions: model.dimensions, parentLayout: model.layout.parent),
+              delegate: FigmaLayoutDelegate(dimensions: model.dimensions!, parentLayout: model.layout.parent),
               child: widget,
           );
         }
@@ -134,9 +134,9 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
           );
         } else if (mainAxis == FigmaDimensionsSizing.hug) {
           Axis? axis;
-          if (model.dimensions.self.widthMode != FigmaDimensionsSizing.hug) {
+          if (model.dimensions!.self.widthMode != FigmaDimensionsSizing.hug) {
             axis = Axis.horizontal;
-          } else if (model.dimensions.self.heightMode != FigmaDimensionsSizing.hug) {
+          } else if (model.dimensions!.self.heightMode != FigmaDimensionsSizing.hug) {
             axis = Axis.vertical;
           }
           widget = UnconstrainedBox(constrainedAxis: axis, child: widget);
@@ -144,9 +144,8 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
         break;
     }
 
-    return FigmaNode(
-      info: model.info,
-      dimensions: model.dimensions.self,
+    return FigmaNode.withContext(context,
+      model: model,
       child: widget,);
   }
 

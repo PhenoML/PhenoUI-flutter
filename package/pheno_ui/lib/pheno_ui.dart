@@ -2,6 +2,7 @@ library pheno_ui;
 
 import 'package:mirai/mirai.dart';
 import 'package:pheno_ui/parsers/figma-safe-area.dart';
+import 'package:pheno_ui/parsers/figma_component.dart';
 import 'package:pheno_ui/parsers/figma_frame.dart';
 import 'package:pheno_ui/parsers/figma_image.dart';
 import 'package:pheno_ui/parsers/figma_nav_button.dart';
@@ -27,6 +28,7 @@ Future<void> initializePhenoUi([String? strapiServer]) async {
         const FigmaRectangleParser(),
         const FigmaSafeAreaParser(),
         const FigmaNavButtonParser(),
+        const FigmaComponentParser(),
       ]
   );
 }

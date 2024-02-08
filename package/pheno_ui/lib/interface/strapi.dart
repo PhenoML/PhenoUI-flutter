@@ -145,15 +145,16 @@ class Strapi {
       scheme: _server.scheme,
       host: _server.host,
       port: _server.port,
-      path: 'api/figma-widget-categories/${entry.id}',
+      path: 'api/figma-widgets',
       queryParameters: {
-        'filters[uid][\$eq]': name,
-        'populate': 'figma_widgets',
+        'filters[name][\$eq]': name,
+        'populate': 'category',
+        'filters[category][id][\$eq]': entry.id.toString(),
       }
     );
 
     var response = await http.get(url);
     var json = jsonDecode(response.body) as Map<String, dynamic>;
-    return StrapiComponentSpec.fromJson(json['data']['attributes']['figma_widgets']['data'][0]);
+    return StrapiComponentSpec.fromJson(json['data'][0]);
   }
 }

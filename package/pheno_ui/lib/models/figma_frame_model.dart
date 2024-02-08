@@ -9,14 +9,12 @@ Widget noOpWrapper(Widget child) => child;
 typedef FrameWrapper = Widget Function(Widget);
 
 class FigmaFrameModel extends FigmaNodeModel{
-  final String name;
   final FigmaStyleModel style;
   final FigmaLayoutModel layout;
   final List<Map<String, dynamic>> children;
   final FrameWrapper wrapper;
 
   FigmaFrameModel.fromJson(Map<String, dynamic> json, [this.wrapper = noOpWrapper]):
-      name = json['name'] ?? '',
       style = FigmaStyleModel.fromJson(json['style']),
       layout = FigmaLayoutModel.fromJson(json['layout']),
       children = (json['children'] as List<dynamic>?)

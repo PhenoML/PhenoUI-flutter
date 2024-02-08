@@ -85,11 +85,26 @@ class FigmaComponentState extends State<FigmaComponent> {
   void loadContent() async {
     var component = await Strapi().loadComponentSpec(Strapi().category, widget.model.widgetType);
 
-    // TODO: implement variants
+    Map<String, dynamic> variantValues = {};
     widget.model.userData.forEach((key, value) {
-      print('key: $key, value: $value');
+      var components = key.split(RegExp('#(?!.*#)'));
+      if (components.length == 2 && components.last == 'variant') {
+        variantValues[components.first] = value;
+      }
     });
-    String variant = component.defaultVariant;
+
+    String? variant;
+    if (variantValues.isNotEmpty) {
+      for (String key in component.variants.keys) {
+        Map<String, dynamic> values = component.variants[key]['variantProperties'];
+        if (values.entries.every((entry) => variantValues[entry.key] == entry.value)) {
+          variant = key;
+          break;
+        }
+      }
+    }
+
+    variant ??= 'default';
 
     setState(() {
       spec = component.variants[variant];

@@ -16,6 +16,8 @@ class FigmaRectangleParser extends MiraiParser<FigmaRectangleModel> {
 
   @override
   Widget parse(BuildContext context, FigmaRectangleModel model) {
-    return Container();
+    return Container(
+      color: Colors.red,
+    );
   }
 }

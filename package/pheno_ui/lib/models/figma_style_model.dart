@@ -71,7 +71,7 @@ class FigmaStyleModel {
       (json['color']['r'] * 255.0).round(),
       (json['color']['g'] * 255.0).round(),
       (json['color']['b'] * 255.0).round(),
-          1.0
+      (json['color']['o'] ?? 1.0).toDouble(),
     ),
     opacity = json['opacity'].toDouble(),
     borderRadius = json['border']['radius']['tl'] == null ? null : BorderRadius.only(
@@ -85,7 +85,7 @@ class FigmaStyleModel {
         (json['border']['color']['r'] * 255.0).round(),
         (json['border']['color']['g'] * 255.0).round(),
         (json['border']['color']['b'] * 255.0).round(),
-              1.0
+        (json['color']['o'] ?? 1.0).toDouble(),
       ),
       width: json['border']['width'].toDouble()
     ),

@@ -50,7 +50,9 @@ class RenderLayoutState extends State<RenderLayout> {
         children: [
           topBar(context, spec?.name, () => setState(() => loadContent())),
           Expanded(
-            child: content!,
+            child: ClipRect(
+              child: content!,
+            )
           ),
         ],
       ),

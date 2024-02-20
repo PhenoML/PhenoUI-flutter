@@ -97,6 +97,7 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
       padding:  model.layout.self.mode == FigmaLayoutMode.none ? null : model.layout.self.padding,
       decoration: BoxDecoration(
         color: model.style.color,
+        backgroundBlendMode: model.style.color == null ? null : BlendMode.values.convertDefault(model.style.blendMode, BlendMode.srcOver),
         border: model.style.border,
         borderRadius: model.style.borderRadius,
       ),

@@ -18,11 +18,25 @@ class FigmaImageParser extends MiraiParser<FigmaImageModel> {
   @override
   String get type => 'figma-image';
 
+  _loadPNG(FigmaImageModel model) {
+    if (model.method == FigmaImageDataMethod.embed) {
+      return Image.memory(base64Decode(model.data), fit: model.fit);
+    }
+    return Image.network(model.data, fit: model.fit);
+  }
+
+  _loadSVG(FigmaImageModel model) {
+    if (model.method == FigmaImageDataMethod.embed) {
+      return SvgPicture.string(model.data, fit: model.fit);
+    }
+    return SvgPicture.network(model.data, fit: model.fit);
+  }
+
   @override
   Widget parse(BuildContext context, FigmaImageModel model) {
     Widget widget = switch (model.format) {
-      FigmaImageFormat.png => Image.memory(base64Decode(model.data), fit: model.fit),
-      FigmaImageFormat.svg => SvgPicture.string(model.data, fit: model.fit),
+      FigmaImageFormat.png =>_loadPNG(model),
+      FigmaImageFormat.svg => _loadSVG(model),
       _ => throw 'ERROR: Unknown image format [${model.format.name}]',
     };
 

@@ -40,11 +40,6 @@ class FigmaImageParser extends MiraiParser<FigmaImageModel> {
       _ => throw 'ERROR: Unknown image format [${model.format.name}]',
     };
 
-    if (model.componentRefs != null && model.componentRefs!.containsKey('visible')) {
-      print('visible');
-      FigmaComponentData.of(context);
-    }
-
     widget = FigmaNode.withContext(context,
       model: model,
       child: widget,

@@ -339,6 +339,8 @@ class FigmaTextModel extends FigmaNodeModel {
   final FigmaTextTruncation truncation;
   final List<FigmaTextSegmentModel> segments;
   final FigmaLayoutParentValuesModel parentLayout;
+  final bool isTextField;
+  final bool isPassword;
 
   FigmaTextModel.fromJson(Map<String, dynamic> json):
       opacity = json['opacity'].toDouble(),
@@ -348,5 +350,7 @@ class FigmaTextModel extends FigmaNodeModel {
       truncation = FigmaTextTruncation.values.byNameDefault(json['textTruncation'], FigmaTextTruncation.disabled ),
       segments = (json['segments'] as List<dynamic>).map((j) => FigmaTextSegmentModel.fromJson(j as Map<String, dynamic>)).toList(),
       parentLayout = FigmaLayoutParentValuesModel.fromJson(json['parentLayout']),
+      isTextField = json['__userData'] == null ? false : json['__userData']['isTextField'] ?? false,
+      isPassword = json['__userData'] == null ? false : json['__userData']['isPasswordField'] ?? false,
       super.fromJson(json);
 }

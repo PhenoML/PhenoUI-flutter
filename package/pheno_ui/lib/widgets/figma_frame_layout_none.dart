@@ -70,7 +70,7 @@ class FigmaFrameLayoutNone extends MultiChildLayoutDelegate {
           FigmaDimensionsConstraintType.min => left,
           FigmaDimensionsConstraintType.max => size.width - right - width,
           FigmaDimensionsConstraintType.center => (left + child.dimensions!.width * 0.5) * widthScale - width * 0.5,
-          FigmaDimensionsConstraintType.stretch => min(left, size.width - right - child.dimensions!.width),
+          FigmaDimensionsConstraintType.stretch => min(left, size.width - right),
           FigmaDimensionsConstraintType.scale => left * widthScale,
         };
 
@@ -78,7 +78,7 @@ class FigmaFrameLayoutNone extends MultiChildLayoutDelegate {
           FigmaDimensionsConstraintType.min => top,
           FigmaDimensionsConstraintType.max => size.height - bottom - height,
           FigmaDimensionsConstraintType.center => (top + child.dimensions!.height * 0.5) * heightScale - height * 0.5,
-          FigmaDimensionsConstraintType.stretch => min(top, size.height - bottom - child.dimensions!.height),
+          FigmaDimensionsConstraintType.stretch => min(top, size.height - bottom),
           FigmaDimensionsConstraintType.scale => top * heightScale,
         };
 

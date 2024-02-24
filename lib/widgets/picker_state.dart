@@ -7,7 +7,7 @@ import 'loading_screen.dart';
 abstract class PickerWidget extends StatefulWidget {
   const PickerWidget({super.key});
   Future<List<StrapiListEntry>> Function() get getList;
-  Widget Function(StrapiListEntry, BuildContext) get builder;
+  Widget Function(StrapiListEntry, BuildContext, List<StrapiListEntry>) get builder;
   String get title;
 }
 
@@ -42,7 +42,7 @@ class PickerState<T extends PickerWidget> extends State<T> {
           settings: RouteSettings(name: '${ModalRoute.of(context)!.settings.name}${e.name}/'),
           transitionDuration: Duration.zero,
           reverseTransitionDuration: Duration.zero,
-          pageBuilder: (context, _, __) => widget.builder(e, context),
+          pageBuilder: (context, _, __) => widget.builder(e, context, entries!),
       )),
     )).toList();
 

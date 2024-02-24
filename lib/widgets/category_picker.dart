@@ -15,7 +15,7 @@ class CategoryPicker extends PickerWidget {
 
   const CategoryPicker({ super.key });
 
-  Widget _builder(StrapiListEntry entry, BuildContext context) {
+  Widget _builder(StrapiListEntry entry, BuildContext context, _) {
     return ScreenPicker(entry: entry);
   }
 

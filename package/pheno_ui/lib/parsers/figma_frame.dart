@@ -93,17 +93,29 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
   Widget parse(BuildContext context, FigmaFrameModel model) {
     var childrenContainer = buildChildrenContainer(context, model);
 
-    Widget widget = Container(
-      padding:  model.layout.self.mode == FigmaLayoutMode.none ? null : model.layout.self.padding,
-      decoration: BoxDecoration(
-        color: model.style.color,
-        backgroundBlendMode: model.style.color == null ? null : BlendMode.values.convertDefault(model.style.blendMode, BlendMode.srcOver),
-        border: model.style.border,
-        borderRadius: model.style.borderRadius,
-      ),
-      constraints: model.dimensions!.self.sizeConstraints,
-      child: childrenContainer,
-    );
+    Widget widget = LayoutBuilder(builder: (context, constraints) {
+      double scale = 1.0;
+      if (constraints.hasBoundedWidth && constraints.hasBoundedHeight) {
+        scale = max(constraints.maxWidth / model.dimensions!.self.width, constraints.maxHeight / model.dimensions!.self.height);
+      } else if (constraints.hasBoundedWidth) {
+        scale = constraints.maxWidth / model.dimensions!.self.width;
+      } else if (constraints.hasBoundedHeight) {
+        scale = constraints.maxHeight / model.dimensions!.self.height;
+      }
+
+      return Container(
+        padding:  model.layout.self.mode == FigmaLayoutMode.none ? null : model.layout.self.padding * scale,
+        decoration: BoxDecoration(
+          color: model.style.color,
+          backgroundBlendMode: model.style.color == null ? null : BlendMode.values.convertDefault(model.style.blendMode, BlendMode.srcOver),
+          border: model.style.border?.scale(scale),
+          borderRadius: model.style.borderRadius == null ? null : model.style.borderRadius! * scale,
+        ),
+        constraints: model.dimensions!.self.sizeConstraints * scale,
+        child: childrenContainer,
+      );
+    });
+
     widget = model.wrapper(widget);
 
     switch (model.layout.parent.mode) {

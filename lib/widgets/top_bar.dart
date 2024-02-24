@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
-Widget topBar(BuildContext context, [String? title, void Function()? refresh]) {
+Widget topBar(BuildContext context, [String? title, void Function()? refresh, BoxConstraints? constraints]) {
   List<Widget> children = [];
-
   if (Navigator.canPop(context)) {
     children.add(IconButton(
       icon: const Icon(Icons.arrow_back),
@@ -12,19 +12,38 @@ Widget topBar(BuildContext context, [String? title, void Function()? refresh]) {
     ));
   }
 
+  var centerChildren = <Widget>[];
+
   if (title != null) {
-    children.add(Expanded(
-      child: Text(
-        title,
-        textAlign: TextAlign.center,
-        style: const TextStyle(
-          color: Colors.white,
-          fontSize: 21,
-          overflow: TextOverflow.ellipsis,
-        ),
+    centerChildren.add(Text(
+      title,
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 21,
+        overflow: TextOverflow.ellipsis,
       ),
     ));
   }
+
+  if (constraints != null) {
+    centerChildren.add(Text(
+      '(${constraints!.maxWidth.toInt()}x${constraints!.maxHeight.toInt() - 60})',
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+        color: Colors.white,
+        fontSize: 12,
+        overflow: TextOverflow.ellipsis,
+      ),
+    ));
+  }
+
+  children.add(Expanded(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: centerChildren
+      )
+  ));
 
   if (refresh != null) {
     children.add(

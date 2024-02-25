@@ -94,24 +94,47 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
     var childrenContainer = buildChildrenContainer(context, model);
 
     Widget widget = LayoutBuilder(builder: (context, constraints) {
-      double scale = 1.0;
-      if (constraints.hasBoundedWidth && constraints.hasBoundedHeight) {
-        scale = max(constraints.maxWidth / model.dimensions!.self.width, constraints.maxHeight / model.dimensions!.self.height);
-      } else if (constraints.hasBoundedWidth) {
-        scale = constraints.maxWidth / model.dimensions!.self.width;
-      } else if (constraints.hasBoundedHeight) {
-        scale = constraints.maxHeight / model.dimensions!.self.height;
+      double scaleX = 1.0;
+      double scaleY = 1.0;
+
+      if (model.dimensions?.self.constraints.horizontal == FigmaDimensionsConstraintType.scale && constraints.hasBoundedWidth) {
+        scaleX = constraints.maxWidth / model.dimensions!.self.width;
       }
 
+      if (model.dimensions?.self.constraints.vertical == FigmaDimensionsConstraintType.scale && constraints.hasBoundedHeight) {
+        scaleY = constraints.maxHeight / model.dimensions!.self.height;
+      }
+
+      var padding = model.layout.self.mode == FigmaLayoutMode.none ? null : EdgeInsets.fromLTRB(
+        model.layout.self.padding.left * scaleX,
+        model.layout.self.padding.top * scaleY,
+        model.layout.self.padding.right * scaleX,
+        model.layout.self.padding.bottom * scaleY,
+      );
+
+      var border = model.style.border == null ? null : Border(
+        top: model.style.border!.top.scale(scaleY),
+        right: model.style.border!.right.scale(scaleX),
+        bottom: model.style.border!.bottom.scale(scaleY),
+        left: model.style.border!.left.scale(scaleX),
+      );
+
+      var boxConstraints = BoxConstraints(
+        minWidth: model.dimensions!.self.sizeConstraints.minWidth * scaleX,
+        maxWidth: model.dimensions!.self.sizeConstraints.maxWidth * scaleX,
+        minHeight: model.dimensions!.self.sizeConstraints.minHeight * scaleY,
+        maxHeight: model.dimensions!.self.sizeConstraints.maxHeight * scaleY,
+      );
+
       return Container(
-        padding:  model.layout.self.mode == FigmaLayoutMode.none ? null : model.layout.self.padding * scale,
+        padding:  padding,
         decoration: BoxDecoration(
           color: model.style.color,
           backgroundBlendMode: model.style.color == null ? null : BlendMode.values.convertDefault(model.style.blendMode, BlendMode.srcOver),
-          border: model.style.border?.scale(scale),
-          borderRadius: model.style.borderRadius == null ? null : model.style.borderRadius! * scale,
+          border: border,
+          borderRadius: model.style.borderRadius == null ? null : model.style.borderRadius! * min(scaleX, scaleY),
         ),
-        constraints: model.dimensions!.self.sizeConstraints * scale,
+        constraints: model.dimensions!.self.sizeConstraints,
         child: childrenContainer,
       );
     });

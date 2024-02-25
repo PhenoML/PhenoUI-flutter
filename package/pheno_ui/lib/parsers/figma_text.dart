@@ -60,7 +60,7 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
         var height = switch (m.lineHeight.unit) {
           FigmaTextUnit.pixels => (m.lineHeight.value as double) / m.size,
           FigmaTextUnit.percent => (m.lineHeight.value as double) * 0.01,
-          FigmaTextUnit.auto => null // good enough, sorry future Dario :/
+          FigmaTextUnit.auto => 1.0, // good enough, sorry future Dario :/
         };
 
         var spacing = switch (m.letterSpacing.unit) {
@@ -101,12 +101,22 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
         );
       }
 
-      return RichText(
-        text: TextSpan(
-          children: segments,
-        ),
-        overflow: TextOverflow.visible,
-        textAlign: TextAlign.values.convertDefault(model.alignHorizontal, TextAlign.left),
+      print(model.alignVertical);
+      var alignment = switch (model.alignVertical) {
+        FigmaTextAlignVertical.top => Alignment.topCenter,
+        FigmaTextAlignVertical.center => Alignment.center,
+        FigmaTextAlignVertical.bottom => Alignment.bottomCenter,
+      };
+      return Align(
+        alignment: alignment,
+        child:
+          RichText(
+            text: TextSpan(
+              children: segments,
+            ),
+            overflow: TextOverflow.visible,
+            textAlign: TextAlign.values.convertDefault(model.alignHorizontal, TextAlign.left),
+          ),
       );
     });
 

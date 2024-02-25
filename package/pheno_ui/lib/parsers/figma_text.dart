@@ -101,12 +101,20 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
         );
       }
 
-      print(model.alignVertical);
-      var alignment = switch (model.alignVertical) {
-        FigmaTextAlignVertical.top => Alignment.topCenter,
-        FigmaTextAlignVertical.center => Alignment.center,
-        FigmaTextAlignVertical.bottom => Alignment.bottomCenter,
-      };
+      var alignment = Alignment(
+        switch (model.alignHorizontal) {
+          FigmaTextAlignHorizontal.left => -1.0,
+          FigmaTextAlignHorizontal.center => 0.0,
+          FigmaTextAlignHorizontal.right => 1.0,
+          _ => 0.0,
+        },
+        switch (model.alignVertical) {
+          FigmaTextAlignVertical.top => -1.0,
+          FigmaTextAlignVertical.center => 0.0,
+          FigmaTextAlignVertical.bottom => 1.0,
+        }
+      );
+
       return Align(
         alignment: alignment,
         child:

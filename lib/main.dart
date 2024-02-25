@@ -1,3 +1,5 @@
+import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pheno_ui/pheno_ui.dart';
 import 'package:pheno_ui_tester/widgets/category_picker.dart';
@@ -5,8 +7,10 @@ import 'package:window_manager/window_manager.dart';
 
 void main() async {
   await initializePhenoUi('https://api.develop.mindora.dev');
-  WidgetsFlutterBinding.ensureInitialized();
-  await windowManager.ensureInitialized();
+  if (!kIsWeb && (Platform.isLinux || Platform.isWindows || Platform.isMacOS)) {
+    WidgetsFlutterBinding.ensureInitialized();
+    await windowManager.ensureInitialized();
+  }
   runApp(const AppPhenoUI());
 }
 

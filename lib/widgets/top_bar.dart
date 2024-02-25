@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:window_manager/window_manager.dart';
@@ -64,7 +67,7 @@ Widget topBar(BuildContext context, [String? title, void Function()? refresh, Bo
             child: const Icon(Icons.arrow_drop_down, color: Colors.white),
           ),
           onSelected: (ContentSize? value) async {
-            if (value != null) {
+            if (value != null && !kIsWeb && (Platform.isLinux || Platform.isWindows || Platform.isMacOS)) {
               // get the window diff from the content size
               var windowSize = await windowManager.getSize();
               var diff = Size(windowSize.width - constraints.maxWidth, windowSize.height - constraints.maxHeight);

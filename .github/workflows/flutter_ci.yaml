@@ -33,10 +33,11 @@ jobs:
           filename: PhenoUI-tester-${{github.ref_name}}-linux.zip
           directory: build/linux/x64/release/bundle
       - name: Linux Release
-        uses: ncipollo/release-action@v1.12.0
+        uses: svenstaro/upload-release-action@v2
         with:
-          artifacts: build/linux/x64/release/bundle/PhenoUI-tester-${{github.ref_name}}-linux.zip
-          token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/linux/x64/release/bundle/PhenoUI-tester-${{github.ref_name}}-linux.zip
+          overwrite: true
 
   build-and-release-windows:
     runs-on: windows-latest
@@ -62,10 +63,11 @@ jobs:
           filename: PhenoUI-tester-${{github.ref_name}}-windows.zip
           directory: build/windows/x64/runner/Release
       - name: Windows Release
-        uses: ncipollo/release-action@v1.12.0
+        uses: svenstaro/upload-release-action@v2
         with:
-          artifacts: build/windows/x64/runner/Release/PhenoUI-tester-${{github.ref_name}}-windows.zip
-          token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/windows/x64/runner/Release/PhenoUI-tester-${{github.ref_name}}-windows.zip
+          overwrite: true
 
   build-and-release-macos:
     runs-on: macos-latest
@@ -92,7 +94,8 @@ jobs:
           filename: PhenoUI-tester-${{github.ref_name}}-macos.zip
           directory: build/macos/Build/Products/Release
       - name: macOS Release
-        uses: ncipollo/release-action@v1.12.0
+        uses: svenstaro/upload-release-action@v2
         with:
-          artifacts: build/macos/Build/Products/Release/PhenoUI-tester-${{github.ref_name}}-macos.zip
-          token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: build/macos/Build/Products/Release/PhenoUI-tester-${{github.ref_name}}-macos.zip
+          overwrite: true

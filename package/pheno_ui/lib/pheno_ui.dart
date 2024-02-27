@@ -29,6 +29,7 @@ Future<void> initializePhenoUi([String? strapiServer]) async {
         const FigmaSafeAreaParser(),
         const FigmaNavButtonParser(),
         const FigmaComponentParser(),
+        const FigmaWebViewParser(),
       ]
   );
 }

@@ -2,6 +2,7 @@ library pheno_ui;
 
 import 'package:mirai/mirai.dart';
 import 'package:pheno_ui/parsers/figma_checkbox.dart';
+import 'package:pheno_ui/parsers/figma_conditional_checkbox.dart';
 import 'package:pheno_ui/parsers/figma_safe_area.dart';
 import 'package:pheno_ui/parsers/figma_component.dart';
 import 'package:pheno_ui/parsers/figma_frame.dart';
@@ -33,6 +34,7 @@ Future<void> initializePhenoUi([String? strapiServer]) async {
         const FigmaComponentParser(),
         const FigmaCheckboxParser(),
         const FigmaWebViewParser(),
+        const FigmaConditionalCheckboxParser(),
       ]
   );
 }

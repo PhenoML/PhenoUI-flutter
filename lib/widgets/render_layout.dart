@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pheno_ui/pheno_ui.dart';
+import 'package:pheno_ui/widgets/figma_screen_renderer.dart';
 import 'package:pheno_ui_tester/widgets/top_bar.dart';
 
 class RenderLayout extends StatefulWidget {
@@ -29,15 +30,32 @@ class RenderLayoutState extends State<RenderLayout> {
       key: _key,
       initialRoute: widget.initialRoute,
       onGenerateRoute: (settings) {
+        var type = settings.arguments ?? 'screen';
+
         for (var entry in widget.entries) {
           if (settings.name == entry.name) {
-            return PageRouteBuilder(
-              settings: settings,
-              pageBuilder: (context, _, __) =>
-                  FigmaScreenRenderer.fromFuture(
-                      Strapi().loadScreenLayout(entry.id)
-                  ),
+            FigmaScreenRenderer screen = FigmaScreenRenderer.fromFuture(
+              Strapi().loadScreenLayout(entry.id)
             );
+
+            switch (type) {
+              case 'popup':
+                return PageRouteBuilder(
+                  opaque: false,
+                  settings: settings,
+                  pageBuilder: (_, __, ___) {
+                    return Container(color: Colors.pinkAccent);
+                  },
+                );
+
+              default:
+                return PageRouteBuilder(
+                  settings: settings,
+                  pageBuilder: (_, __, ___) {
+                    return screen;
+                  },
+                );
+            }
           }
         }
         throw Exception('Invalid route: ${settings.name}');

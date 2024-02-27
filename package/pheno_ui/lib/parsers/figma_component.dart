@@ -20,7 +20,7 @@ class FigmaComponentParser extends MiraiParser<FigmaComponentModel> {
   Widget parse(BuildContext context, FigmaComponentModel model) {
     Widget widget = FigmaNode.withContext(context,
       model: model,
-      child: FigmaComponent(model),
+      child: FigmaComponent(FigmaComponentState.new, model),
     );
 
     return dimensionWrapWidget(widget, model.dimensions!, model.parentLayout);
@@ -49,19 +49,24 @@ class FigmaComponentData extends InheritedWidget {
   }
 }
 
-class FigmaComponent extends StatefulWidget {
+class FigmaComponent<T extends FigmaComponentState> extends StatefulWidget {
+  final T Function() stateNew;
   final FigmaComponentModel model;
 
-  const FigmaComponent(this.model, { super.key });
+  const FigmaComponent(this.stateNew, this.model, { super.key });
 
   @override
-  State<StatefulWidget> createState() => FigmaComponentState();
+  // ignore: no_logic_in_create_state
+  State<StatefulWidget> createState() => stateNew();
 }
 
 class FigmaComponentState extends State<FigmaComponent> {
   Map<String, dynamic>? spec;
+  Map<String, dynamic>? variants;
+  Map<String, dynamic> variantValues = {};
 
-  @override void initState() {
+  @override
+  void initState() {
     loadContent();
     super.initState();
   }
@@ -82,21 +87,19 @@ class FigmaComponentState extends State<FigmaComponent> {
     );
   }
 
-  void loadContent() async {
-    var component = await Strapi().loadComponentSpec(Strapi().category, widget.model.widgetType);
+  void setVariant([String? key, String? value]) {
+    if (variants == null || variants!.length <= 1) {
+      return;
+    }
 
-    Map<String, dynamic> variantValues = {};
-    widget.model.userData.forEach((key, value) {
-      var components = key.split(RegExp('#(?!.*#)'));
-      if (components.length == 2 && components.last == 'variant') {
-        variantValues[components.first] = value;
-      }
-    });
+    if (key != null && value != null) {
+      variantValues[key] = value;
+    }
 
     String? variant;
     if (variantValues.isNotEmpty) {
-      for (String key in component.variants.keys) {
-        Map<String, dynamic> values = component.variants[key]['variantProperties'];
+      for (String key in variants!.keys) {
+        Map<String, dynamic> values = variants![key]['variantProperties'];
         if (values.entries.every((entry) => variantValues[entry.key] == entry.value)) {
           variant = key;
           break;
@@ -107,7 +110,27 @@ class FigmaComponentState extends State<FigmaComponent> {
     variant ??= 'default';
 
     setState(() {
-      spec = component.variants[variant];
+      spec = variants![variant];
     });
+  }
+
+  // this can be overridden by the child class to set its own initial variant
+  void initVariant() {
+    // use the variant set in the model
+    setVariant();
+  }
+
+  void loadContent() async {
+    var component = await Strapi().loadComponentSpec(Strapi().category, widget.model.widgetType);
+    variants = component.variants;
+
+    widget.model.userData.forEach((key, value) {
+      var components = key.split(RegExp('#(?!.*#)'));
+      if (components.length == 2 && components.last == 'variant') {
+        variantValues[components.first] = value;
+      }
+    });
+
+    initVariant();
   }
 }

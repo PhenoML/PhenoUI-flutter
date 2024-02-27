@@ -1,13 +1,15 @@
 library pheno_ui;
 
 import 'package:mirai/mirai.dart';
-import 'package:pheno_ui/parsers/figma-safe-area.dart';
+import 'package:pheno_ui/parsers/figma_checkbox.dart';
+import 'package:pheno_ui/parsers/figma_safe_area.dart';
 import 'package:pheno_ui/parsers/figma_component.dart';
 import 'package:pheno_ui/parsers/figma_frame.dart';
 import 'package:pheno_ui/parsers/figma_image.dart';
 import 'package:pheno_ui/parsers/figma_nav_button.dart';
 import 'package:pheno_ui/parsers/figma_rectangle.dart';
 import 'package:pheno_ui/parsers/figma_text.dart';
+import 'package:pheno_ui/parsers/figma_web_view.dart';
 
 import 'interface/strapi.dart';
 
@@ -29,6 +31,7 @@ Future<void> initializePhenoUi([String? strapiServer]) async {
         const FigmaSafeAreaParser(),
         const FigmaNavButtonParser(),
         const FigmaComponentParser(),
+        const FigmaCheckboxParser(),
         const FigmaWebViewParser(),
       ]
   );

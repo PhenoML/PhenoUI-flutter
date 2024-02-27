@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:mirai/mirai.dart';
 import 'package:pheno_ui/models/figma_simple_style_model.dart';
@@ -21,11 +22,11 @@ class FigmaWebViewParser extends MiraiParser<FigmaSimpleStyleModel> {
   Widget parse(BuildContext context, FigmaSimpleStyleModel model) {
     Widget widget;
 
-    if (Platform.isAndroid || Platform.isIOS) {
+    if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
       var controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
         ..setBackgroundColor(const Color(0x00000000))
-        ..loadRequest(Uri.parse('https://flutter.dev'));
+        ..loadRequest(Uri.parse(model.userData['URL']));
       widget = WebViewWidget(controller: controller);
     } else {
       widget = Container(

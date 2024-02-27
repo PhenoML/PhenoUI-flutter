@@ -14,6 +14,7 @@ dependencies:
   google_fonts: ^6.1.0
   http: ^1.2.0
   mirai: ^0.5.1
+  webview_flutter: ^4.7.0
 
 dev_dependencies:
   flutter_test:

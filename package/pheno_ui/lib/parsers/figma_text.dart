@@ -89,15 +89,25 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
         );
       }).toList();
 
+      Widget widget;
       if (model.isTextField) {
-        return TextField(
+        widget = TextField(
           style: segments[0].style,
           obscureText: model.isPassword,
           decoration: InputDecoration(
-            border: InputBorder.none,
+            contentPadding: EdgeInsets.zero,
+            border: const OutlineInputBorder(borderSide: BorderSide.none),
             hintText: segments[0].text,
             // hintStyle: segments[0].style,
           ),
+        );
+      } else {
+        widget = RichText(
+          text: TextSpan(
+            children: segments,
+          ),
+          overflow: TextOverflow.visible,
+          textAlign: TextAlign.values.convertDefault(model.alignHorizontal, TextAlign.left),
         );
       }
 
@@ -117,14 +127,7 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
 
       return Align(
         alignment: alignment,
-        child:
-          RichText(
-            text: TextSpan(
-              children: segments,
-            ),
-            overflow: TextOverflow.visible,
-            textAlign: TextAlign.values.convertDefault(model.alignHorizontal, TextAlign.left),
-          ),
+        child: widget,
       );
     });
 

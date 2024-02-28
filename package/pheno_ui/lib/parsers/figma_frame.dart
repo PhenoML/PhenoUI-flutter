@@ -89,55 +89,61 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
     }
   }
 
-  @override
-  Widget parse(BuildContext context, FigmaFrameModel model) {
+  Widget buildWidgetWithScale(BuildContext context, FigmaFrameModel model, double scaleX, double scaleY) {
     var childrenContainer = buildChildrenContainer(context, model);
 
-    Widget widget = LayoutBuilder(builder: (context, constraints) {
-      double scaleX = 1.0;
-      double scaleY = 1.0;
+    var padding = model.layout.self.mode == FigmaLayoutMode.none ? null : EdgeInsets.fromLTRB(
+      model.layout.self.padding.left * scaleX,
+      model.layout.self.padding.top * scaleY,
+      model.layout.self.padding.right * scaleX,
+      model.layout.self.padding.bottom * scaleY,
+    );
 
-      if (model.dimensions?.self.constraints.horizontal == FigmaDimensionsConstraintType.scale && constraints.hasBoundedWidth) {
-        scaleX = constraints.maxWidth / model.dimensions!.self.width;
-      }
+    var border = model.style.border == null ? null : Border(
+      top: model.style.border!.top.scale(scaleY),
+      right: model.style.border!.right.scale(scaleX),
+      bottom: model.style.border!.bottom.scale(scaleY),
+      left: model.style.border!.left.scale(scaleX),
+    );
 
-      if (model.dimensions?.self.constraints.vertical == FigmaDimensionsConstraintType.scale && constraints.hasBoundedHeight) {
-        scaleY = constraints.maxHeight / model.dimensions!.self.height;
-      }
+    var boxConstraints = BoxConstraints(
+      minWidth: model.dimensions!.self.sizeConstraints.minWidth * scaleX,
+      maxWidth: model.dimensions!.self.sizeConstraints.maxWidth * scaleX,
+      minHeight: model.dimensions!.self.sizeConstraints.minHeight * scaleY,
+      maxHeight: model.dimensions!.self.sizeConstraints.maxHeight * scaleY,
+    );
 
-      var padding = model.layout.self.mode == FigmaLayoutMode.none ? null : EdgeInsets.fromLTRB(
-        model.layout.self.padding.left * scaleX,
-        model.layout.self.padding.top * scaleY,
-        model.layout.self.padding.right * scaleX,
-        model.layout.self.padding.bottom * scaleY,
-      );
+    return Container(
+      padding:  padding,
+      decoration: BoxDecoration(
+        color: model.style.color,
+        backgroundBlendMode: model.style.color == null ? null : BlendMode.values.convertDefault(model.style.blendMode, BlendMode.srcOver),
+        border: border,
+        borderRadius: model.style.borderRadius == null ? null : model.style.borderRadius! * min(scaleX, scaleY),
+      ),
+      constraints: model.dimensions!.self.sizeConstraints,
+      child: childrenContainer,
+    );
+  }
 
-      var border = model.style.border == null ? null : Border(
-        top: model.style.border!.top.scale(scaleY),
-        right: model.style.border!.right.scale(scaleX),
-        bottom: model.style.border!.bottom.scale(scaleY),
-        left: model.style.border!.left.scale(scaleX),
-      );
-
-      var boxConstraints = BoxConstraints(
-        minWidth: model.dimensions!.self.sizeConstraints.minWidth * scaleX,
-        maxWidth: model.dimensions!.self.sizeConstraints.maxWidth * scaleX,
-        minHeight: model.dimensions!.self.sizeConstraints.minHeight * scaleY,
-        maxHeight: model.dimensions!.self.sizeConstraints.maxHeight * scaleY,
-      );
-
-      return Container(
-        padding:  padding,
-        decoration: BoxDecoration(
-          color: model.style.color,
-          backgroundBlendMode: model.style.color == null ? null : BlendMode.values.convertDefault(model.style.blendMode, BlendMode.srcOver),
-          border: border,
-          borderRadius: model.style.borderRadius == null ? null : model.style.borderRadius! * min(scaleX, scaleY),
-        ),
-        constraints: model.dimensions!.self.sizeConstraints,
-        child: childrenContainer,
-      );
-    });
+  @override
+  Widget parse(BuildContext context, FigmaFrameModel model) {
+    Widget widget;
+    if (model.layout.parent.mode == FigmaLayoutMode.none && (model.dimensions?.self.constraints.horizontal == FigmaDimensionsConstraintType.scale || model.dimensions?.self.constraints.vertical == FigmaDimensionsConstraintType.scale)) {
+      widget = LayoutBuilder(builder: (context, constraints) {
+        double scaleX = 1.0;
+        double scaleY = 1.0;
+        if (model.dimensions?.self.constraints.horizontal == FigmaDimensionsConstraintType.scale && constraints.hasBoundedWidth) {
+          scaleX = constraints.maxWidth / model.dimensions!.self.width;
+        }
+        if (model.dimensions?.self.constraints.vertical == FigmaDimensionsConstraintType.scale && constraints.hasBoundedHeight) {
+          scaleY = constraints.maxHeight / model.dimensions!.self.height;
+        }
+        return buildWidgetWithScale(context, model, scaleX, scaleY);
+      });
+    } else {
+      widget = buildWidgetWithScale(context, model, 1.0, 1.0);
+    }
 
     widget = model.wrapper(widget);
 

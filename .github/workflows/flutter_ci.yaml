@@ -22,18 +22,18 @@ jobs:
       - name: Enable linux build
         run: flutter config --enable-linux-desktop
       - name: Build artifacts
-        run: flutter build linux --release
+        run: flutter build linux --debug
       - name: Archive Release
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
           filename: PhenoUI-tester-${{github.ref_name}}-linux.zip
-          directory: build/linux/x64/release/bundle
+          directory: build/linux/x64/debug/bundle
       - name: Linux Release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/linux/x64/release/bundle/PhenoUI-tester-${{github.ref_name}}-linux.zip
+          file: build/linux/x64/debug/bundle/PhenoUI-tester-${{github.ref_name}}-linux.zip
           overwrite: true
 
   build-and-release-windows:
@@ -49,18 +49,18 @@ jobs:
       - name: Enable windows build
         run: flutter config --enable-windows-desktop
       - name: Build artifacts
-        run: flutter build windows --release
+        run: flutter build windows --debug
       - name: Archive Release
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
           filename: PhenoUI-tester-${{github.ref_name}}-windows.zip
-          directory: build/windows/x64/runner/Release
+          directory: build/windows/x64/runner/Debug
       - name: Windows Release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/windows/x64/runner/Release/PhenoUI-tester-${{github.ref_name}}-windows.zip
+          file: build/windows/x64/runner/Debug/PhenoUI-tester-${{github.ref_name}}-windows.zip
           overwrite: true
 
   build-and-release-macos:
@@ -77,16 +77,16 @@ jobs:
       - name: Enable macOS build
         run: flutter config --enable-macos-desktop
       - name: Build artifacts
-        run: flutter build macos --release
+        run: flutter build macos --debug
       - name: Archive Release
         uses: thedoctor0/zip-release@master
         with:
           type: 'zip'
           filename: PhenoUI-tester-${{github.ref_name}}-macos.zip
-          directory: build/macos/Build/Products/Release
+          directory: build/macos/Build/Products/Debug
       - name: macOS Release
         uses: svenstaro/upload-release-action@v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: build/macos/Build/Products/Release/PhenoUI-tester-${{github.ref_name}}-macos.zip
+          file: build/macos/Build/Products/Debug/PhenoUI-tester-${{github.ref_name}}-macos.zip
           overwrite: true

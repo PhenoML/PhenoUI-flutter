@@ -10,6 +10,7 @@ import './tools/figma_dimensions.dart';
 import '../models/figma_text_model.dart';
 import '../parsers/tools/figma_enum.dart';
 import 'figma_component.dart';
+import 'figma_form.dart';
 
 
 class FigmaTextParser extends MiraiParser<FigmaTextModel> {
@@ -84,9 +85,24 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
 
     Widget widget;
     if (model.isTextField) {
+      String id = model.userData.get('id', context: context);
+      var form = FigmaFormInterface.maybeOf(context);
+      if (form != null) {
+        form.registerInput(id, '');
+      }
+
       widget = TextField(
         style: segments[0].style,
         obscureText: model.userData.maybeGet('isPasswordField', context: context) ?? false,
+        onChanged: form == null ? null : (value) {
+          form.inputValueChanged(id, value);
+        },
+        onEditingComplete: form == null ? null : () {
+          form.inputEditingComplete(id);
+        },
+        onSubmitted: form == null ? null : (value) {
+          form.inputSubmitted(id, value);
+        },
         decoration: InputDecoration(
           contentPadding: EdgeInsets.zero,
           border: const OutlineInputBorder(borderSide: BorderSide.none),

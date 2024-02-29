@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:pheno_ui/parsers/figma_component.dart';
 import '../models/figma_component_model.dart';
 import '../widgets/figma_node.dart';
+import 'figma_form.dart';
 import 'tools/figma_dimensions.dart';
 
 class FigmaCheckboxParser extends FigmaComponentParser {
@@ -34,6 +35,19 @@ class FigmaCheckboxState extends FigmaComponentState {
   set checked(bool value) {
     _state = value ? 'checked' : 'unchecked';
     setVariant(widget.model.userData.get('state'), widget.model.userData.get(_state));
+    var form = FigmaFormInterface.maybeOf(context);
+    if (form != null) {
+      form.inputValueChanged(widget.model.userData.get('id'), checked);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    var form = FigmaFormInterface.maybeOf(context, listen: false);
+    if (form != null) {
+      form.registerInput(widget.model.userData.get('id'), checked);
+    }
   }
 
   @override

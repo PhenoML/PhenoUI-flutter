@@ -26,7 +26,7 @@ class FigmaWebViewParser extends MiraiParser<FigmaSimpleStyleModel> {
       var controller = WebViewController()
         ..setJavaScriptMode(JavaScriptMode.unrestricted)
         ..setBackgroundColor(const Color(0x00000000))
-        ..loadRequest(Uri.parse(model.userData['URL']));
+        ..loadRequest(Uri.parse(model.userData.get('URL')));
       widget = WebViewWidget(controller: controller);
     } else {
       widget = Container(

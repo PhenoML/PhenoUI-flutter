@@ -33,11 +33,11 @@ class FigmaCheckboxState extends FigmaComponentState {
   bool get checked => _state == 'checked';
   set checked(bool value) {
     _state = value ? 'checked' : 'unchecked';
-    setVariant(widget.model.userData['state'], widget.model.userData[_state]);
+    setVariant(widget.model.userData.get('state'), widget.model.userData.get(_state));
   }
 
   @override
   void initVariant() {
-    setVariant(widget.model.userData['state'], widget.model.userData[_state]);
+    setVariant(widget.model.userData.get('state'), widget.model.userData.get(_state));
   }
 }

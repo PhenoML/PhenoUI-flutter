@@ -19,8 +19,8 @@ class FigmaConditionalCheckboxParser extends FigmaComponentParser {
         child: GestureDetector(
           onTap: () {
             Navigator.of(context).pushNamed(
-              model.userData['push'],
-              arguments: model.userData['popup'] ? 'popup' : 'screen',
+              model.userData.get('push'),
+              arguments: model.userData.get('popup') ? 'popup' : 'screen',
             ).then((value) {
               if (value != null) {
                 var state = key.currentState as FigmaCheckboxState;

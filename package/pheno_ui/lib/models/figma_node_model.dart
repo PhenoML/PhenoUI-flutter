@@ -1,3 +1,4 @@
+import 'package:pheno_ui/parsers/tools/figma_user_data.dart';
 import 'figma_dimensions_model.dart';
 
 class FigmaNodeInfoModel {
@@ -10,15 +11,17 @@ class FigmaNodeInfoModel {
 }
 
 class FigmaNodeModel {
+  final String type;
   final FigmaNodeInfoModel? info;
   final FigmaDimensionsModel? dimensions;
   final Map<String, dynamic>? componentRefs;
-  final Map<String, dynamic> userData;
+  final FigmaUserData userData;
 
   FigmaNodeModel.fromJson(Map<String, dynamic> json):
+    type = json['type'],
     info = json.containsKey('__info') ? FigmaNodeInfoModel.fromJson(json['__info']) : null,
     dimensions = json.containsKey('dimensions') ? FigmaDimensionsModel.fromJson(json['dimensions']) : null,
     componentRefs = json['componentRefs'],
-    userData = json['__userData'] ?? {}
+    userData = FigmaUserData(json['__userData'])
   ;
 }

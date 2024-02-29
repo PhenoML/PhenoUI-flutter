@@ -29,8 +29,8 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
     if (model.componentRefs != null && model.componentRefs!.containsKey('characters')) {
       String key = model.componentRefs!['characters']!;
       var data = FigmaComponentData.of(context);
-      if (data.userData.containsKey(key)) {
-        var characters = data.userData[key];
+      var characters = data.userData.maybeGet(key);
+      if (characters is String) {
         var segment = modelSegments.first;
         modelSegments = [FigmaTextSegmentModel.copy(segment, characters: characters)];
       }
@@ -86,7 +86,7 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
     if (model.isTextField) {
       widget = TextField(
         style: segments[0].style,
-        obscureText: model.isPassword,
+        obscureText: model.userData.maybeGet('isPasswordField', context: context) ?? false,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.zero,
           border: const OutlineInputBorder(borderSide: BorderSide.none),

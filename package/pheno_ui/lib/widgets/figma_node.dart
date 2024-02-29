@@ -18,7 +18,7 @@ class FigmaNode extends StatelessWidget {
     if (model.componentRefs != null && model.componentRefs!.containsKey('visible')) {
       var data = FigmaComponentData.maybeOf(context);
       if (data != null) {
-        visible = data.userData[model.componentRefs!['visible']] ?? true;
+        visible = data.userData.maybeGet(model.componentRefs!['visible']) ?? true;
       }
     }
 

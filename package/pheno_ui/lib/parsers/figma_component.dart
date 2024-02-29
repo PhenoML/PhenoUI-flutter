@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:mirai/mirai.dart';
 import 'package:pheno_ui/parsers/tools/figma_dimensions.dart';
+import 'package:pheno_ui/parsers/tools/figma_user_data.dart';
 import 'package:pheno_ui/widgets/figma_node.dart';
 
 import '../interface/strapi.dart';
@@ -28,7 +29,7 @@ class FigmaComponentParser extends MiraiParser<FigmaComponentModel> {
 }
 
 class FigmaComponentData extends InheritedWidget {
-  final Map<String, dynamic> userData;
+  final FigmaUserData userData;
 
   const FigmaComponentData({required this.userData, required super.child, super.key});
 
@@ -124,7 +125,7 @@ class FigmaComponentState extends State<FigmaComponent> {
     var component = await Strapi().loadComponentSpec(Strapi().category, widget.model.widgetType);
     variants = component.variants;
 
-    widget.model.userData.forEach((key, value) {
+    widget.model.userData.map!.forEach((key, value) {
       var components = key.split(RegExp('#(?!.*#)'));
       if (components.length == 2 && components.last == 'variant') {
         variantValues[components.first] = value;

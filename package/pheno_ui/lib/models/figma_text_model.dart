@@ -340,7 +340,6 @@ class FigmaTextModel extends FigmaNodeModel {
   final List<FigmaTextSegmentModel> segments;
   final FigmaLayoutParentValuesModel parentLayout;
   final bool isTextField;
-  final bool isPassword;
 
   FigmaTextModel.fromJson(Map<String, dynamic> json):
       opacity = json['opacity'].toDouble(),
@@ -351,6 +350,5 @@ class FigmaTextModel extends FigmaNodeModel {
       segments = (json['segments'] as List<dynamic>).map((j) => FigmaTextSegmentModel.fromJson(j as Map<String, dynamic>)).toList(),
       parentLayout = FigmaLayoutParentValuesModel.fromJson(json['parentLayout']),
       isTextField = json['isTextField'] ?? false,
-      isPassword = json['__userData'] == null ? false : json['__userData']['isPasswordField'] ?? false,
       super.fromJson(json);
 }

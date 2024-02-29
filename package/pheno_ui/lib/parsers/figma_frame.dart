@@ -130,7 +130,7 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
   Widget parse(BuildContext context, FigmaFrameModel model) {
     Widget widget;
     if (model.layout.parent.mode == FigmaLayoutMode.none && (model.dimensions?.self.constraints.horizontal == FigmaDimensionsConstraintType.scale || model.dimensions?.self.constraints.vertical == FigmaDimensionsConstraintType.scale)) {
-      widget = LayoutBuilder(builder: (context, constraints) {
+      widget = model.wrapper(context, true, (context) => LayoutBuilder(builder: (context, constraints) {
         double scaleX = 1.0;
         double scaleY = 1.0;
         if (model.dimensions?.self.constraints.horizontal == FigmaDimensionsConstraintType.scale && constraints.hasBoundedWidth) {
@@ -140,12 +140,10 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
           scaleY = constraints.maxHeight / model.dimensions!.self.height;
         }
         return buildWidgetWithScale(context, model, scaleX, scaleY);
-      });
+      }));
     } else {
-      widget = buildWidgetWithScale(context, model, 1.0, 1.0);
+      widget = model.wrapper(context, false, (context) => buildWidgetWithScale(context, model, 1.0, 1.0));
     }
-
-    widget = model.wrapper(widget);
 
     switch (model.layout.parent.mode) {
       case FigmaLayoutMode.none:

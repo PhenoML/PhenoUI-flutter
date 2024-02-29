@@ -20,7 +20,7 @@ class FigmaNavButtonParser extends MiraiParser<FigmaNavButtonModel> {
       FigmaNavButtonAction.replace => () => Navigator.of(context).pushReplacementNamed(model.target!, arguments: 'screen'),
     };
 
-    var frameModel = FigmaFrameModel.fromJson(model.child, (child) => GestureDetector(onTap: onTap, child: child));
+    var frameModel = FigmaFrameModel.fromJson(model.child, (context, _, builder) => GestureDetector(onTap: onTap, child: builder(context)));
     var parser = MiraiRegistry.instance.getParser(model.child['type']);
     return parser?.parse(context, frameModel) ?? const SizedBox();
   }

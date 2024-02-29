@@ -5,8 +5,8 @@ import 'figma_layout_model.dart';
 import 'figma_node_model.dart';
 import 'figma_style_model.dart';
 
-Widget noOpWrapper(Widget child) => child;
-typedef FrameWrapper = Widget Function(Widget);
+Widget noOpWrapper(BuildContext context, bool hasBuilder, WidgetBuilder builder) => builder(context);
+typedef FrameWrapper = Widget Function(BuildContext, bool, WidgetBuilder);
 
 class FigmaFrameModel extends FigmaNodeModel{
   final FigmaStyleModel style;

@@ -65,6 +65,7 @@ class FigmaComponentState extends State<FigmaComponent> {
   Map<String, dynamic>? spec;
   Map<String, dynamic>? variants;
   Map<String, dynamic> variantValues = {};
+  bool loaded = false;
 
   @override
   void initState() {
@@ -75,21 +76,34 @@ class FigmaComponentState extends State<FigmaComponent> {
   @override
   Widget build(BuildContext context) {
     if (spec == null) {
-      return const SizedBox();
+      return loaded ? Container(
+        color: const Color(0xFFFF00FF),
+        child: Center(
+          child: Text('No spec for ${widget.model.widgetType}'),
+        ),
+      ) : const SizedBox();
     }
 
     return FigmaComponentData(
       userData: widget.model.userData,
       child: Builder(
         builder: (context) {
-          return Mirai.fromJson(spec!, context) ?? const SizedBox();
+          return Mirai.fromJson(spec!, context) ?? Container(
+            color: const Color(0xFFFF00FF),
+            child: Center(
+              child: Text('Failed to parse ${widget.model.widgetType}'),
+            )
+          );
         },
       ),
     );
   }
 
   void setVariant([String? key, String? value]) {
-    if (variants == null || variants!.length <= 1) {
+    if (variants == null || variants!.isEmpty) {
+      setState(() {
+        spec = null;
+      });
       return;
     }
 
@@ -132,6 +146,7 @@ class FigmaComponentState extends State<FigmaComponent> {
       }
     });
 
+    loaded = true;
     initVariant();
   }
 }

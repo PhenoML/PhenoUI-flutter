@@ -1,7 +1,6 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:mirai/mirai.dart';
 import 'package:pheno_ui/interface/data/screen_spec.dart';
-import 'package:pheno_ui/interface/strapi.dart';
 
 class FigmaScreenRenderer extends StatefulWidget {
   final Future<PhenoScreenSpec>? future;
@@ -54,6 +53,8 @@ class RenderLayoutState extends State<FigmaScreenRenderer> {
       return const SizedBox();
     }
 
-    return Mirai.fromJson(spec!.spec, context) ?? const SizedBox();
+    return Material(
+      child: Mirai.fromJson(spec!.spec, context) ?? const SizedBox(),
+    );
   }
 }

@@ -5,7 +5,7 @@ import '../strapi.dart';
 import 'entry.dart';
 
 class StrapiDataProvider extends PhenoDataProvider {
-  StrapiDataProvider._({
+  const StrapiDataProvider._({
     required String sourceId,
     required String category,
   }) : super(sourceId: sourceId, category: category);

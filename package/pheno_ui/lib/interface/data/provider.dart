@@ -7,7 +7,7 @@ abstract class PhenoDataProvider {
   final String sourceId;
   final String category;
 
-  PhenoDataProvider({
+  const PhenoDataProvider({
     required this.sourceId,
     required this.category,
   });

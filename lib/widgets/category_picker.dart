@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pheno_ui/interface/data/entry.dart';
 import 'package:pheno_ui/interface/strapi.dart';
 import 'package:pheno_ui_tester/widgets/picker_state.dart';
 import 'package:pheno_ui_tester/widgets/screen_picker.dart';
@@ -15,11 +16,11 @@ class CategoryPicker extends PickerWidget {
 
   const CategoryPicker({ super.key });
 
-  Widget _builder(StrapiListEntry entry, BuildContext context, _) {
+  Widget _builder(PhenoDataEntry entry, BuildContext context, _) {
     return ScreenPicker(entry: entry);
   }
 
-  Future<List<StrapiListEntry>> _getList() {
+  Future<List<PhenoDataEntry>> _getList() {
     return Strapi().getCategoryList();
   }
 

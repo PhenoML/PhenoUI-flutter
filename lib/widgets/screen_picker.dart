@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pheno_ui/interface/data/entry.dart';
 import 'package:pheno_ui/interface/strapi.dart';
 import 'package:pheno_ui_tester/widgets/picker_state.dart';
 import 'package:pheno_ui_tester/widgets/render_layout.dart';
@@ -13,16 +14,16 @@ class ScreenPicker extends PickerWidget {
   @override
   get title => 'Layout';
 
-  final StrapiListEntry entry;
+  final PhenoDataEntry entry;
 
   const ScreenPicker({ super.key, required this.entry });
 
-  Widget _builder(StrapiListEntry entry, BuildContext context, List<StrapiListEntry> entries) {
+  Widget _builder(PhenoDataEntry entry, BuildContext context, List<PhenoDataEntry> entries) {
     Strapi().category = this.entry.name;
     return RenderLayout(initialRoute: entry.name, entries: entries);
   }
 
-  Future<List<StrapiListEntry>> _getList() {
+  Future<List<PhenoDataEntry>> _getList() {
     return Strapi().getScreenList(entry.id);
   }
 

@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:pheno_ui/interface/data/entry.dart';
 import 'package:pheno_ui/pheno_ui.dart';
-import 'package:pheno_ui/widgets/figma_screen_renderer.dart';
 import 'package:pheno_ui_tester/widgets/top_bar.dart';
 
 class RenderLayout extends StatefulWidget {
   final String initialRoute;
-  final List<StrapiListEntry> entries;
+  final List<PhenoDataEntry> entries;
 
   const RenderLayout({
     super.key,

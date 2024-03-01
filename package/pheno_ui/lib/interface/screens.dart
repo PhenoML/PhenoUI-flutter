@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pheno_ui/interface/data/entry.dart';
+import 'package:pheno_ui/interface/data/provider.dart';
+import 'package:pheno_ui/interface/data/screen_spec.dart';
 import 'package:pheno_ui/interface/strapi.dart';
 
 import '../widgets/figma_screen_renderer.dart';
@@ -6,8 +9,9 @@ import '../widgets/figma_screen_renderer.dart';
 
 class FigmaScreens {
   static final FigmaScreens _sharedInstance = FigmaScreens._internal();
-  final Map<String, StrapiListEntry> screens = {};
-  final Map<String, StrapiScreenSpec> screenSpecCache = {};
+  late final PhenoDataProvider provider;
+  final Map<String, PhenoDataEntry> screens = {};
+  final Map<String, PhenoScreenSpec> screenSpecCache = {};
   final Map<String, WidgetBuilder> screenBuilders = {};
 
   factory FigmaScreens() {
@@ -16,10 +20,9 @@ class FigmaScreens {
 
   FigmaScreens._internal();
 
-  Future<void> init([String strapiCategory = 'product']) async {
-    var category = await Strapi().getCategory(strapiCategory);
-    print(category.id);
-    var screens = await Strapi().getScreenList(category.id);
+  Future<void> init(PhenoDataProvider provider) async {
+    this.provider = provider;
+    var screens = await this.provider.getScreenList();
     for (var screen in screens) {
       print('id:${screen.id} uid:${screen.uid}');
       this.screens[screen.uid] = screen;
@@ -46,12 +49,12 @@ class FigmaScreens {
     return null;
   }
 
-  Future<StrapiScreenSpec> getScreenSpec(String uid) async {
+  Future<PhenoScreenSpec> getScreenSpec(String uid) async {
     if (screenSpecCache.containsKey(uid)) {
       return screenSpecCache[uid]!;
     }
 
-    var spec = await Strapi().loadScreenLayout(screens[uid]!.id);
+    var spec = await provider.loadScreenLayout(screens[uid]!.id);
     screenSpecCache[uid] = spec;
     return spec;
   }

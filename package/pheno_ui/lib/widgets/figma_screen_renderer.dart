@@ -1,18 +1,19 @@
 import 'package:flutter/widgets.dart';
 import 'package:mirai/mirai.dart';
+import 'package:pheno_ui/interface/data/screen_spec.dart';
 import 'package:pheno_ui/interface/strapi.dart';
 
 class FigmaScreenRenderer extends StatefulWidget {
-  final Future<StrapiScreenSpec>? future;
-  final StrapiScreenSpec? spec;
+  final Future<PhenoScreenSpec>? future;
+  final PhenoScreenSpec? spec;
 
   const FigmaScreenRenderer({ super.key, this.future, this.spec });
 
-  factory FigmaScreenRenderer.fromFuture(Future<StrapiScreenSpec> future) {
+  factory FigmaScreenRenderer.fromFuture(Future<PhenoScreenSpec> future) {
     return FigmaScreenRenderer(future: future);
   }
 
-  factory FigmaScreenRenderer.fromSpec(StrapiScreenSpec spec) {
+  factory FigmaScreenRenderer.fromSpec(PhenoScreenSpec spec) {
     return FigmaScreenRenderer(spec: spec);
   }
 
@@ -22,7 +23,7 @@ class FigmaScreenRenderer extends StatefulWidget {
 
 
 class RenderLayoutState extends State<FigmaScreenRenderer> {
-  StrapiScreenSpec? spec;
+  PhenoScreenSpec? spec;
 
   RenderLayoutState();
 

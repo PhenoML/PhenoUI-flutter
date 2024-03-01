@@ -20,6 +20,8 @@ class StrapiDataProvider extends PhenoDataProvider {
       Strapi().server = sourceId;
     }
 
+    Strapi().category = category;
+
     return StrapiDataProvider._(
       sourceId: sourceId,
       category: category,

@@ -12,6 +12,9 @@ import '../parsers/tools/figma_enum.dart';
 import 'figma_component.dart';
 import 'figma_form.dart';
 
+const Map<String, String> kFontNameMap = {
+  "Baloo": "Baloo 2",
+};
 
 class FigmaTextParser extends MiraiParser<FigmaTextModel> {
   const FigmaTextParser();
@@ -63,9 +66,11 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
         FigmaTextUnit.auto => null
       };
 
-      var style = GoogleFonts.getFont(m.name.family, textStyle:  TextStyle(
+      var family = kFontNameMap.containsKey(m.name.family) ? kFontNameMap[m.name.family]! : m.name.family;
+
+      var style = GoogleFonts.getFont(family, textStyle:  TextStyle(
         fontSize: m.size * scale,
-        fontFamily: m.name.family,
+        fontFamily: family,
         fontStyle: FontStyle.values.convert(m.name.style),
         fontWeight: m.weight,
         decoration: decoration,

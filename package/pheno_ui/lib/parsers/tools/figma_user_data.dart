@@ -27,14 +27,29 @@ class FigmaUserData {
     var value = map![key];
 
     if (value is Map<String, dynamic>) {
-      if (context == null) {
-        throw 'Context is required to parse a component';
+      if (value['type'] == 'binding') {
+        if (context == null) {
+          throw 'Context is required to parse a component';
+        }
+        var data = FigmaComponentData.maybeOf(context);
+        if (data == null) {
+          throw 'FigmaComponentData not found in context';
+        }
+        return data.userData.maybeGet<T>(value['id'], context: context);
       }
-      var data = FigmaComponentData.maybeOf(context);
-      if (data == null) {
-        throw 'FigmaComponentData not found in context';
+
+      if (value['type'] == 'group') {
+        List<Map<String, dynamic>> properties = (value["properties"] as List).map((e) => e as Map<String, dynamic>).toList();
+        Map<String, dynamic> result = {};
+        for (var property in properties) {
+          if (!property['description'].isEmpty) {
+            result[property['description']] = property['value'];
+          }
+        }
+        // set the result back to the map for faster access next time
+        map![key] = result;
+        return result as T;
       }
-      return data.userData.maybeGet<T>(value['id'], context: context);
     }
 
     return value as T?;

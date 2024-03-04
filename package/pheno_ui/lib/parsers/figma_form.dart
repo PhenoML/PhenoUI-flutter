@@ -42,7 +42,7 @@ abstract class FigmaFormHandler {
   void onInputValueChanged<T>(FigmaFormInput<T> input) { /* nothing */ }
   void onInputEditingComplete<T>(FigmaFormInput<T> input) { /* nothing */ }
   void onInputSubmitted<T>(FigmaFormInput<T> input) { /* nothing */ }
-  void onSubmit(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaUserData userData, String? buttonData);
+  void onSubmit(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaUserData userData, Map<String, dynamic>? buttonData);
 }
 
 class _DefaultFormHandler extends FigmaFormHandler {
@@ -64,7 +64,7 @@ class _DefaultFormHandler extends FigmaFormHandler {
   }
 
   @override
-  void onSubmit(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaUserData userData, String? buttonData) {
+  void onSubmit(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaUserData userData, Map<String, dynamic>? buttonData) {
     for (var input in inputs.values) {
       switch (input.type) {
         case String:
@@ -86,8 +86,8 @@ class _DefaultFormHandler extends FigmaFormHandler {
       }
     }
 
-    if (buttonData != null) {
-      Navigator.of(context).pushReplacementNamed(buttonData, arguments: 'screen');
+    if (buttonData != null && buttonData.containsKey('route')){
+      Navigator.of(context).pushReplacementNamed(buttonData['route']!, arguments: 'screen');
     }
   }
 }
@@ -168,7 +168,7 @@ class FigmaFormState extends State<FigmaForm> {
     handler?.onInputSubmitted(inputs[id]!);
   }
 
-  void submit(String? buttonData) {
+  void submit(Map<String, dynamic>? buttonData) {
     handler?.onSubmit(context, inputs, widget.userData, buttonData);
   }
 }
@@ -178,7 +178,7 @@ class FigmaFormInterface extends InheritedWidget {
   final void Function<T>(String, T) inputValueChanged;
   final void Function(String) inputEditingComplete;
   final void Function<T>(String, T) inputSubmitted;
-  final void Function(String?) submit;
+  final void Function(Map<String, dynamic>?) submit;
 
   const FigmaFormInterface({
     required this.registerInput,

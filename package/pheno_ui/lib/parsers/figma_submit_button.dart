@@ -16,8 +16,15 @@ class FigmaSubmitButtonParser extends MiraiParser<FigmaSimpleChildModel> {
 
   @override
   Widget parse(BuildContext context, FigmaSimpleChildModel model) {
+    var form = FigmaFormInterface.maybeOf(context);
+    String id = model.userData.maybeGet('id') ?? model.info!.name!;
+
+    if (form != null && !form.shouldDisplayInput(id)) {
+      return const SizedBox();
+    }
+
     onTap() {
-      FigmaFormInterface.maybeOf(context)?.submit(model.userData.maybeGet('context'));
+      form?.submit(id, model.userData.maybeGet('context'));
     }
 
     var frameModel = FigmaFrameModel.fromJson(model.child, (context, _, builder) => GestureDetector(onTap: onTap, child: builder(context)));

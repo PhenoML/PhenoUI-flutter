@@ -147,6 +147,17 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
 
   @override
   Widget parse(BuildContext context, FigmaTextModel model) {
+    // if this is a text field and belongs to a form, check if it should be displayed
+    if (model.isTextField) {
+      var form = FigmaFormInterface.maybeOf(context);
+      if (form != null) {
+        String id = model.userData.get('id', context: context);
+        if (!form.shouldDisplayInput(id)) {
+          return const SizedBox();
+        }
+      }
+    }
+
     Widget widget;
     if (model.parentLayout.mode == FigmaLayoutMode.none && (model.dimensions?.self.constraints.horizontal == FigmaDimensionsConstraintType.scale || model.dimensions?.self.constraints.vertical == FigmaDimensionsConstraintType.scale)) {
       widget = LayoutBuilder(builder: (context, constraints) {

@@ -54,4 +54,13 @@ class FigmaCheckboxState extends FigmaComponentState {
   void initVariant() {
     setVariant(widget.model.userData.get('state'), widget.model.userData.get(_state));
   }
+
+  @override
+  Widget build(BuildContext context) {
+    var form = FigmaFormInterface.maybeOf(context, listen: false);
+    if (form != null && form.shouldDisplayInput(widget.model.userData.get('id'))) {
+      return const SizedBox();
+    }
+    return super.build(context);
+  }
 }

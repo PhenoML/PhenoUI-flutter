@@ -38,11 +38,12 @@ class FigmaFormInput<T> {
 }
 
 abstract class FigmaFormHandler {
+  bool shouldDisplayInput(String id) => true;
   void onInputRegistered<T>(FigmaFormInput<T> input) { /* nothing */ }
   void onInputValueChanged<T>(FigmaFormInput<T> input) { /* nothing */ }
   void onInputEditingComplete<T>(FigmaFormInput<T> input) { /* nothing */ }
   void onInputSubmitted<T>(FigmaFormInput<T> input) { /* nothing */ }
-  void onSubmit(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaUserData userData, Map<String, dynamic>? buttonData);
+  void onSubmit(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaUserData userData, String buttonId, Map<String, dynamic>? buttonData);
 }
 
 class _DefaultFormHandler extends FigmaFormHandler {
@@ -64,7 +65,7 @@ class _DefaultFormHandler extends FigmaFormHandler {
   }
 
   @override
-  void onSubmit(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaUserData userData, Map<String, dynamic>? buttonData) {
+  void onSubmit(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaUserData userData, String buttonId, Map<String, dynamic>? buttonData) {
     for (var input in inputs.values) {
       switch (input.type) {
         case String:
@@ -127,6 +128,7 @@ class FigmaFormState extends State<FigmaForm> {
   @override
   Widget build(BuildContext context) {
     return FigmaFormInterface(
+      shouldDisplayInput: shouldDisplayInput,
       registerInput: registerInput,
       inputValueChanged: inputValueChanged,
       inputEditingComplete: inputEditingComplete,
@@ -134,6 +136,10 @@ class FigmaFormState extends State<FigmaForm> {
       submit: submit,
       child: widget.child,
     );
+  }
+
+  bool shouldDisplayInput(String id) {
+    return handler?.shouldDisplayInput(id) ?? true;
   }
 
   void registerInput<T>(String id, T initialValue) {
@@ -168,19 +174,21 @@ class FigmaFormState extends State<FigmaForm> {
     handler?.onInputSubmitted(inputs[id]!);
   }
 
-  void submit(Map<String, dynamic>? buttonData) {
-    handler?.onSubmit(context, inputs, widget.userData, buttonData);
+  void submit(String id, Map<String, dynamic>? buttonData) {
+    handler?.onSubmit(context, inputs, widget.userData, id, buttonData);
   }
 }
 
 class FigmaFormInterface extends InheritedWidget {
+  final bool Function(String) shouldDisplayInput;
   final void Function<T>(String, T) registerInput;
   final void Function<T>(String, T) inputValueChanged;
   final void Function(String) inputEditingComplete;
   final void Function<T>(String, T) inputSubmitted;
-  final void Function(Map<String, dynamic>?) submit;
+  final void Function(String, Map<String, dynamic>?) submit;
 
   const FigmaFormInterface({
+    required this.shouldDisplayInput,
     required this.registerInput,
     required this.inputValueChanged,
     required this.inputEditingComplete,

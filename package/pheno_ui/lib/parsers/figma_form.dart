@@ -38,6 +38,7 @@ class FigmaFormInput<T> {
 }
 
 abstract class FigmaFormHandler {
+  const FigmaFormHandler();
   bool shouldDisplayInput(String id) => true;
   void onInputRegistered<T>(FigmaFormInput<T> input) { /* nothing */ }
   void onInputValueChanged<T>(FigmaFormInput<T> input) { /* nothing */ }

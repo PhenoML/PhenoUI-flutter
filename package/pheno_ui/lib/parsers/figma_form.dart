@@ -70,14 +70,16 @@ class _DefaultFormHandler extends FigmaFormHandler {
       switch (input.type) {
         case String:
           if (input.value.isEmpty) {
-            _showDialog(context, content: userData.maybeGet('metadata'));
+            Map<String, dynamic>? formData = userData.maybeGet('data');
+            _showDialog(context, title: formData?['incomplete_title'], content: formData?['incomplete_message']);
             return;
           }
           break;
 
         case bool:
           if (!input.value) {
-            _showDialog(context, content: userData.maybeGet('metadata'));
+            Map<String, dynamic>? formData = userData.maybeGet('data');
+            _showDialog(context, title: formData?['incomplete_title'], content: formData?['incomplete_message']);
             return;
           }
           break;

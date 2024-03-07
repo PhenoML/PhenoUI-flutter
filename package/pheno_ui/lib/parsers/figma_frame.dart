@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:mirai/mirai.dart';
+import 'package:pheno_ui/models/figma_style_model.dart';
 import '../widgets/figma_frame_layout_none.dart';
 import '../widgets/figma_node.dart';
 import './tools/figma_dimensions.dart';
@@ -99,7 +100,7 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
       model.layout.self.padding.bottom * scaleY,
     );
 
-    var border = model.style.border == null ? null : Border(
+    var border = model.style.border == null ? null : FigmaStyleBorder(
       top: model.style.border!.top.scale(scaleY),
       right: model.style.border!.right.scale(scaleX),
       bottom: model.style.border!.bottom.scale(scaleY),
@@ -129,21 +130,7 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
   @override
   Widget parse(BuildContext context, FigmaFrameModel model) {
     Widget widget;
-    if (model.layout.parent.mode == FigmaLayoutMode.none && (model.dimensions?.self.constraints.horizontal == FigmaDimensionsConstraintType.scale || model.dimensions?.self.constraints.vertical == FigmaDimensionsConstraintType.scale)) {
-      widget = model.wrapper(context, true, (context) => LayoutBuilder(builder: (context, constraints) {
-        double scaleX = 1.0;
-        double scaleY = 1.0;
-        if (model.dimensions?.self.constraints.horizontal == FigmaDimensionsConstraintType.scale && constraints.hasBoundedWidth) {
-          scaleX = constraints.maxWidth / model.dimensions!.self.width;
-        }
-        if (model.dimensions?.self.constraints.vertical == FigmaDimensionsConstraintType.scale && constraints.hasBoundedHeight) {
-          scaleY = constraints.maxHeight / model.dimensions!.self.height;
-        }
-        return buildWidgetWithScale(context, model, scaleX, scaleY);
-      }));
-    } else {
-      widget = model.wrapper(context, false, (context) => buildWidgetWithScale(context, model, 1.0, 1.0));
-    }
+    widget = model.wrapper(context, false, (context) => buildWidgetWithScale(context, model, 1.0, 1.0));
 
     switch (model.layout.parent.mode) {
       case FigmaLayoutMode.none:

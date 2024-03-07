@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:mirai/mirai.dart';
+import 'package:pheno_ui/interface/screens.dart';
 import 'package:pheno_ui/parsers/tools/figma_dimensions.dart';
 import 'package:pheno_ui/parsers/tools/figma_user_data.dart';
 import 'package:pheno_ui/widgets/figma_node.dart';
@@ -136,7 +137,10 @@ class FigmaComponentState extends State<FigmaComponent> {
   }
 
   void loadContent() async {
-    var component = await Strapi().loadComponentSpec(Strapi().category, widget.model.widgetType);
+    if (!FigmaScreens().initialized) {
+      throw 'FigmaScreens not initialized';
+    }
+    var component = await FigmaScreens().provider.loadComponentSpec(widget.model.widgetType);
     variants = component.variants;
 
     widget.model.userData.map!.forEach((key, value) {

@@ -13,6 +13,8 @@ class FigmaScreens {
   final Map<String, PhenoDataEntry> screens = {};
   final Map<String, PhenoScreenSpec> screenSpecCache = {};
   final Map<String, WidgetBuilder> screenBuilders = {};
+  bool _initialized = false;
+  get initialized => _initialized;
 
   factory FigmaScreens() {
     return _sharedInstance;
@@ -27,6 +29,7 @@ class FigmaScreens {
       print('id:${screen.id} uid:${screen.uid}');
       this.screens[screen.uid] = screen;
     }
+    _initialized = true;
   }
 
   void registerScreenBuilder(String uid, WidgetBuilder builder) {

@@ -1,6 +1,7 @@
 
 import 'package:pheno_ui/interface/data/screen_spec.dart';
 
+import 'component_spec.dart';
 import 'entry.dart';
 
 abstract class PhenoDataProvider {
@@ -14,4 +15,5 @@ abstract class PhenoDataProvider {
 
   Future<List<PhenoDataEntry>> getScreenList();
   Future<PhenoScreenSpec> loadScreenLayout(int id);
+  Future<PhenoComponentSpec> loadComponentSpec(String name);
 }

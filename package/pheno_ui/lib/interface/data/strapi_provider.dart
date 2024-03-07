@@ -2,6 +2,7 @@ import 'package:pheno_ui/interface/data/provider.dart';
 import 'package:pheno_ui/interface/data/screen_spec.dart';
 
 import '../strapi.dart';
+import 'component_spec.dart';
 import 'entry.dart';
 
 class StrapiDataProvider extends PhenoDataProvider {
@@ -37,5 +38,10 @@ class StrapiDataProvider extends PhenoDataProvider {
   @override
   Future<PhenoScreenSpec> loadScreenLayout(int id) async {
     return await Strapi().loadScreenLayout(id);
+  }
+
+  @override
+  Future<PhenoComponentSpec> loadComponentSpec(String name) async {
+    return await Strapi().loadComponentSpec(category, name);
   }
 }

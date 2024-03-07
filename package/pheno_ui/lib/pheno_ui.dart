@@ -21,26 +21,27 @@ export 'package:mirai/mirai.dart';
 export 'package:pheno_ui/interface/strapi.dart';
 export 'package:pheno_ui/widgets/figma_screen_renderer.dart';
 
-Future<void> initializePhenoUi([String? strapiServer]) async {
-  if (strapiServer != null) {
-    Strapi().server = strapiServer;
-  }
+Future<void> initializePhenoUi({List<MiraiParser> parsers = const []}) async {
+  const List<MiraiParser> defaultParsers = [
+    FigmaFrameParser(),
+    FigmaTextParser(),
+    FigmaImageParser(),
+    FigmaRectangleParser(),
+    FigmaSafeAreaParser(),
+    FigmaNavButtonParser(),
+    FigmaComponentParser(),
+    FigmaCheckboxParser(),
+    FigmaWebViewParser(),
+    FigmaConditionalCheckboxParser(),
+    FigmaFormParser(),
+    FigmaSubmitButtonParser(),
+    FigmaKeepAspectRatioParser(),
+  ];
+
+  // merge the parsers giving priority to the ones passed as argument
+  var mergedParsers = <MiraiParser>[...defaultParsers, ...parsers];
 
   await Mirai.initialize(
-      parsers: [
-        const FigmaFrameParser(),
-        const FigmaTextParser(),
-        const FigmaImageParser(),
-        const FigmaRectangleParser(),
-        const FigmaSafeAreaParser(),
-        const FigmaNavButtonParser(),
-        const FigmaComponentParser(),
-        const FigmaCheckboxParser(),
-        const FigmaWebViewParser(),
-        const FigmaConditionalCheckboxParser(),
-        const FigmaFormParser(),
-        const FigmaSubmitButtonParser(),
-        const FigmaKeepAspectRatioParser(),
-      ]
+      parsers: mergedParsers,
   );
 }

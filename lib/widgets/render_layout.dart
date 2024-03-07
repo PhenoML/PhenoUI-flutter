@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:pheno_ui/interface/data/entry.dart';
+import 'package:pheno_ui/interface/data/strapi_provider.dart';
+import 'package:pheno_ui/interface/screens.dart';
 import 'package:pheno_ui/pheno_ui.dart';
 import 'package:pheno_ui_tester/widgets/top_bar.dart';
 
 class RenderLayout extends StatefulWidget {
+  final String category;
   final String initialRoute;
   final List<PhenoDataEntry> entries;
 
   const RenderLayout({
     super.key,
+    required this.category,
     required this.initialRoute,
     required this.entries,
   });
@@ -20,46 +24,42 @@ class RenderLayout extends StatefulWidget {
 
 class RenderLayoutState extends State<RenderLayout> {
   final GlobalKey _key = GlobalKey<NavigatorState>();
+  bool _initialized = false;
   Navigator? navigator;
 
   RenderLayoutState();
 
   @override
+  void initState() {
+    super.initState();
+    if (FigmaScreens().initialized) {
+      setState(() {
+        _initialized = true;
+      });
+    } else {
+      var dataProvider = StrapiDataProvider(sourceId: 'https://api.develop.mindora.dev', category: widget.category);
+      FigmaScreens().init(dataProvider).then((_) => setState(() {
+        _initialized = true;
+      }));
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (!_initialized) {
+      return const Center(
+        child: CircularProgressIndicator(
+          color: Colors.blueGrey,
+          strokeWidth: 11.0,
+          strokeCap: StrokeCap.round,
+        ),
+      );
+    }
+
     navigator = Navigator(
       key: _key,
       initialRoute: widget.initialRoute,
-      onGenerateRoute: (settings) {
-        var type = settings.arguments ?? 'screen';
-
-        for (var entry in widget.entries) {
-          if (settings.name == entry.name) {
-            FigmaScreenRenderer screen = FigmaScreenRenderer.fromFuture(
-              Strapi().loadScreenLayout(entry.id)
-            );
-
-            switch (type) {
-              case 'popup':
-                return PageRouteBuilder(
-                  opaque: false,
-                  settings: settings,
-                  pageBuilder: (_, __, ___) {
-                    return Container(color: Colors.pinkAccent);
-                  },
-                );
-
-              default:
-                return PageRouteBuilder(
-                  settings: settings,
-                  pageBuilder: (_, __, ___) {
-                    return screen;
-                  },
-                );
-            }
-          }
-        }
-        throw Exception('Invalid route: ${settings.name}');
-      },
+      onGenerateRoute: (settings) => FigmaScreens().generateRoute(settings),
     );
 
     return Material(

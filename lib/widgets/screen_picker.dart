@@ -19,8 +19,11 @@ class ScreenPicker extends PickerWidget {
   const ScreenPicker({ super.key, required this.entry });
 
   Widget _builder(PhenoDataEntry entry, BuildContext context, List<PhenoDataEntry> entries) {
-    Strapi().category = this.entry.name;
-    return RenderLayout(initialRoute: entry.name, entries: entries);
+    return RenderLayout(
+      category: this.entry.name,
+      initialRoute: entry.name,
+      entries: entries
+    );
   }
 
   Future<List<PhenoDataEntry>> _getList() {

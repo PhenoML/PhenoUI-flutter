@@ -6,7 +6,8 @@ import 'package:pheno_ui_tester/widgets/category_picker.dart';
 import 'package:window_manager/window_manager.dart';
 
 void main() async {
-  await initializePhenoUi('https://api.develop.mindora.dev');
+  Strapi().server = 'https://api.develop.mindora.dev';
+  await initializePhenoUi();
   if (!kIsWeb && (Platform.isLinux || Platform.isWindows || Platform.isMacOS)) {
     WidgetsFlutterBinding.ensureInitialized();
     await windowManager.ensureInitialized();

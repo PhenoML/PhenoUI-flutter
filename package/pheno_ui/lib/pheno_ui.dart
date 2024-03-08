@@ -13,6 +13,7 @@ import 'package:pheno_ui/parsers/figma_nav_button.dart';
 import 'package:pheno_ui/parsers/figma_rectangle.dart';
 import 'package:pheno_ui/parsers/figma_submit_button.dart';
 import 'package:pheno_ui/parsers/figma_text.dart';
+import 'package:pheno_ui/parsers/figma_tile_child.dart';
 import 'package:pheno_ui/parsers/figma_web_view.dart';
 
 import 'interface/strapi.dart';
@@ -36,6 +37,7 @@ Future<void> initializePhenoUi({List<MiraiParser> parsers = const []}) async {
     FigmaFormParser(),
     FigmaSubmitButtonParser(),
     FigmaKeepAspectRatioParser(),
+    FigmaTileChildParser(),
   ];
 
   // merge the parsers giving priority to the ones passed as argument

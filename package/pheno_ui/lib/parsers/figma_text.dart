@@ -99,6 +99,7 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
 
       widget = TextField(
         focusNode: focusNode,
+        onTapOutside: (_) => focusNode?.unfocus(),
         style: segments[0].style,
         obscureText: model.userData.maybeGet('isPasswordField', context: context) ?? false,
         onChanged: form == null ? null : (value) {

@@ -66,8 +66,8 @@ class FigmaDimensionsConstraints {
 }
 
 class FigmaDimensionsParentModel {
-  final double x;
-  final double y;
+  double x;
+  double y;
   final double width;
   final double height;
 

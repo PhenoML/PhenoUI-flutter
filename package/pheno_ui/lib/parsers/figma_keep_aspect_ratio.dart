@@ -17,7 +17,6 @@ class FigmaKeepAspectRatioParser extends MiraiParser<FigmaSimpleChildModel> {
   @override
   Widget parse(BuildContext context, FigmaSimpleChildModel model) {
     var dimensions = FigmaDimensionsModel.fromJson(model.child['dimensions']);
-    print('dimensions: ${model.child['dimensions']}e');
     var frameModel = FigmaFrameModel.fromJson(model.child, (context, hasBuilder, builder) {
       var child = builder(context);
       return Align(

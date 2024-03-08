@@ -32,16 +32,10 @@ class RenderLayoutState extends State<RenderLayout> {
   @override
   void initState() {
     super.initState();
-    if (FigmaScreens().initialized) {
-      setState(() {
-        _initialized = true;
-      });
-    } else {
-      var dataProvider = StrapiDataProvider(sourceId: 'https://api.develop.mindora.dev', category: widget.category);
-      FigmaScreens().init(dataProvider).then((_) => setState(() {
-        _initialized = true;
-      }));
-    }
+    var dataProvider = StrapiDataProvider(sourceId: Strapi().server, category: widget.category);
+    FigmaScreens().setProvider(dataProvider).then((_) => setState(() {
+      _initialized = true;
+    }));
   }
 
   @override
@@ -69,6 +63,7 @@ class RenderLayoutState extends State<RenderLayout> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               topBar(context, widget.initialRoute, () {
+                FigmaScreens().clearCache();
                 NavigatorState state = _key.currentState! as NavigatorState;
                 state.pushNamedAndRemoveUntil(widget.initialRoute, (route) => false);
               }, constraits),

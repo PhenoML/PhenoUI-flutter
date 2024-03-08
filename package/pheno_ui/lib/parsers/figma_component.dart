@@ -137,10 +137,10 @@ class FigmaComponentState extends State<FigmaComponent> {
   }
 
   void loadContent() async {
-    if (!FigmaScreens().initialized) {
-      throw 'FigmaScreens not initialized';
+    if (FigmaScreens().provider == null) {
+      throw 'FigmaScreens provider not initialized';
     }
-    var component = await FigmaScreens().provider.loadComponentSpec(widget.model.widgetType);
+    var component = await FigmaScreens().provider!.loadComponentSpec(widget.model.widgetType);
     variants = component.variants;
 
     widget.model.userData.map!.forEach((key, value) {

@@ -6,7 +6,7 @@ import 'component_spec.dart';
 import 'entry.dart';
 
 class StrapiDataProvider extends PhenoDataProvider {
-  const StrapiDataProvider._({
+  StrapiDataProvider._({
     required String sourceId,
     required String category,
   }) : super(sourceId: sourceId, category: category);
@@ -30,18 +30,18 @@ class StrapiDataProvider extends PhenoDataProvider {
   }
 
   @override
-  Future<List<PhenoDataEntry>> getScreenList() async {
+  Future<List<PhenoDataEntry>> doGetScreenList() async {
     var category = await Strapi().getCategory(this.category);
     return await Strapi().getScreenList(category.id);
   }
 
   @override
-  Future<PhenoScreenSpec> loadScreenLayout(int id) async {
+  Future<PhenoScreenSpec> doLoadScreenLayout(int id) async {
     return await Strapi().loadScreenLayout(id);
   }
 
   @override
-  Future<PhenoComponentSpec> loadComponentSpec(String name) async {
+  Future<PhenoComponentSpec> doLoadComponentSpec(String name) async {
     return await Strapi().loadComponentSpec(category, name);
   }
 }

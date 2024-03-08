@@ -1,14 +1,10 @@
-import 'package:pheno_ui/models/figma_node_model.dart';
-
-import 'figma_layout_model.dart';
+import 'package:pheno_ui/models/figma_parent_layout_model.dart';
 import 'figma_style_model.dart';
 
-class FigmaSimpleStyleModel extends FigmaNodeModel {
+class FigmaSimpleStyleModel extends FigmaParentLayoutModel {
   final FigmaStyleModel style;
-  final FigmaLayoutParentValuesModel parentLayout;
 
   FigmaSimpleStyleModel.fromJson(Map<String, dynamic> json):
         style = FigmaStyleModel.fromJson(json['style']),
-        parentLayout = FigmaLayoutParentValuesModel.fromJson(json['parentLayout']),
         super.fromJson(json);
 }

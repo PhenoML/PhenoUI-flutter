@@ -2,19 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:pheno_ui/interface/data/entry.dart';
 import 'package:pheno_ui/interface/data/provider.dart';
 import 'package:pheno_ui/interface/data/screen_spec.dart';
-import 'package:pheno_ui/interface/strapi.dart';
 
 import '../widgets/figma_screen_renderer.dart';
 
 
 class FigmaScreens {
   static final FigmaScreens _sharedInstance = FigmaScreens._internal();
-  late final PhenoDataProvider provider;
   final Map<String, PhenoDataEntry> screens = {};
-  final Map<String, PhenoScreenSpec> screenSpecCache = {};
   final Map<String, WidgetBuilder> screenBuilders = {};
-  bool _initialized = false;
-  get initialized => _initialized;
+
+  PhenoDataProvider? _provider;
+  PhenoDataProvider? get provider => _provider;
 
   factory FigmaScreens() {
     return _sharedInstance;
@@ -22,27 +20,34 @@ class FigmaScreens {
 
   FigmaScreens._internal();
 
-  Future<void> init(PhenoDataProvider provider) async {
-    this.provider = provider;
-    var screens = await this.provider.getScreenList();
+  Future<void> setProvider(PhenoDataProvider provider) async {
+    if (_provider != null) {
+      if (_provider == provider || (_provider!.sourceId == provider.sourceId && _provider!.category == provider.category)) {
+        return;
+      }
+      this.screens.clear();
+      clearCache();
+    }
+    _provider = provider;
+
+    var screens = await _provider!.getScreenList(true);
     for (var screen in screens) {
       print('id:${screen.id} uid:${screen.uid}');
       this.screens[screen.uid] = screen;
     }
-    _initialized = true;
   }
 
   void registerScreenBuilder(String uid, WidgetBuilder builder) {
     screenBuilders[uid] = builder;
   }
 
+  void clearCache() {
+    _provider?.clearCache();
+  }
+
   WidgetBuilder? getScreenBuilder(String uid) {
     if (screenBuilders.containsKey(uid)) {
       return screenBuilders[uid]!;
-    }
-
-    if (screenSpecCache.containsKey(uid)) {
-      return (context) => FigmaScreenRenderer.fromSpec(screenSpecCache[uid]!);
     }
 
     if (screens.containsKey(uid)) {
@@ -53,13 +58,12 @@ class FigmaScreens {
   }
 
   Future<PhenoScreenSpec> getScreenSpec(String uid) async {
-    if (screenSpecCache.containsKey(uid)) {
-      return screenSpecCache[uid]!;
+    var screen = screens[uid];
+    if (screen == null) {
+      throw Exception('Unknown screen: $uid');
     }
 
-    var spec = await provider.loadScreenLayout(screens[uid]!.id);
-    screenSpecCache[uid] = spec;
-    return spec;
+    return await _provider!.loadScreenLayout(screen.id);
   }
 
   Route generateRoute(RouteSettings settings) {

@@ -42,6 +42,6 @@ class FigmaWebViewParser extends MiraiParser<FigmaSimpleStyleModel> {
       child: widget,
     );
 
-    return dimensionWrapWidget(widget, model.dimensions!, model.parentLayout);
+    return dimensionWrapWidget(widget, model.dimensions!, model.parentLayout!);
   }
 }

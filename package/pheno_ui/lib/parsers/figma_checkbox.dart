@@ -30,6 +30,7 @@ class FigmaCheckboxParser extends FigmaComponentParser {
 }
 
 class FigmaCheckboxState extends FigmaComponentState {
+  FocusNode? focusNode;
   String _state = 'unchecked';
   bool get checked => _state == 'checked';
   set checked(bool value) {
@@ -46,7 +47,7 @@ class FigmaCheckboxState extends FigmaComponentState {
     super.initState();
     var form = FigmaFormInterface.maybeOf(context, listen: false);
     if (form != null) {
-      form.registerInput(widget.model.userData.get('id'), checked);
+      focusNode = form.registerInput(widget.model.userData.get('id'), checked);
     }
   }
 

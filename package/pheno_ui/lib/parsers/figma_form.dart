@@ -31,19 +31,20 @@ class FigmaFormParser extends MiraiParser<FigmaSimpleChildModel> {
 }
 
 class FigmaFormInput<T> {
+  final FocusNode node;
   final String id;
   T value;
   Type get type => value.runtimeType;
-  FigmaFormInput(this.id, this.value);
+  FigmaFormInput(this.node, this.id, this.value);
 }
 
 abstract class FigmaFormHandler {
   const FigmaFormHandler();
   bool shouldDisplayInput(String id) => true;
-  void onInputRegistered<T>(FigmaFormInput<T> input) { /* nothing */ }
-  void onInputValueChanged<T>(FigmaFormInput<T> input) { /* nothing */ }
-  void onInputEditingComplete<T>(FigmaFormInput<T> input) { /* nothing */ }
-  void onInputSubmitted<T>(FigmaFormInput<T> input) { /* nothing */ }
+  void onInputRegistered<T>(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaFormInput<T> input) { /* nothing */ }
+  void onInputValueChanged<T>(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaFormInput<T> input) { /* nothing */ }
+  void onInputEditingComplete<T>(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaFormInput<T> input) { /* nothing */ }
+  void onInputSubmitted<T>(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaFormInput<T> input) { /* nothing */ }
   void onSubmit(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaUserData userData, String buttonId, Map<String, dynamic>? buttonData);
 }
 
@@ -145,13 +146,14 @@ class FigmaFormState extends State<FigmaForm> {
     return handler?.shouldDisplayInput(id) ?? true;
   }
 
-  void registerInput<T>(String id, T initialValue) {
+  FocusNode registerInput<T>(String id, T initialValue) {
     if (inputs.containsKey(id)) {
       logger.w('Input with id $id already exists.');
-      return;
     }
-    inputs[id] = FigmaFormInput<T>(id, initialValue);
-    handler?.onInputRegistered(inputs[id]!);
+    FocusNode node = FocusNode();
+    inputs[id] = FigmaFormInput<T>(node, id, initialValue);
+    handler?.onInputRegistered(context, inputs, inputs[id]!);
+    return node;
   }
 
   void inputValueChanged<T>(String id, T value) {
@@ -159,14 +161,14 @@ class FigmaFormState extends State<FigmaForm> {
       throw 'Input with id $id does not exist';
     }
     inputs[id]!.value = value;
-    handler?.onInputValueChanged(inputs[id]!);
+    handler?.onInputValueChanged(context, inputs, inputs[id]!);
   }
 
   void inputEditingComplete(String id) {
     if (!inputs.containsKey(id)) {
       throw 'Input with id $id does not exist';
     }
-    handler?.onInputEditingComplete(inputs[id]!);
+    handler?.onInputEditingComplete(context, inputs, inputs[id]!);
   }
 
   void inputSubmitted<T>(String id, T value) {
@@ -174,7 +176,7 @@ class FigmaFormState extends State<FigmaForm> {
       throw 'Input with id $id does not exist';
     }
     inputs[id]!.value = value;
-    handler?.onInputSubmitted(inputs[id]!);
+    handler?.onInputSubmitted(context, inputs, inputs[id]!);
   }
 
   void submit(String id, Map<String, dynamic>? buttonData) {
@@ -184,7 +186,7 @@ class FigmaFormState extends State<FigmaForm> {
 
 class FigmaFormInterface extends InheritedWidget {
   final bool Function(String) shouldDisplayInput;
-  final void Function<T>(String, T) registerInput;
+  final FocusNode Function<T>(String, T) registerInput;
   final void Function<T>(String, T) inputValueChanged;
   final void Function(String) inputEditingComplete;
   final void Function<T>(String, T) inputSubmitted;

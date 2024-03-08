@@ -92,11 +92,13 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
     if (model.isTextField) {
       String id = model.userData.get('id', context: context);
       var form = FigmaFormInterface.maybeOf(context);
+      FocusNode? focusNode;
       if (form != null) {
-        form.registerInput(id, '');
+        focusNode = form.registerInput(id, '');
       }
 
       widget = TextField(
+        focusNode: focusNode,
         style: segments[0].style,
         obscureText: model.userData.maybeGet('isPasswordField', context: context) ?? false,
         onChanged: form == null ? null : (value) {

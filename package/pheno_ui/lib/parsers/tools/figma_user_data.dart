@@ -6,7 +6,17 @@ import 'package:pheno_ui/parsers/figma_component.dart';
 class FigmaUserData {
   final Map<String, dynamic>? map;
 
-  FigmaUserData(this.map);
+  FigmaUserData(Map<String, dynamic>? map) : map = map == null ? null : {...map};
+
+  void set<T>(String key, T value) {
+    if (map == null) {
+      throw 'User data map is null';
+    }
+    if (map!.containsKey(key) && (map![key] is Map<String, dynamic> || map![key]['type'] == 'group')) {
+      throw 'Bound values and groups cannot be overwritten';
+    }
+    map![key] = value;
+  }
 
   T get<T>(String key, { BuildContext? context }) {
     if (map == null) {

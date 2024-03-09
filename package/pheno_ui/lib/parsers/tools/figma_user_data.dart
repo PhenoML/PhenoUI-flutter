@@ -29,7 +29,7 @@ class FigmaUserData {
       }
     }
 
-    if (map!.containsKey(key) && (map![key] is Map<String, dynamic> || map![key]['type'] == 'group')) {
+    if (map!.containsKey(key) && map![key] is Map<String, dynamic>) {
       throw 'Bound values and groups cannot be overwritten';
     }
     map![key] = value;

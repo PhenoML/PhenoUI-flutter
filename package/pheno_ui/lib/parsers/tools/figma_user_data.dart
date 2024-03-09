@@ -12,6 +12,23 @@ class FigmaUserData {
     if (map == null) {
       throw 'User data map is null';
     }
+
+    if (!map!.containsKey(key)) {
+      List<String> candidates = [];
+      for (var k in map!.keys) {
+        if (k.split(RegExp('#(?!.*#)')).first == key) {
+          candidates.add(k);
+        }
+      }
+      if (candidates.isNotEmpty) {
+        if (candidates.length > 1) {
+          throw 'Ambiguous key: $key (candidates: ${candidates.join(', ')})';
+        } else {
+          key = candidates.first;
+        }
+      }
+    }
+
     if (map!.containsKey(key) && (map![key] is Map<String, dynamic> || map![key]['type'] == 'group')) {
       throw 'Bound values and groups cannot be overwritten';
     }

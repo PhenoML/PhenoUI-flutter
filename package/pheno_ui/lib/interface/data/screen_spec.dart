@@ -8,10 +8,10 @@ class PhenoScreenSpec {
 
   factory PhenoScreenSpec.fromJson(Map<String, dynamic> json) {
     return PhenoScreenSpec(
-        json['data']['id'].toInt(),
-        json['data']['attributes']['name'],
-        json['data']['attributes']['slug'],
-        json['data']['attributes']['spec']
+        json['id'].toInt(),
+        json['attributes']['name'],
+        json['attributes']['slug'],
+        json['attributes']['spec']
     );
   }
 }

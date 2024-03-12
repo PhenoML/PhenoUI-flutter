@@ -87,7 +87,7 @@ class Strapi {
 
     var response = await http.get(url);
     var json = jsonDecode(response.body) as Map<String, dynamic>;
-    return PhenoScreenSpec.fromJson(json);
+    return PhenoScreenSpec.fromJson(json['data']);
   }
 
   Future<PhenoComponentSpec> loadComponentSpec(String category, String name) async {

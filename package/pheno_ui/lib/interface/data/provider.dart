@@ -1,5 +1,7 @@
 
 import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pheno_ui/interface/data/screen_spec.dart';
 
 import 'component_spec.dart';
@@ -57,4 +59,7 @@ abstract class PhenoDataProvider {
   Future<List<PhenoDataEntry>> doGetScreenList();
   Future<PhenoScreenSpec> doLoadScreenLayout(int id);
   Future<PhenoComponentSpec> doLoadComponentSpec(String name);
+
+  Image loadPng(String path, { required BoxFit fit });
+  SvgPicture loadSvg(String path, { required BoxFit fit });
 }

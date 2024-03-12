@@ -1,3 +1,5 @@
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pheno_ui/interface/data/provider.dart';
 import 'package:pheno_ui/interface/data/screen_spec.dart';
 
@@ -43,5 +45,15 @@ class StrapiDataProvider extends PhenoDataProvider {
   @override
   Future<PhenoComponentSpec> doLoadComponentSpec(String name) async {
     return await Strapi().loadComponentSpec(category, name);
+  }
+
+  @override
+  Image loadPng(String path, { required BoxFit fit }) {
+    return Image.network(path, fit: fit);
+  }
+
+  @override
+  SvgPicture loadSvg(String path, { required BoxFit fit }) {
+    return SvgPicture.network(path, fit: fit);
   }
 }

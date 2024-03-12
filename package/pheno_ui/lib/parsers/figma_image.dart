@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mirai/mirai.dart';
-import 'package:pheno_ui/parsers/figma_component.dart';
 import 'package:pheno_ui/widgets/figma_node.dart';
+import '../interface/screens.dart';
 import './tools/figma_dimensions.dart';
 
 import '../models/fimga_image_model.dart';
@@ -22,14 +22,14 @@ class FigmaImageParser extends MiraiParser<FigmaImageModel> {
     if (model.method == FigmaImageDataMethod.embed) {
       return Image.memory(base64Decode(model.data), fit: model.fit);
     }
-    return Image.network(model.data, fit: model.fit);
+    return FigmaScreens().provider!.loadPng(model.data, fit: model.fit);
   }
 
   _loadSVG(FigmaImageModel model) {
     if (model.method == FigmaImageDataMethod.embed) {
       return SvgPicture.string(model.data, fit: model.fit);
     }
-    return SvgPicture.network(model.data, fit: model.fit);
+    return FigmaScreens().provider!.loadSvg(model.data, fit: model.fit);
   }
 
   @override

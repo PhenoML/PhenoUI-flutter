@@ -63,6 +63,8 @@ class FigmaComponent<T extends FigmaComponentState> extends StatefulWidget {
 }
 
 class FigmaComponentState extends State<FigmaComponent> {
+  late final FigmaUserData userData;
+
   Map<String, dynamic>? spec;
   Map<String, dynamic>? variants;
   Map<String, dynamic> variantValues = {};
@@ -70,6 +72,7 @@ class FigmaComponentState extends State<FigmaComponent> {
 
   @override
   void initState() {
+    userData = widget.model.userData;
     loadContent();
     super.initState();
   }
@@ -86,7 +89,7 @@ class FigmaComponentState extends State<FigmaComponent> {
     }
 
     return FigmaComponentData(
-      userData: widget.model.userData,
+      userData: userData,
       child: Builder(
         builder: (context) {
           return Mirai.fromJson(spec!, context) ?? Container(
@@ -143,7 +146,7 @@ class FigmaComponentState extends State<FigmaComponent> {
     var component = await FigmaScreens().provider!.loadComponentSpec(widget.model.widgetType);
     variants = component.variants;
 
-    widget.model.userData.map!.forEach((key, value) {
+    userData.map!.forEach((key, value) {
       var components = key.split(RegExp('#(?!.*#)'));
       if (components.length == 2 && components.last == 'variant') {
         variantValues[components.first] = value;

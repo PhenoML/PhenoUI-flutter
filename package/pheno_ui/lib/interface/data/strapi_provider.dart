@@ -48,7 +48,7 @@ class StrapiDataProvider extends PhenoDataProvider {
   }
 
   @override
-  Image loadPng(String path, { required BoxFit fit }) {
+  Image loadImage(String path, { required BoxFit fit }) {
     return Image.network(path, fit: fit);
   }
 

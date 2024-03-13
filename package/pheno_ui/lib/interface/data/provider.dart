@@ -60,6 +60,6 @@ abstract class PhenoDataProvider {
   Future<PhenoScreenSpec> doLoadScreenLayout(int id);
   Future<PhenoComponentSpec> doLoadComponentSpec(String name);
 
-  Image loadPng(String path, { required BoxFit fit });
+  Image loadImage(String path, { required BoxFit fit });
   SvgPicture loadSvg(String path, { required BoxFit fit });
 }

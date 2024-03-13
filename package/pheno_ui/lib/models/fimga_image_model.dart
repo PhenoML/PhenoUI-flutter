@@ -6,6 +6,7 @@ import 'figma_node_model.dart';
 
 enum FigmaImageFormat with FigmaEnum {
   png,
+  jpeg,
   svg,
   unknown,
   ;

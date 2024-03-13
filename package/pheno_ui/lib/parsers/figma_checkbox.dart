@@ -35,10 +35,10 @@ class FigmaCheckboxState extends FigmaComponentState {
   bool get checked => _state == 'checked';
   set checked(bool value) {
     _state = value ? 'checked' : 'unchecked';
-    setVariant(widget.model.userData.get('state'), widget.model.userData.get(_state));
+    setVariant(userData.get('state'), userData.get(_state));
     var form = FigmaFormInterface.maybeOf(context);
     if (form != null) {
-      form.inputValueChanged(widget.model.userData.get('id'), checked);
+      form.inputValueChanged(userData.get('id'), checked);
     }
   }
 
@@ -47,19 +47,19 @@ class FigmaCheckboxState extends FigmaComponentState {
     super.initState();
     var form = FigmaFormInterface.maybeOf(context, listen: false);
     if (form != null) {
-      focusNode = form.registerInput(widget.model.userData.get('id'), checked);
+      focusNode = form.registerInput(userData.get('id'), checked);
     }
   }
 
   @override
   void initVariant() {
-    setVariant(widget.model.userData.get('state'), widget.model.userData.get(_state));
+    setVariant(userData.get('state'), userData.get(_state));
   }
 
   @override
   Widget build(BuildContext context) {
     var form = FigmaFormInterface.maybeOf(context, listen: false);
-    if (form != null && !form.shouldDisplayInput(widget.model.userData.get('id'))) {
+    if (form != null && !form.shouldDisplayInput(userData.get('id'))) {
       return const SizedBox();
     }
     return super.build(context);

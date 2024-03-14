@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:mirai/mirai.dart';
 import 'package:pheno_ui/interface/screens.dart';
+import 'package:pheno_ui/models/figma_layout_model.dart';
 import 'package:pheno_ui/parsers/tools/figma_dimensions.dart';
 import 'package:pheno_ui/parsers/tools/figma_user_data.dart';
 import 'package:pheno_ui/widgets/figma_node.dart';
@@ -52,6 +53,28 @@ class FigmaComponentData extends InheritedWidget {
 }
 
 class FigmaComponent<T extends FigmaComponentState> extends StatefulWidget {
+  static Future<FigmaComponent> instance<T extends FigmaComponentState>({
+    required String component,
+    T Function()? stateNew,
+    Key? key,
+    Map<String, dynamic>? arguments,
+  }) async  {
+    var spec = await FigmaScreens().provider!.loadComponentSpec(component);
+    var userData = FigmaUserData(spec.arguments);
+    if (arguments != null) {
+      for (var entry in arguments.entries) {
+        userData.set(entry.key, entry.value);
+      }
+    }
+    var model = FigmaComponentModel(
+      type: 'figma-component-instance',
+      widgetType: component,
+      userData: userData,
+      parentLayout: FigmaLayoutParentValuesModel(),
+    );
+    return FigmaComponent(stateNew ?? FigmaComponentState.new, model, key: key);
+}
+
   final T Function() stateNew;
   final FigmaComponentModel model;
 

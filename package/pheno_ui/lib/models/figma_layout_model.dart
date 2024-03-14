@@ -182,6 +182,10 @@ enum FigmaLayoutPositioning with FigmaEnum {
 class FigmaLayoutParentValuesModel {
   final FigmaLayoutMode mode;
 
+  FigmaLayoutParentValuesModel({
+    this.mode = FigmaLayoutMode.none,
+  });
+
   FigmaLayoutParentValuesModel._fromJson(Map<String, dynamic> json):
       mode = FigmaLayoutMode.values.byNameDefault(json['layoutMode'], FigmaLayoutMode.none);
 

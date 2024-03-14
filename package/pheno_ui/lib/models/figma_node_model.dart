@@ -17,6 +17,14 @@ class FigmaNodeModel {
   final Map<String, dynamic>? componentRefs;
   final FigmaUserData userData;
 
+  FigmaNodeModel({
+    required this.type,
+    required this.userData,
+    this.info,
+    this.dimensions,
+    this.componentRefs,
+  });
+
   FigmaNodeModel.fromJson(Map<String, dynamic> json):
     type = json['type'],
     info = json.containsKey('__info') ? FigmaNodeInfoModel.fromJson(json['__info']) : null,

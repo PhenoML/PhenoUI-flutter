@@ -7,10 +7,11 @@ import '../parsers/figma_component.dart';
 class FigmaNode extends StatelessWidget {
   final FigmaNodeInfoModel? info;
   final FigmaDimensionsSelfModel? dimensions;
+  final double opacity;
   final bool visible;
   final Widget? child;
 
-  const FigmaNode({this.info, this.dimensions, this.visible = true, this.child, super.key});
+  const FigmaNode({this.info, this.dimensions, this.opacity = 1.0, this.visible = true, this.child, super.key});
 
   factory FigmaNode.withContext(BuildContext context, { required FigmaNodeModel model, Widget? child }) {
     bool visible = true;
@@ -26,6 +27,7 @@ class FigmaNode extends StatelessWidget {
       info: model.info,
       dimensions: model.dimensions!.self,
       visible: visible,
+      opacity: model.style?.opacity ?? 1.0,
       child: child,
     );
   }
@@ -33,6 +35,12 @@ class FigmaNode extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (visible && child != null) {
+      if (opacity != 1.0) {
+        return Opacity(
+          opacity: opacity,
+          child: child!,
+        );
+      }
       return child!;
     }
     return const SizedBox();

@@ -58,15 +58,22 @@ class RenderLayoutState extends State<RenderLayout> {
 
     return Material(
       child: LayoutBuilder(
-        builder: (_, constraits) {
+        builder: (_, constraints) {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               topBar(context, widget.initialRoute, () async {
+                setState(() {
+                  _initialized = false;
+                });
                 await FigmaScreens().refreshScreens();
+                setState(() {
+                  _initialized = true;
+                });
+                await Future.delayed(const Duration(milliseconds: 100)); // ugh
                 NavigatorState state = _key.currentState! as NavigatorState;
                 state.pushNamedAndRemoveUntil(widget.initialRoute, (route) => false);
-              }, constraits),
+              }, constraints),
               Expanded(
                   child: ClipRect(
                     child: navigator!,

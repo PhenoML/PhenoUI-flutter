@@ -25,11 +25,20 @@ class FigmaScreens {
       if (_provider == provider || (_provider!.sourceId == provider.sourceId && _provider!.category == provider.category)) {
         return;
       }
-      this.screens.clear();
-      clearCache();
     }
     _provider = provider;
+    await refreshScreens();
+  }
 
+  void registerScreenBuilder(String uid, WidgetBuilder builder) {
+    screenBuilders[uid] = builder;
+  }
+
+  Future<void> refreshScreens() async {
+    clearCache();
+    if (_provider == null) {
+      return;
+    }
     var screens = await _provider!.getScreenList(true);
     for (var screen in screens) {
       print('id:${screen.id} uid:${screen.uid}');
@@ -37,11 +46,8 @@ class FigmaScreens {
     }
   }
 
-  void registerScreenBuilder(String uid, WidgetBuilder builder) {
-    screenBuilders[uid] = builder;
-  }
-
   void clearCache() {
+    screens.clear();
     _provider?.clearCache();
   }
 

@@ -62,8 +62,8 @@ class RenderLayoutState extends State<RenderLayout> {
           return Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              topBar(context, widget.initialRoute, () {
-                FigmaScreens().clearCache();
+              topBar(context, widget.initialRoute, () async {
+                await FigmaScreens().refreshScreens();
                 NavigatorState state = _key.currentState! as NavigatorState;
                 state.pushNamedAndRemoveUntil(widget.initialRoute, (route) => false);
               }, constraits),

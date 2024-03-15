@@ -53,7 +53,13 @@ class RenderLayoutState extends State<FigmaScreenRenderer> {
       return const SizedBox();
     }
 
+    var arguments = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    bool isPopup = arguments != null && arguments['type'] is String && arguments['type'] == 'popup';
+
+    // future Dario: once we replace material popups with custom ones, we can
+    // remove the isPopup check and the Material widget
     return Material(
+      color: isPopup ? Colors.transparent : null,
       child: Mirai.fromJson(spec!.spec, context) ?? const SizedBox(),
     );
   }

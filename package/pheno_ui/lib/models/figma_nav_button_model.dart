@@ -4,6 +4,7 @@ import 'figma_simple_child_model.dart';
 enum FigmaNavButtonAction with FigmaEnum {
   pop,
   push,
+  popup,
   replace,
   ;
   @override

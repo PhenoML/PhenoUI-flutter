@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:mirai/mirai.dart';
 import 'package:pheno_ui/models/figma_simple_child_model.dart';
 import 'package:pheno_ui/parsers/tools/figma_user_data.dart';
@@ -92,7 +91,7 @@ class _DefaultFormHandler extends FigmaFormHandler {
     }
 
     if (buttonData != null && buttonData.containsKey('route')){
-      Navigator.of(context).pushReplacementNamed(buttonData['route']!, arguments: 'screen');
+      Navigator.of(context).pushReplacementNamed(buttonData['route']!, arguments: { 'type': 'screen' });
     }
   }
 }

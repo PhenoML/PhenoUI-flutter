@@ -3,7 +3,6 @@ import 'package:mirai/mirai.dart';
 import 'package:pheno_ui/models/figma_simple_child_model.dart';
 import 'package:pheno_ui/parsers/figma_form.dart';
 import '../models/figma_frame_model.dart';
-import '../models/figma_nav_button_model.dart';
 
 class FigmaSubmitButtonParser extends MiraiParser<FigmaSimpleChildModel> {
   const FigmaSubmitButtonParser();

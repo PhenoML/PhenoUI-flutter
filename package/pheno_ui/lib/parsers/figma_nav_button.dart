@@ -14,10 +14,12 @@ class FigmaNavButtonParser extends MiraiParser<FigmaNavButtonModel> {
 
   @override
   Widget parse(BuildContext context, FigmaNavButtonModel model) {
+    Map<String, dynamic>? data = model.userData.maybeGet('data');
     var onTap = switch (model.action) {
-      FigmaNavButtonAction.pop => () => Navigator.of(context).pop(model.target),
-      FigmaNavButtonAction.push => () => Navigator.of(context).pushNamed(model.target!, arguments: 'screen'),
-      FigmaNavButtonAction.replace => () => Navigator.of(context).pushReplacementNamed(model.target!, arguments: 'screen'),
+      FigmaNavButtonAction.pop => () => Navigator.of(context).pop(data ?? model.target),
+      FigmaNavButtonAction.push => () => Navigator.of(context).pushNamed(model.target!, arguments: { 'type': 'screen', 'data': data }),
+      FigmaNavButtonAction.popup => () => Navigator.of(context).pushNamed(model.target!, arguments: { 'type': 'popup', 'data': data }),
+      FigmaNavButtonAction.replace => () => Navigator.of(context).pushReplacementNamed(model.target!, arguments: { 'type': 'screen', 'data': data }),
     };
 
     var frameModel = FigmaFrameModel.fromJson(model.child, (context, _, builder) => GestureDetector(onTap: onTap, child: builder(context)));

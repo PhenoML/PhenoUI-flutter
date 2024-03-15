@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:pheno_ui/interface/data/entry.dart';
 import 'package:pheno_ui/interface/data/provider.dart';
 import 'package:pheno_ui/interface/data/screen_spec.dart';
@@ -76,16 +76,23 @@ class FigmaScreens {
     var uid = settings.name!.split('/').last;
     var builder = getScreenBuilder(uid);
     if (builder == null) {
-      print('Unknown screen: $uid');
-      return MaterialPageRoute(
-          settings: const RouteSettings(name: 'unknown_screen'),
-          builder: (_) => Container(color: Colors.pink)
+      return PageRouteBuilder(
+          settings: RouteSettings(name: 'unknown_screen_$uid'),
+          pageBuilder: (_, __, ___) => Container(
+            color: const Color(0xFFFF00FF),
+            child: Center(
+              child: Text('Unknown screen: $uid'),
+            ),
+          ),
       );
     }
 
-    return MaterialPageRoute(
+    Map<String, dynamic>? args = settings.arguments as Map<String, dynamic>?;
+    bool isPopup = args != null && args['type'] is String && args['type'] == 'popup';
+    return PageRouteBuilder(
       settings: RouteSettings(name: uid, arguments: settings.arguments),
-      builder: builder
+      pageBuilder: (context, _, __) => builder(context),
+      opaque: !isPopup,
     );
   }
 }

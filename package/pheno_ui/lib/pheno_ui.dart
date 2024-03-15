@@ -5,6 +5,7 @@ import 'package:pheno_ui/parsers/figma_checkbox.dart';
 import 'package:pheno_ui/parsers/figma_conditional_checkbox.dart';
 import 'package:pheno_ui/parsers/figma_form.dart';
 import 'package:pheno_ui/parsers/figma_keep_aspect_ratio.dart';
+import 'package:pheno_ui/parsers/figma_props_from_route.dart';
 import 'package:pheno_ui/parsers/figma_safe_area.dart';
 import 'package:pheno_ui/parsers/figma_component.dart';
 import 'package:pheno_ui/parsers/figma_frame.dart';
@@ -40,6 +41,7 @@ Future<void> initializePhenoUi({List<MiraiParser> parsers = const []}) async {
     FigmaKeepAspectRatioParser(),
     FigmaTileChildParser(),
     FigmaTextFromRouteParser(),
+    FigmaPropsFromRouteParser(),
   ];
 
   // merge the parsers giving priority to the ones passed as argument

@@ -25,20 +25,24 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
   @override
   String get type => 'figma-text';
 
-  Widget buildWidgetWithScale(BuildContext context, FigmaTextModel model, double scaleX, double scaleY) {
-    double scale = min(scaleX, scaleY);
-
-    var modelSegments = model.segments;
-
-    if (model.componentRefs != null && model.componentRefs!.containsKey('characters')) {
+  List<FigmaTextSegmentModel> getTextSegments(BuildContext context, FigmaTextModel model) {
+    if (model.componentRefs != null &&
+        model.componentRefs!.containsKey('characters')) {
       String key = model.componentRefs!['characters']!;
       var data = FigmaComponentData.of(context);
       var characters = data.userData.maybeGet(key);
       if (characters is String) {
-        var segment = modelSegments.first;
-        modelSegments = [FigmaTextSegmentModel.copy(segment, characters: characters)];
+        var segment = model.segments.first;
+        return [FigmaTextSegmentModel.copy(segment, characters: characters)];
       }
     }
+    return model.segments;
+  }
+
+  Widget buildWidgetWithScale(BuildContext context, FigmaTextModel model, double scaleX, double scaleY) {
+    double scale = min(scaleX, scaleY);
+
+    var modelSegments = getTextSegments(context, model);
 
     List<TextSpan> segments = modelSegments.map((m) {
       var text = switch (m.textCase) {
@@ -57,7 +61,7 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
       var height = switch (m.lineHeight.unit) {
         FigmaTextUnit.pixels => (m.lineHeight.value as double) / (m.size * scale),
         FigmaTextUnit.percent => (m.lineHeight.value as double) * 0.01,
-        FigmaTextUnit.auto => 1.0, // good enough, sorry future Dario :/
+        FigmaTextUnit.auto => null, // good enough, sorry future Dario :/
       };
 
       var spacing = switch (m.letterSpacing.unit) {

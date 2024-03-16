@@ -92,6 +92,23 @@ class FigmaScreens {
     return PageRouteBuilder(
       settings: RouteSettings(name: uid, arguments: settings.arguments),
       pageBuilder: (context, _, __) => builder(context),
+      transitionsBuilder: (context, animation, secondaryAnimation, child) {
+        if (isPopup) {
+          const begin = Offset(0.0, 1.0);
+          const end = Offset.zero;
+          var curve = animation.status == AnimationStatus.reverse ? Curves.easeInToLinear : Curves.elasticOut;
+          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+          final offsetAnimation = animation.drive(tween);
+
+          return SlideTransition(
+            position: offsetAnimation,
+            child: child,
+          );
+        }
+        return child;
+      },
+      transitionDuration: const Duration(milliseconds: 800),
+      reverseTransitionDuration: const Duration(milliseconds: 300),
       opaque: !isPopup,
     );
   }

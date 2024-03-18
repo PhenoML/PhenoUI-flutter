@@ -337,7 +337,7 @@ packages:
       path: "package/pheno_ui"
       relative: true
     source: path
-    version: "0.0.1"
+    version: "0.0.15"
   platform:
     dependency: transitive
     description:

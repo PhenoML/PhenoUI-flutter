@@ -14,7 +14,7 @@ class TransitionPlayer extends StatelessWidget {
   Widget build(BuildContext context) {
     final Map<String, dynamic> value = animation.value;
     Size screenSize = MediaQuery.of(context).size;
-    Offset? anchor = value['anchor'];
+    Offset anchor = value['anchor'] ?? const Offset(0.5, 0.5);
 
     final Matrix4 translationM4 = Matrix4.identity();
     final Offset? offset = value['offset'];
@@ -25,7 +25,7 @@ class TransitionPlayer extends StatelessWidget {
     final Matrix4 rotationM4 = Matrix4.identity();
     final double? rotation = value['rotation'];
     if (rotation != null) {
-      final Offset rotationAnchor = value['rotationAnchor'] ?? anchor ?? const Offset(0.5, 0.5);
+      final Offset rotationAnchor = value['rotationAnchor'] ?? anchor;
       rotationM4.translate(screenSize.width * rotationAnchor.dx, screenSize.height * rotationAnchor.dy);
       rotationM4.rotateZ(rotation);
       rotationM4.translate(-screenSize.width * rotationAnchor.dx, -screenSize.height * rotationAnchor.dy);
@@ -34,7 +34,7 @@ class TransitionPlayer extends StatelessWidget {
     final Matrix4 scaleM4 = Matrix4.identity();
     final double? scale = value['scale'];
     if (scale != null) {
-      final Offset scaleAnchor = value['scaleAnchor'] ?? anchor ?? const Offset(0.5, 0.5);
+      final Offset scaleAnchor = value['scaleAnchor'] ?? anchor;
       scaleM4.translate(screenSize.width * scaleAnchor.dx, screenSize.height * scaleAnchor.dy);
       scaleM4.scale(scale);
       scaleM4.translate(-screenSize.width * scaleAnchor.dx, -screenSize.height * scaleAnchor.dy);

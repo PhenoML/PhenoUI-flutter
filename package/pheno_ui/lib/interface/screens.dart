@@ -1,8 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:pheno_ui/animation/multi_tween.dart';
-import 'package:pheno_ui/animation/step_tween_double.dart';
-import 'package:pheno_ui/animation/transition_player.dart';
-import 'package:pheno_ui/animation/tween_segment.dart';
+import 'package:pheno_ui/animation/transition_animation.dart';
 import 'package:pheno_ui/interface/data/entry.dart';
 import 'package:pheno_ui/interface/data/provider.dart';
 import 'package:pheno_ui/interface/data/screen_spec.dart';
@@ -14,6 +11,10 @@ class FigmaScreens {
   static final FigmaScreens _sharedInstance = FigmaScreens._internal();
   final Map<String, PhenoDataEntry> screens = {};
   final Map<String, WidgetBuilder> screenBuilders = {};
+  final Map<String, TransitionAnimation> transitions = {
+    'default_screen': TransitionAnimationLibrary.slideInFromRight.animation,
+    'default_popup': TransitionAnimationLibrary.slideInFromBottom.animation,
+  };
 
   PhenoDataProvider? _provider;
   PhenoDataProvider? get provider => _provider;
@@ -92,83 +93,14 @@ class FigmaScreens {
     }
 
     Map<String, dynamic>? args = settings.arguments as Map<String, dynamic>?;
-    bool isPopup = true; //args != null && args['type'] is String && args['type'] == 'popup';
+    bool isPopup = args != null && args['type'] is String && args['type'] == 'popup';
+    final transition = transitions[isPopup ? 'default_popup' : 'default_screen']!;
     return PageRouteBuilder(
       settings: RouteSettings(name: uid, arguments: settings.arguments),
       pageBuilder: (context, _, __) => builder(context),
-      transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        Offset offsetStart, offsetEnd;
-        double scaleStart, scaleEnd;
-        double offsetTimeStart, offsetTimeEnd;
-        double scaleTimeStart, scaleTimeEnd;
-
-        if (secondaryAnimation.status == AnimationStatus.forward || secondaryAnimation.status == AnimationStatus.reverse) {
-          offsetStart = Offset.zero;
-          offsetEnd = const Offset(-1.0, 0.0);
-          scaleStart = 1.0;
-          scaleEnd = 0.8;
-          offsetTimeStart = 0.05;
-          offsetTimeEnd = 1.0;
-          scaleTimeStart = 0.0;
-          scaleTimeEnd = 0.5;
-        } else {
-          offsetStart = const Offset(1.0, 0.0);
-          offsetEnd = Offset.zero;
-          scaleStart = 0.8;
-          scaleEnd = 1.0;
-          offsetTimeStart = 0.0;
-          offsetTimeEnd = 0.95;
-          scaleTimeStart = 0.5;
-          scaleTimeEnd = 1.0;
-        }
-
-        // if (isPopup) {
-          var multi = MultiTween();
-          multi['offset'] = TweenSegment(
-              start: offsetTimeStart,
-              end: offsetTimeEnd,
-              animatable: Tween(
-                  begin: offsetStart,
-                  end: offsetEnd
-              ).chain(CurveTween(
-                  curve: Curves.easeOut
-              ))
-          );
-
-          multi['scale'] = TweenSegment(
-              start: scaleTimeStart,
-              end: scaleTimeEnd,
-              animatable: Tween(
-                  begin: scaleStart,
-                  end: scaleEnd
-              ).chain(CurveTween(
-                  curve: Curves.easeInOut
-              ))
-          );
-
-          // print('multi: ${multiAnimation.value}');
-          // print(animation.status);
-          // print(secondaryAnimation.status);
-
-          if (secondaryAnimation.status == AnimationStatus.forward || secondaryAnimation.status == AnimationStatus.reverse) {
-            final multiAnimation = secondaryAnimation.drive(MultiTweenLibrary.wiggleOutLeft);
-            return TransitionPlayer(animation: multiAnimation, child: child);
-          }
-          final multiAnimation = animation.drive(MultiTweenLibrary.wiggleInLeft);
-          // final multiAnimation = animation.drive(MultiTween.from({
-          //   'offset': Tween(begin: const Offset(1.0, 0.0), end: Offset.zero).chain(StepTweenDouble(begin: 0, end: 1)),
-          // }));
-          return TransitionPlayer(animation: multiAnimation, child: child);
-          // return SlideTransition(
-          //   position: offsetAnimation,
-          //   child: child,
-          // );
-
-        // }
-        return child;
-      },
-      transitionDuration: const Duration(milliseconds: 600),
-      reverseTransitionDuration: const Duration(milliseconds: 400),
+      transitionsBuilder: transition.transitionBuilder,
+      transitionDuration: transition.duration,
+      reverseTransitionDuration: transition.reverseDuration,
       opaque: !isPopup,
     );
   }

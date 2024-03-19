@@ -4,7 +4,7 @@ class TweenSegment<T> extends Animatable<T> {
   final double start;
   final double end;
   final Animatable<T> animatable;
-  TweenSegment({
+  const TweenSegment({
     required this.start,
     required this.end,
     required this.animatable,

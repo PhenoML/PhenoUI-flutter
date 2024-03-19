@@ -1,16 +1,14 @@
 import 'dart:math' as math;
 
 import 'package:flutter/animation.dart';
+import 'package:pheno_ui/animation/immutable_tween.dart';
 import 'package:pheno_ui/animation/tween_segment.dart';
 
 class MultiTween extends Animatable<Map<String, dynamic>> {
-  final Map<String, Animatable> _map = <String, Animatable>{};
+  final Map<String, Animatable> _map;
 
-  MultiTween();
-
-  factory MultiTween.from(Map<String, Animatable> values) {
-    return MultiTween().._map.addAll(values);
-  }
+  MultiTween(): _map = {};
+  const MultiTween.from(this._map);
 
   factory MultiTween.combine(List<MultiTween> others) {
     final combined = MultiTween();
@@ -43,64 +41,152 @@ class MultiTween extends Animatable<Map<String, dynamic>> {
 }
 
 extension MultiTweenLibrary on MultiTween {
-  static final MultiTween wiggleInLeft = MultiTween.from(
+  static const MultiTween slideInUp = MultiTween.from(
+    {
+      'offset': ImmutableTween(begin: Offset(0.0, 1.0), end: Offset.zero, curve: Curves.easeOut),
+    }
+  );
+
+  static const MultiTween slideOutUp = MultiTween.from(
+    {
+      'offset': ImmutableTween(begin: Offset.zero, end: Offset(0.0, -1.0), curve: Curves.easeOut),
+    }
+  );
+
+  static const MultiTween slideInDown = MultiTween.from(
+    {
+      'offset': ImmutableTween(begin: Offset(0.0, -1.0), end: Offset.zero, curve: Curves.easeOut),
+    }
+  );
+
+  static const MultiTween slideOutDown = MultiTween.from(
+    {
+      'offset': ImmutableTween(begin: Offset.zero, end: Offset(0.0, 1.0), curve: Curves.easeOut),
+    }
+  );
+
+  static const MultiTween slideInRight = MultiTween.from(
+    {
+      'offset': ImmutableTween(begin: Offset(-1.0, 0.0), end: Offset.zero, curve: Curves.easeOut),
+    }
+  );
+
+  static const MultiTween slideOutRight = MultiTween.from(
+    {
+      'offset': ImmutableTween(begin: Offset.zero, end: Offset(1.0, 0.0), curve: Curves.easeOut),
+    }
+  );
+
+  static const  MultiTween slideInLeft = MultiTween.from(
+    {
+      'offset': ImmutableTween(begin: Offset(1.0, 0.0), end: Offset.zero, curve: Curves.easeOut),
+    }
+  );
+
+  static const MultiTween slideOutLeft = MultiTween.from(
+    {
+      'offset': ImmutableTween(begin: Offset.zero, end: Offset(-1.0, 0.0), curve: Curves.easeOut),
+    }
+  );
+
+  static const MultiTween bounceInUp = MultiTween.from(
+    {
+      'offset': ImmutableTween(begin: Offset(0.0, 1.0), end: Offset.zero, curve: Curves.bounceOut),
+    }
+  );
+
+  static const MultiTween elasticInUp = MultiTween.from(
+    {
+      'offset': ImmutableTween(begin: Offset(0.0, 1.0), end: Offset.zero, curve: ElasticOutCurve(0.65)),
+    }
+  );
+
+  static const MultiTween carouselInLeft = MultiTween.from(
+      {
+        'offset': TweenSegment(
+          start: 0.0,
+          end: 0.95,
+          animatable: ImmutableTween(begin: Offset(1.0, 0.0), end: Offset.zero, curve: Curves.easeOut),
+        ),
+
+        'scaleAnchor': ImmutableConstantTween(Offset(0.5, 0.5)),
+        'scale': TweenSegment(
+          start: 0.5,
+          end: 1.0,
+          animatable: ImmutableTween(begin: 0.9, end: 1.0, curve: Curves.easeOut),
+        ),
+      }
+  );
+
+  static const MultiTween carouselOutLeft = MultiTween.from(
+      {
+        'offset': TweenSegment(
+          start: 0.05,
+          end: 1.0,
+          animatable: ImmutableTween(begin: Offset.zero, end: Offset(-1.0, 0.0), curve: Curves.easeOut),
+        ),
+
+        'scaleAnchor': ImmutableConstantTween(Offset(0.5, 0.5)),
+        'scale': TweenSegment(
+          start: 0.0,
+          end: 0.5,
+          animatable: ImmutableTween(begin: 1.0, end: 0.9, curve: Curves.easeOut),
+        ),
+      }
+  );
+
+  static const MultiTween wiggleInLeft = MultiTween.from(
     {
       'offset': TweenSegment(
         start: 0.0,
         end: 0.35,
-        animatable:Tween(begin: const Offset(1.0, 0.0), end: Offset.zero).chain(CurveTween(curve: Curves.easeOut)),
+        animatable: ImmutableTween(begin: Offset(1.0, 0.0), end: Offset.zero, curve: Curves.easeOut),
       ),
 
-      'rotationAnchor': ConstantTween(const Offset(0.5, 1.0)),
-      'rotation': TweenSegment(
-        start: 0.25,
-        end: 1.0,
-        animatable: Tween(begin: math.pi * 0.05, end: 0.0).chain(CurveTween(curve: Curves.elasticOut)),
-      ),
-
-      'scaleAnchor': ConstantTween(const Offset(0.5, 0.5)),
+      'scaleAnchor': ImmutableConstantTween(Offset(0.5, 0.5)),
       'scale': TweenSegment(
         start: 0.5,
         end: 1.0,
-        animatable: Tween(begin: 0.9, end: 1.0).chain(CurveTween(curve: Curves.easeOut)),
+        animatable: ImmutableTween(begin: 0.9, end: 1.0, curve: Curves.easeOut),
+      ),
+
+      'rotationAnchor': ImmutableConstantTween(Offset(0.5, 1.0)),
+      'rotation': TweenSegment(
+        start: 0.25,
+        end: 1.0,
+        animatable: ImmutableTween(begin: math.pi * 0.05, end: 0.0, curve: Curves.elasticOut),
       ),
     }
   );
 
-  static final MultiTween wiggleOutLeft = MultiTween.from(
+  static const MultiTween wiggleOutLeft = MultiTween.from(
       {
         'offset': TweenSegment(
           start: 0.2,
           end: 0.5,
-          animatable:Tween(begin: Offset.zero, end: const Offset(-1.0, 0.0)).chain(CurveTween(curve: Curves.easeOut)),
+          animatable: ImmutableTween(begin: Offset.zero, end: Offset(-1.0, 0.0), curve: Curves.easeOut),
         ),
 
-        'rotation': TweenSequence(
-          [
-            TweenSequenceItem(tween: ConstantTween(0.0), weight: 0.05),
-            TweenSequenceItem(
-              tween: Tween(begin: 0.0, end: math.pi * 0.05).chain(CurveTween(curve: Curves.easeOut)),
-              weight: 0.25,
-            ),
-            TweenSequenceItem(
-              tween: Tween(begin: math.pi * 0.05, end: 0.0).chain(CurveTween(curve: Curves.elasticOut)),
-              weight: 0.70,
-            ),
-          ],
-        ),
-
-        'rotationAnchor': ConstantTween(const Offset(0.5, 1.0)),
-        // 'rotation': TweenSegment(
-        //   start: 0.25,
-        //   end: 1.0,
-        //   animatable: Tween(begin: 0.0, end: math.pi * 0.05).chain(CurveTween(curve: Curves.elasticOut)),
-        // ),
-
-        'scaleAnchor': ConstantTween(const Offset(0.5, 0.5)),
+        'scaleAnchor': ImmutableConstantTween(Offset(0.5, 0.5)),
         'scale': TweenSegment(
           start: 0.0,
           end: 0.3,
-          animatable: Tween(begin: 1.0, end: 0.9).chain(CurveTween(curve: Curves.easeOut)),
+          animatable: ImmutableTween(begin: 1.0, end: 0.9, curve: Curves.easeOut),
+        ),
+
+        'rotationAnchor': ImmutableConstantTween(Offset(0.5, 1.0)),
+        'rotation': ImmutableTweenSequence(
+          [
+            TweenSequenceItem(tween: ImmutableConstantTween(0.0), weight: 0.05),
+            TweenSequenceItem(
+              tween: ImmutableTween(begin: 0.0, end: math.pi * 0.05, curve: Curves.easeOut),
+              weight: 0.25,
+            ),
+            TweenSequenceItem(
+              tween: ImmutableTween(begin: math.pi * 0.05, end: 0.0, curve: Curves.elasticOut),
+              weight: 0.70,
+            ),
+          ],
         ),
       }
   );

@@ -19,7 +19,7 @@ class FigmaNavButtonParser extends MiraiParser<FigmaNavButtonModel> {
       FigmaNavButtonAction.pop => () => Navigator.of(context).pop(data ?? model.target),
       FigmaNavButtonAction.push => () => Navigator.of(context).pushNamed(model.target!, arguments: { 'type': 'screen', 'data': data }),
       FigmaNavButtonAction.popup => () => Navigator.of(context).pushNamed(model.target!, arguments: { 'type': 'popup', 'data': data }),
-      FigmaNavButtonAction.replace => () => Navigator.of(context).pushReplacementNamed(model.target!, arguments: { 'type': 'screen', 'data': data }),
+      FigmaNavButtonAction.unknown => throw Exception('Unknown action for FigmaNavButtonModel'),
     };
 
     var frameModel = FigmaFrameModel.fromJson(model.child, (context, _, builder) => GestureDetector(onTap: onTap, child: builder(context)));

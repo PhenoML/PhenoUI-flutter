@@ -4,8 +4,8 @@ import 'figma_simple_child_model.dart';
 enum FigmaNavButtonAction with FigmaEnum {
   pop,
   push,
-  popup,
   replace,
+  unknown,
   ;
   @override
   get figmaName => _figmaName;
@@ -19,7 +19,7 @@ class FigmaNavButtonModel extends FigmaSimpleChildModel {
 
   FigmaNavButtonModel.fromJson(Map<String, dynamic> json)
       :
-        action = FigmaNavButtonAction.values.byNameDefault(json['__userData']['action'], FigmaNavButtonAction.pop),
+        action = FigmaNavButtonAction.values.byNameDefault(json['__userData']['action'], FigmaNavButtonAction.unknown),
         target = json['__userData']['target'],
         super.fromJson(json);
 }

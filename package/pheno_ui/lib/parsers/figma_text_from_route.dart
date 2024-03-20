@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import 'package:pheno_ui/interface/route_arguments.dart';
 
 import '../models/figma_text_model.dart';
 import 'figma_text.dart';
@@ -14,9 +15,9 @@ class FigmaTextFromRouteParser extends FigmaTextParser {
     String? key = model.userData.maybeGet('key');
     if (key is String) {
       var arguments = ModalRoute.of(context)?.settings.arguments;
-      if (arguments is Map<String, dynamic>) {
-        var data = arguments['data'];
-        if (data is Map<String, dynamic>) {
+      if (arguments is RouteArguments) {
+        var data = arguments.data;
+        if (data != null) {
           var text = data[key];
           if (text is String) {
             var segment = model.segments.first;

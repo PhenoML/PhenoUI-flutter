@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:mirai/mirai.dart';
+import 'package:pheno_ui/interface/route_arguments.dart';
 import 'package:pheno_ui/models/figma_simple_child_model.dart';
 
 class FigmaPropsFromRouteParser extends MiraiParser<FigmaSimpleChildModel> {
@@ -23,11 +24,11 @@ class FigmaPropsFromRouteParser extends MiraiParser<FigmaSimpleChildModel> {
     Map<String, dynamic>? props = model.userData.maybeGet('props');
     if (props is Map<String, dynamic>) {
       var arguments = ModalRoute.of(context)?.settings.arguments;
-      if (arguments is Map<String, dynamic>) {
-        var data = arguments['data'];
-        if (data is Map<String, dynamic>) {
+      if (arguments is RouteArguments) {
+        var data = arguments.data;
+        if (data != null) {
           for (var key in props.keys) {
-            var value = data[key];
+            var value = data[props[key]];
             if (value != null) {
               childModel.userData.set(key, value);
             }

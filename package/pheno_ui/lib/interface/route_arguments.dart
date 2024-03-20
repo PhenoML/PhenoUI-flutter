@@ -8,11 +8,11 @@ enum RouteType {
 
 class RouteArguments {
   final RouteType type;
-  final TransitionAnimation? animation;
+  final TransitionAnimation transition;
   final Map<String, dynamic>? data;
   RouteArguments({
     required this.type,
-    this.animation,
+    required this.transition,
     this.data,
   });
 }

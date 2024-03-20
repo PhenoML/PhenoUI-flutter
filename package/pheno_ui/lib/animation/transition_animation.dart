@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:pheno_ui/animation/multi_tween.dart';
 import 'package:pheno_ui/animation/transition_player.dart';
+import 'package:pheno_ui/interface/route_arguments.dart';
+import 'package:pheno_ui/parsers/tools/figma_enum.dart';
 
 class TransitionAnimation {
   final MultiTween primary;
@@ -62,18 +64,26 @@ class TransitionAnimation {
   }
 }
 
-enum TransitionAnimationLibrary {
-  slideInFromRight(TransitionAnimation(
-    primary: MultiTweenLibrary.slideInLeft,
-    duration: Duration(milliseconds: 300),
-    reverseDuration: Duration(milliseconds: 200),
-  )),
+// these are the default transitions so they need to be reusable
+const _slideInFromRight = TransitionAnimation(
+  primary: MultiTweenLibrary.slideInLeft,
+  duration: Duration(milliseconds: 300),
+  reverseDuration: Duration(milliseconds: 200),
+);
 
-  slideInFromBottom(TransitionAnimation(
-    primary: MultiTweenLibrary.slideInUp,
-    duration: Duration(milliseconds: 400),
-    reverseDuration: Duration(milliseconds: 300),
-  )),
+const _slideInFromBottom = TransitionAnimation(
+  primary: MultiTweenLibrary.slideInUp,
+  duration: Duration(milliseconds: 400),
+  reverseDuration: Duration(milliseconds: 300),
+);
+
+enum TransitionLibrary {
+  defaultScreen(_slideInFromRight),
+  defaultPopup(_slideInFromBottom),
+
+  slideInFromRight(_slideInFromRight),
+
+  slideInFromBottom(_slideInFromBottom),
 
   elasticInFromBottom(TransitionAnimation(
     primary: MultiTweenLibrary.elasticInUp,
@@ -89,8 +99,23 @@ enum TransitionAnimationLibrary {
     reverseDuration: Duration(milliseconds: 400),
   )),
 
-
   ;
   final TransitionAnimation animation;
-  const TransitionAnimationLibrary(this.animation);
+  const TransitionLibrary(this.animation);
+
+  static TransitionLibrary defaultTransitionForType(RouteType type) {
+    return switch (type) {
+      RouteType.popup => TransitionLibrary.defaultPopup,
+      _ => TransitionLibrary.defaultScreen,
+    };
+  }
+
+  static TransitionAnimation getTransition(String? name, RouteType type) {
+    var transitionDefault = defaultTransitionForType(type);
+    if (name == null) {
+      return transitionDefault.animation;
+    }
+
+    return TransitionLibrary.values.byNameDefault(name, transitionDefault).animation;
+  }
 }

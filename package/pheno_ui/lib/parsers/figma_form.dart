@@ -3,7 +3,9 @@ import 'package:mirai/mirai.dart';
 import 'package:pheno_ui/models/figma_simple_child_model.dart';
 import 'package:pheno_ui/parsers/tools/figma_user_data.dart';
 
+import '../animation/transition_animation.dart';
 import '../interface/log.dart';
+import '../interface/route_arguments.dart';
 import '../models/figma_frame_model.dart';
 
 class FigmaFormParser extends MiraiParser<FigmaSimpleChildModel> {
@@ -57,7 +59,7 @@ class _DefaultFormHandler extends FigmaFormHandler {
         content: Text(content ?? 'Please complete the form before submitting.'),
         actions: <Widget>[
           TextButton(
-            onPressed: () => Navigator.pop(context, 'OK'),
+            onPressed: () => Navigator.pop(context, true),
             child: const Text('OK'),
           ),
         ],
@@ -91,7 +93,16 @@ class _DefaultFormHandler extends FigmaFormHandler {
     }
 
     if (buttonData != null && buttonData.containsKey('route')){
-      Navigator.of(context).pushReplacementNamed(buttonData['route']!, arguments: { 'type': 'screen' });
+      RouteType type = RouteType.screen;
+      String? transitionName = userData.maybeGet('transition');
+
+      var arguments = RouteArguments(
+        type: type,
+        transition: TransitionLibrary.getTransition(transitionName, type),
+        data: userData.maybeGet('data'),
+      );
+
+      Navigator.of(context).pushReplacementNamed(buttonData['route']!, arguments: arguments);
     }
   }
 }

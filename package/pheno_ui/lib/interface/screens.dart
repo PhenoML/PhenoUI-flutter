@@ -3,6 +3,7 @@ import 'package:pheno_ui/animation/transition_animation.dart';
 import 'package:pheno_ui/interface/data/entry.dart';
 import 'package:pheno_ui/interface/data/provider.dart';
 import 'package:pheno_ui/interface/data/screen_spec.dart';
+import 'package:pheno_ui/interface/route_arguments.dart';
 
 import '../widgets/figma_screen_renderer.dart';
 
@@ -11,10 +12,6 @@ class FigmaScreens {
   static final FigmaScreens _sharedInstance = FigmaScreens._internal();
   final Map<String, PhenoDataEntry> screens = {};
   final Map<String, WidgetBuilder> screenBuilders = {};
-  final Map<String, TransitionAnimation> transitions = {
-    'default_screen': TransitionAnimationLibrary.slideInFromRight.animation,
-    'default_popup': TransitionAnimationLibrary.slideInFromBottom.animation,
-  };
 
   PhenoDataProvider? _provider;
   PhenoDataProvider? get provider => _provider;
@@ -92,16 +89,24 @@ class FigmaScreens {
       );
     }
 
-    Map<String, dynamic>? args = settings.arguments as Map<String, dynamic>?;
-    bool isPopup = args != null && args['type'] is String && args['type'] == 'popup';
-    final transition = transitions[isPopup ? 'default_popup' : 'default_screen']!;
+    TransitionAnimation transition;
+    bool isOpaque;
+    if (settings.arguments is RouteArguments) {
+      var args = settings.arguments as RouteArguments;
+      transition = args.transition;
+      isOpaque = args.type == RouteType.screen;
+    } else {
+      transition = TransitionLibrary.defaultScreen.animation;
+      isOpaque = false;
+    }
+
     return PageRouteBuilder(
       settings: RouteSettings(name: uid, arguments: settings.arguments),
       pageBuilder: (context, _, __) => builder(context),
       transitionsBuilder: transition.transitionBuilder,
       transitionDuration: transition.duration,
       reverseTransitionDuration: transition.reverseDuration,
-      opaque: !isPopup,
+      opaque: isOpaque,
     );
   }
 }

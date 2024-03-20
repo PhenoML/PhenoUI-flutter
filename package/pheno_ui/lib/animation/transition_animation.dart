@@ -99,6 +99,21 @@ enum TransitionLibrary {
     reverseDuration: Duration(milliseconds: 400),
   )),
 
+  carouselPrimary(TransitionAnimation(
+    primary: MultiTweenLibrary.slideInUp,
+    secondary: MultiTweenLibrary.carouselOutLeft,
+    duration: Duration(milliseconds: 400),
+    reverseDuration: Duration(milliseconds: 300),
+  )),
+
+  carouselSecondary(TransitionAnimation(
+    primary: MultiTweenLibrary.carouselInLeft,
+    primaryReverse: MultiTweenLibrary.slideInUp,
+    secondary: MultiTweenLibrary.carouselOutLeft,
+    duration: Duration(milliseconds: 600),
+    reverseDuration: Duration(milliseconds: 300),
+  )),
+
   ;
   final TransitionAnimation animation;
   const TransitionLibrary(this.animation);

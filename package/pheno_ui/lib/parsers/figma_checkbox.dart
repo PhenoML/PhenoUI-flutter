@@ -13,11 +13,13 @@ class FigmaCheckboxParser extends FigmaComponentParser {
 
   @override
   Widget parse(BuildContext context, FigmaComponentModel model) {
+    print('parse ${model.info?.name}');
     GlobalKey key = GlobalKey();
     Widget widget = FigmaNode.withContext(context,
       model: model,
       child: GestureDetector(
         onTap: () {
+          print('onTap ${model.info?.name}');
           var state = key.currentState as FigmaCheckboxState;
           state.checked = !state.checked;
         },
@@ -45,6 +47,7 @@ class FigmaCheckboxState extends FigmaComponentState {
   @override
   void initState() {
     super.initState();
+    print('initState ${userData.map}');
     var form = FigmaFormInterface.maybeOf(context, listen: false);
     if (form != null) {
       focusNode = form.registerInput(userData.get('id'), checked);

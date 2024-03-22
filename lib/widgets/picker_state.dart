@@ -9,11 +9,13 @@ abstract class PickerWidget extends StatefulWidget {
   const PickerWidget({super.key});
   Future<List<PhenoDataEntry>> Function() get getList;
   Widget Function(PhenoDataEntry, BuildContext, List<PhenoDataEntry>) get builder;
+  Future<void> Function(PhenoDataEntry)? get delete => null;
   String get title;
 }
 
 class PickerState<T extends PickerWidget> extends State<T> {
   List<PhenoDataEntry>? entries;
+  bool _loading = false;
 
   PickerState();
 
@@ -32,13 +34,32 @@ class PickerState<T extends PickerWidget> extends State<T> {
 
   @override
   Widget build(BuildContext context) {
-    if (entries == null) {
+    if (entries == null || _loading) {
       return loadingScreen();
     }
 
     List<Widget> children = (entries as List).map((e) => ListTile(
-      leading: const Icon(Icons.screenshot),
+      leading: const Icon(
+        Icons.screenshot,
+        size: 20,
+      ),
+      trailing: widget.delete == null? null :IconButton(
+        onPressed: () async {
+          setState(() => _loading = true);
+          await widget.delete!(e);
+          _loading = false;
+          loadEntries();
+        },
+        icon: const Icon(
+          Icons.delete,
+          size: 16,
+        ),
+      ),
       title: Text(e.name),
+      titleTextStyle: const TextStyle(
+        color: Colors.black,
+        fontSize: 14,
+      ),
       onTap: () => Navigator.push(context, PageRouteBuilder(
           settings: RouteSettings(name: '${ModalRoute.of(context)!.settings.name}${e.name}/'),
           transitionDuration: Duration.zero,

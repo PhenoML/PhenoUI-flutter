@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:pheno_ui/interface/data/component_spec.dart';
 import 'package:pheno_ui/interface/data/entry.dart';
 import 'package:pheno_ui/interface/data/screen_spec.dart';
@@ -14,6 +15,10 @@ class Strapi {
   String get server => _server.toString();
   set server(String value) => _server = Uri.parse(value);
 
+  String? get user => _user;
+
+  bool get isLoggedIn => _jwt != null;
+
   static final Strapi _singleton = Strapi._internal();
 
   factory Strapi() {
@@ -22,8 +27,75 @@ class Strapi {
 
   Strapi._internal() : _server = Uri.parse('http://127.0.0.1:1337');
 
-  void login(Uri server, String user, String password) {
-    // TODO
+  Future<String> login(Uri server, String user, String password) async {
+    if (user.isNotEmpty && password.isNotEmpty) {
+      _server = server;
+      Uri url = Uri(
+        scheme: _server.scheme,
+        host: _server.host,
+        port: _server.port,
+        path: '/api/auth/local',
+      );
+
+      var response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'identifier': user,
+          'password': password,
+        })
+      );
+
+      var body = jsonDecode(response.body) as Map<String, dynamic>;
+      if (body.containsKey('jwt')) {
+        _user = user;
+        _jwt = body['jwt'];
+        return _jwt!;
+      } else if (body.containsKey('error')) {
+        throw Exception(body['error']['message']);
+      } else {
+        throw Exception('UNKNOWN ERROR: Invalid response');
+      }
+    }
+
+    throw Exception('Invalid empty user name or password');
+  }
+
+  Future<bool> loginJwt(String server, String jwt) async {
+    if (JwtDecoder.isExpired(jwt)) {
+      return false;
+    }
+
+    this.server = server;
+    Uri url = Uri(
+      scheme: _server.scheme,
+      host: _server.host,
+      port: _server.port,
+      path: '/api/users/me',
+    );
+
+    var response = await http.get(
+      url,
+      headers: {
+        'Authorization': 'Bearer $jwt',
+      }
+    );
+
+    var body = jsonDecode(response.body) as Map<String, dynamic>;
+    if (body.containsKey('username')) {
+      _user = body['username'];
+      _jwt = jwt;
+      return true;
+    }
+
+    return false;
+  }
+
+  void logout() {
+    _user = null;
+    _jwt = null;
   }
 
   Future<PhenoDataEntry> getCategory(String name, [String collection = 'screen-categories']) async {
@@ -43,7 +115,6 @@ class Strapi {
   }
 
   Future<List<PhenoDataEntry>> getCategoryList() async {
-    // TODO: make sure user is logged in
     Uri url = Uri(
       scheme: _server.scheme,
       host: _server.host,
@@ -59,7 +130,6 @@ class Strapi {
   }
 
   Future<List<PhenoDataEntry>> getScreenList(int id) async {
-    // TODO: make user is logged in
     Uri url = Uri(
       scheme: _server.scheme,
       host: _server.host,
@@ -77,7 +147,6 @@ class Strapi {
   }
 
   Future<PhenoScreenSpec> loadScreenLayout(int id) async {
-    // TODO: make user is logged in
     Uri url = Uri(
       scheme: _server.scheme,
       host: _server.host,
@@ -88,6 +157,22 @@ class Strapi {
     var response = await http.get(url);
     var json = jsonDecode(response.body) as Map<String, dynamic>;
     return PhenoScreenSpec.fromJson(json['data']);
+  }
+
+  Future<void> deleteScreen(int id) async {
+    Uri url = Uri(
+      scheme: _server.scheme,
+      host: _server.host,
+      port: _server.port,
+      path: 'api/screens/$id',
+    );
+
+    await http.delete(
+      url,
+      headers: {
+        'Authorization': 'Bearer $_jwt',
+      }
+    );
   }
 
   Future<PhenoComponentSpec> loadComponentSpec(String category, String name) async {

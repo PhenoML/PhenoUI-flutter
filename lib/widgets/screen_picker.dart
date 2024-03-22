@@ -12,6 +12,9 @@ class ScreenPicker extends PickerWidget {
   get builder => _builder;
 
   @override
+  get delete => _delete;
+
+  @override
   get title => 'Layout';
 
   final PhenoDataEntry entry;
@@ -24,6 +27,13 @@ class ScreenPicker extends PickerWidget {
       initialRoute: entry.name,
       entries: entries
     );
+  }
+
+  Future<void> _delete(PhenoDataEntry entry) async {
+    if (!Strapi().isLoggedIn) {
+      throw Exception('You must be logged in to delete a screen');
+    }
+    await Strapi().deleteScreen(entry.id);
   }
 
   Future<List<PhenoDataEntry>> _getList() {

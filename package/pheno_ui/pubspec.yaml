@@ -13,6 +13,7 @@ dependencies:
   flutter_svg: ^2.0.9
   google_fonts: ^6.1.0
   http: ^1.2.0
+  jwt_decoder: ^2.0.1
   logger: ^1.4.0
   mirai: ^0.5.1
   webview_flutter: ^4.7.0

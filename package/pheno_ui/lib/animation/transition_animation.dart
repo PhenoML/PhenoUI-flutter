@@ -92,10 +92,10 @@ enum TransitionLibrary {
     reverseDuration: Duration(milliseconds: 300),
   )),
 
-  boundInFromBottom(TransitionAnimation(
+  bounceInFromBottom(TransitionAnimation(
     primary: MultiTweenLibrary.bounceInUp,
     primaryReverse: MultiTweenLibrary.slideInUp,
-    duration: Duration(milliseconds: 600),
+    duration: Duration(milliseconds: 800),
     reverseDuration: Duration(milliseconds: 400),
   )),
 

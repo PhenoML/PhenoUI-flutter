@@ -47,7 +47,7 @@ extension MultiTweenLibrary on MultiTween {
     }
   );
 
-  static const MultiTween slideOutUp = MultiTween.from(
+  static const MultiTween slideOutFromBottom = MultiTween.from(
     {
       'offset': ImmutableTween(begin: Offset.zero, end: Offset(0.0, -1.0), curve: Curves.easeOut),
     }

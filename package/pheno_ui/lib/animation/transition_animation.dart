@@ -99,11 +99,17 @@ enum TransitionLibrary {
     reverseDuration: Duration(milliseconds: 400),
   )),
 
-  wiggleInFromLeft(TransitionAnimation(
+  wiggleInFromRight(TransitionAnimation(
     primary: MultiTweenLibrary.wiggleInLeft,
     primaryReverse: MultiTweenLibrary.slideInLeft,
     duration: Duration(milliseconds: 600),
     reverseDuration: Duration(milliseconds: 400),
+  )),
+
+  slideInFromLeft(TransitionAnimation(
+    primary: MultiTweenLibrary.slideInRight,
+    duration: Duration(milliseconds: 300),
+    reverseDuration: Duration(milliseconds: 200),
   )),
 
   carouselPrimary(TransitionAnimation(

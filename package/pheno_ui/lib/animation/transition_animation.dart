@@ -114,7 +114,7 @@ enum TransitionLibrary {
 
   carouselPrimary(TransitionAnimation(
     primary: MultiTweenLibrary.slideInFromBottom,
-    secondary: MultiTweenLibrary.carouselOutFromRight,
+    secondary: MultiTweenLibrary.carouselOutToLeft,
     duration: Duration(milliseconds: 400),
     reverseDuration: Duration(milliseconds: 300),
   )),
@@ -122,7 +122,7 @@ enum TransitionLibrary {
   carouselSecondary(TransitionAnimation(
     primary: MultiTweenLibrary.carouselInFromRight,
     primaryReverse: MultiTweenLibrary.slideInFromBottom,
-    secondary: MultiTweenLibrary.carouselOutFromRight,
+    secondary: MultiTweenLibrary.carouselOutToLeft,
     duration: Duration(milliseconds: 600),
     reverseDuration: Duration(milliseconds: 300),
   )),

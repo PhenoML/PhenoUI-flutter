@@ -41,67 +41,67 @@ class MultiTween extends Animatable<Map<String, dynamic>> {
 }
 
 extension MultiTweenLibrary on MultiTween {
-  static const MultiTween slideInUp = MultiTween.from(
+  static const MultiTween slideInFromBottom = MultiTween.from(
     {
       'offset': ImmutableTween(begin: Offset(0.0, 1.0), end: Offset.zero, curve: Curves.easeOut),
     }
   );
 
-  static const MultiTween slideOutUp = MultiTween.from(
+  static const MultiTween slideOutToTop = MultiTween.from(
     {
       'offset': ImmutableTween(begin: Offset.zero, end: Offset(0.0, -1.0), curve: Curves.easeOut),
     }
   );
 
-  static const MultiTween slideInDown = MultiTween.from(
+  static const MultiTween slideInFromTop = MultiTween.from(
     {
       'offset': ImmutableTween(begin: Offset(0.0, -1.0), end: Offset.zero, curve: Curves.easeOut),
     }
   );
 
-  static const MultiTween slideOutDown = MultiTween.from(
+  static const MultiTween slideOutToBottom = MultiTween.from(
     {
       'offset': ImmutableTween(begin: Offset.zero, end: Offset(0.0, 1.0), curve: Curves.easeOut),
     }
   );
 
-  static const MultiTween slideInRight = MultiTween.from(
+  static const MultiTween slideInFromLeft = MultiTween.from(
     {
       'offset': ImmutableTween(begin: Offset(-1.0, 0.0), end: Offset.zero, curve: Curves.easeOut),
     }
   );
 
-  static const MultiTween slideOutRight = MultiTween.from(
+  static const MultiTween slideOutToRight = MultiTween.from(
     {
       'offset': ImmutableTween(begin: Offset.zero, end: Offset(1.0, 0.0), curve: Curves.easeOut),
     }
   );
 
-  static const  MultiTween slideInLeft = MultiTween.from(
+  static const  MultiTween slideInFromRight = MultiTween.from(
     {
       'offset': ImmutableTween(begin: Offset(1.0, 0.0), end: Offset.zero, curve: Curves.easeOut),
     }
   );
 
-  static const MultiTween slideOutLeft = MultiTween.from(
+  static const MultiTween slideOutToLeft = MultiTween.from(
     {
       'offset': ImmutableTween(begin: Offset.zero, end: Offset(-1.0, 0.0), curve: Curves.easeOut),
     }
   );
 
-  static const MultiTween bounceInUp = MultiTween.from(
+  static const MultiTween bounceInFromBottom = MultiTween.from(
     {
       'offset': ImmutableTween(begin: Offset(0.0, 1.0), end: Offset.zero, curve: Curves.bounceOut),
     }
   );
 
-  static const MultiTween elasticInUp = MultiTween.from(
+  static const MultiTween elasticInFromBottom = MultiTween.from(
     {
       'offset': ImmutableTween(begin: Offset(0.0, 1.0), end: Offset.zero, curve: ElasticOutCurve(0.65)),
     }
   );
 
-  static const MultiTween carouselInLeft = MultiTween.from(
+  static const MultiTween carouselInFromRight = MultiTween.from(
       {
         'offset': TweenSegment(
           start: 0.0,
@@ -118,7 +118,7 @@ extension MultiTweenLibrary on MultiTween {
       }
   );
 
-  static const MultiTween carouselOutLeft = MultiTween.from(
+  static const MultiTween carouselOutToLeft = MultiTween.from(
       {
         'offset': TweenSegment(
           start: 0.05,
@@ -135,7 +135,7 @@ extension MultiTweenLibrary on MultiTween {
       }
   );
 
-  static const MultiTween wiggleInLeft = MultiTween.from(
+  static const MultiTween wiggleInFromRight = MultiTween.from(
     {
       'offset': TweenSegment(
         start: 0.0,
@@ -159,7 +159,7 @@ extension MultiTweenLibrary on MultiTween {
     }
   );
 
-  static const MultiTween wiggleOutLeft = MultiTween.from(
+  static const MultiTween wiggleOutToLeft = MultiTween.from(
       {
         'offset': TweenSegment(
           start: 0.2,

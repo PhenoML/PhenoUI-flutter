@@ -66,13 +66,13 @@ class TransitionAnimation {
 
 // these are the default transitions so they need to be reusable
 const _slideInFromRight = TransitionAnimation(
-  primary: MultiTweenLibrary.slideInLeft,
+  primary: MultiTweenLibrary.slideInFromRight,
   duration: Duration(milliseconds: 300),
   reverseDuration: Duration(milliseconds: 200),
 );
 
 const _slideInFromBottom = TransitionAnimation(
-  primary: MultiTweenLibrary.slideInUp,
+  primary: MultiTweenLibrary.slideInFromBottom,
   duration: Duration(milliseconds: 400),
   reverseDuration: Duration(milliseconds: 300),
 );
@@ -86,37 +86,43 @@ enum TransitionLibrary {
   slideInFromBottom(_slideInFromBottom),
 
   elasticInFromBottom(TransitionAnimation(
-    primary: MultiTweenLibrary.elasticInUp,
-    primaryReverse: MultiTweenLibrary.slideInUp,
+    primary: MultiTweenLibrary.elasticInFromBottom,
+    primaryReverse: MultiTweenLibrary.slideInFromBottom,
     duration: Duration(milliseconds: 800),
     reverseDuration: Duration(milliseconds: 300),
   )),
 
   bounceInFromBottom(TransitionAnimation(
-    primary: MultiTweenLibrary.bounceInUp,
-    primaryReverse: MultiTweenLibrary.slideInUp,
+    primary: MultiTweenLibrary.bounceInFromBottom,
+    primaryReverse: MultiTweenLibrary.slideInFromBottom,
     duration: Duration(milliseconds: 800),
     reverseDuration: Duration(milliseconds: 400),
   )),
 
-  wiggleInFromLeft(TransitionAnimation(
-    primary: MultiTweenLibrary.wiggleInLeft,
-    primaryReverse: MultiTweenLibrary.slideInLeft,
+  wiggleInFromRight(TransitionAnimation(
+    primary: MultiTweenLibrary.wiggleInFromRight,
+    primaryReverse: MultiTweenLibrary.slideInFromRight,
     duration: Duration(milliseconds: 600),
     reverseDuration: Duration(milliseconds: 400),
   )),
 
+  slideInFromLeft(TransitionAnimation(
+    primary: MultiTweenLibrary.slideInFromLeft,
+    duration: Duration(milliseconds: 300),
+    reverseDuration: Duration(milliseconds: 200),
+  )),
+
   carouselPrimary(TransitionAnimation(
-    primary: MultiTweenLibrary.slideInUp,
-    secondary: MultiTweenLibrary.carouselOutLeft,
+    primary: MultiTweenLibrary.slideInFromBottom,
+    secondary: MultiTweenLibrary.carouselOutToLeft,
     duration: Duration(milliseconds: 400),
     reverseDuration: Duration(milliseconds: 300),
   )),
 
   carouselSecondary(TransitionAnimation(
-    primary: MultiTweenLibrary.carouselInLeft,
-    primaryReverse: MultiTweenLibrary.slideInUp,
-    secondary: MultiTweenLibrary.carouselOutLeft,
+    primary: MultiTweenLibrary.carouselInFromRight,
+    primaryReverse: MultiTweenLibrary.slideInFromBottom,
+    secondary: MultiTweenLibrary.carouselOutToLeft,
     duration: Duration(milliseconds: 600),
     reverseDuration: Duration(milliseconds: 300),
   )),

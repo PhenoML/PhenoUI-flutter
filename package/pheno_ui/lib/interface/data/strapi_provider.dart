@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pheno_ui/interface/data/provider.dart';
 import 'package:pheno_ui/interface/data/screen_spec.dart';
+import 'package:http/http.dart' as http;
 
 import '../strapi.dart';
 import 'component_spec.dart';
@@ -55,5 +59,10 @@ class StrapiDataProvider extends PhenoDataProvider {
   @override
   SvgPicture loadSvg(String path, { required BoxFit fit }) {
     return SvgPicture.network(path, fit: fit);
+  }
+
+  @override
+  Future<LottieComposition> doLoadAnimation(String path) async {
+    return NetworkLottie(path).load();
   }
 }

@@ -2,6 +2,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:lottie/lottie.dart';
 import 'package:pheno_ui/interface/data/screen_spec.dart';
 
 import 'component_spec.dart';
@@ -13,6 +14,7 @@ abstract class PhenoDataProvider {
 
   final Map<int, Future<PhenoScreenSpec>> _screenSpecCache = {};
   final Map<String, Future<PhenoComponentSpec>> _componentSpecCache = {};
+  final Map<String, Future<LottieComposition>> _animationCache = {};
   List<PhenoDataEntry>? _screenList;
 
   PhenoDataProvider({
@@ -41,7 +43,7 @@ abstract class PhenoDataProvider {
     if (_screenSpecCache.containsKey(id)) {
       return await _screenSpecCache[id]!;
     }
-    var specFuture = doLoadScreenLayout(id);
+    final specFuture = doLoadScreenLayout(id);
     _screenSpecCache[id] = specFuture;
     return await specFuture;
   }
@@ -51,14 +53,25 @@ abstract class PhenoDataProvider {
     if (_componentSpecCache.containsKey(name)) {
       return await _componentSpecCache[name]!;
     }
-    var specFuture =  doLoadComponentSpec(name);
+    final specFuture =  doLoadComponentSpec(name);
     _componentSpecCache[name] = specFuture;
     return await specFuture;
+  }
+
+  @nonVirtual
+  Future<LottieComposition> loadAnimation(String path) async {
+    if (_animationCache.containsKey(path)) {
+      return await _animationCache[path]!;
+    }
+    final animationFuture = doLoadAnimation(path);
+    _animationCache[path] = animationFuture;
+    return await animationFuture;
   }
 
   Future<List<PhenoDataEntry>> doGetScreenList();
   Future<PhenoScreenSpec> doLoadScreenLayout(int id);
   Future<PhenoComponentSpec> doLoadComponentSpec(String name);
+  Future<LottieComposition> doLoadAnimation(String path);
 
   Image loadImage(String path, { required BoxFit fit });
   SvgPicture loadSvg(String path, { required BoxFit fit });

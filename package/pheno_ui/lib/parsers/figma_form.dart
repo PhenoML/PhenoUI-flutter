@@ -109,7 +109,7 @@ class _DefaultFormHandler extends FigmaFormHandler {
 
     if (buttonData != null && buttonData.containsKey('route')){
       RouteType type = RouteType.screen;
-      String? transitionName = userData.maybeGet('transition');
+      String? transitionName = buttonData['transition'];
 
       var arguments = RouteArguments(
         type: type,

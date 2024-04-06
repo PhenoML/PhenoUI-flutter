@@ -67,15 +67,14 @@ class _DefaultFormHandler extends FigmaFormHandler {
     );
   }
 
-  @override
-  void onSubmit(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaUserData userData, String buttonId, Map<String, dynamic>? buttonData) {
+  bool _fullValidation(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaUserData userData, String buttonId, Map<String, dynamic>? buttonData) {
     for (var input in inputs.values) {
       switch (input.type) {
         case String:
           if (input.value.isEmpty) {
             Map<String, dynamic>? formData = userData.maybeGet('data');
             _showDialog(context, title: formData?['incomplete_title'], content: formData?['incomplete_message']);
-            return;
+            return false;
           }
           break;
 
@@ -83,13 +82,29 @@ class _DefaultFormHandler extends FigmaFormHandler {
           if (!input.value) {
             Map<String, dynamic>? formData = userData.maybeGet('data');
             _showDialog(context, title: formData?['incomplete_title'], content: formData?['incomplete_message']);
-            return;
+            return false;
           }
           break;
 
         default:
           break;
       }
+    }
+    return true;
+  }
+
+  @override
+  void onSubmit(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaUserData userData, String buttonId, Map<String, dynamic>? buttonData) {
+    switch(buttonData?['__default_validation__']){
+      case 'no_validation':
+        break;
+
+      case 'full_validation':
+      default:
+        if (!_fullValidation(context, inputs, userData, buttonId, buttonData)) {
+           return; 
+        }
+        break;
     }
 
     if (buttonData != null && buttonData.containsKey('route')){

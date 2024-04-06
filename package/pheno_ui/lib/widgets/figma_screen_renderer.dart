@@ -18,14 +18,14 @@ class FigmaScreenRenderer extends StatefulWidget {
   }
 
   @override
-  State<FigmaScreenRenderer> createState() => RenderLayoutState();
+  State<FigmaScreenRenderer> createState() => FigmaScreenRendererState();
 }
 
 
-class RenderLayoutState extends State<FigmaScreenRenderer> {
-  PhenoScreenSpec? spec;
+class FigmaScreenRendererState extends State<FigmaScreenRenderer> {
+  Widget? child;
 
-  RenderLayoutState();
+  FigmaScreenRendererState();
 
   @override
   initState() {
@@ -34,15 +34,14 @@ class RenderLayoutState extends State<FigmaScreenRenderer> {
   }
 
   loadContent() {
-    spec = null;
     if (widget.future != null) {
-      widget.future!.then((layout) => setState(() {
-        spec = layout;
+      widget.future!.then((spec) => setState(() {
+        child = Mirai.fromJson(spec.spec, context) ?? const SizedBox();
       }));
       return;
     } else if (widget.spec != null) {
       setState(() {
-        spec = widget.spec;
+        child = Mirai.fromJson(widget.spec!.spec, context) ?? const SizedBox();
       });
       return;
     }
@@ -50,7 +49,7 @@ class RenderLayoutState extends State<FigmaScreenRenderer> {
 
   @override
   Widget build(BuildContext context) {
-    if (spec == null) {
+    if (child == null) {
       return const SizedBox();
     }
 
@@ -66,7 +65,7 @@ class RenderLayoutState extends State<FigmaScreenRenderer> {
     // remove the isPopup check and the Material widget
     return Material(
       color: isOpaque ? null : Colors.transparent,
-      child: Mirai.fromJson(spec!.spec, context) ?? const SizedBox(),
+      child: child,
     );
   }
 }

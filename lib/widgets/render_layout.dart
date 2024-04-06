@@ -70,9 +70,6 @@ class RenderLayoutState extends State<RenderLayout> {
                 setState(() {
                   _initialized = true;
                 });
-                await Future.delayed(const Duration(milliseconds: 100)); // ugh
-                NavigatorState state = _key.currentState! as NavigatorState;
-                state.pushNamedAndRemoveUntil(widget.initialRoute, (route) => false);
               }, constraints),
               Expanded(
                   child: ClipRect(

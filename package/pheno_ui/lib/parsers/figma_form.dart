@@ -59,7 +59,7 @@ class _DefaultFormHandler extends FigmaFormHandler {
         content: Text(content ?? 'Please complete the form before submitting.'),
         actions: <Widget>[
           TextButton(
-            onPressed: () => Navigator.pop(context, true),
+            onPressed: () => Navigator.pop(context),
             child: const Text('OK'),
           ),
         ],

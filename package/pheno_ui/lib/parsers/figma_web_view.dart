@@ -7,7 +7,7 @@ import 'package:pheno_ui/models/figma_simple_style_model.dart';
 import 'package:pheno_ui/parsers/tools/figma_dimensions.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
-import '../widgets/figma_node.dart';
+import '../widgets/figma_node_old.dart';
 
 class FigmaWebViewParser extends MiraiParser<FigmaSimpleStyleModel> {
   const FigmaWebViewParser();
@@ -37,7 +37,7 @@ class FigmaWebViewParser extends MiraiParser<FigmaSimpleStyleModel> {
       );
     }
 
-    widget = FigmaNode.withContext(context,
+    widget = FigmaNodeOld.withContext(context,
       model: model,
       child: widget,
     );

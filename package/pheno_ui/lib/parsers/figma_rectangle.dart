@@ -4,7 +4,7 @@ import 'package:pheno_ui/models/figma_simple_style_model.dart';
 import 'package:pheno_ui/parsers/tools/figma_dimensions.dart';
 import 'package:pheno_ui/parsers/tools/figma_enum.dart';
 
-import '../widgets/figma_node.dart';
+import '../widgets/figma_node_old.dart';
 
 class FigmaRectangleParser extends MiraiParser<FigmaSimpleStyleModel> {
   const FigmaRectangleParser();
@@ -27,7 +27,7 @@ class FigmaRectangleParser extends MiraiParser<FigmaSimpleStyleModel> {
       constraints: model.dimensions!.self.sizeConstraints,
     );
 
-    widget = FigmaNode.withContext(context,
+    widget = FigmaNodeOld.withContext(context,
       model: model,
       child: widget,
     );

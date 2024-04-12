@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:mirai/mirai.dart';
-import 'package:pheno_ui/widgets/figma_node.dart';
+import 'package:pheno_ui/widgets/figma_node_old.dart';
 import '../interface/screens.dart';
 import './tools/figma_dimensions.dart';
 
@@ -41,7 +41,7 @@ class FigmaImageParser extends MiraiParser<FigmaImageModel> {
       _ => throw 'ERROR: Unknown image format [${model.format.name}]',
     };
 
-    widget = FigmaNode.withContext(context,
+    widget = FigmaNodeOld.withContext(context,
       model: model,
       child: widget,
     );

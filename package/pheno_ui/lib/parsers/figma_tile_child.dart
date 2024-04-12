@@ -4,7 +4,7 @@ import 'package:pheno_ui/parsers/tools/figma_dimensions.dart';
 import '../models/figma_node_model.dart';
 import '../pheno_ui.dart';
 import '../widgets/figma_frame_layout_none.dart';
-import '../widgets/figma_node.dart';
+import '../widgets/figma_node_old.dart';
 
 class FigmaTileChildParser extends MiraiParser<FigmaTileChildModel> {
 const FigmaTileChildParser();
@@ -59,7 +59,7 @@ const FigmaTileChildParser();
       );
     });
 
-    widget = FigmaNode.withContext(context,
+    widget = FigmaNodeOld.withContext(context,
       model: model,
       child: widget,
     );

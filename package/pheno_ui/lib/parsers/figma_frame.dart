@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:mirai/mirai.dart';
 import 'package:pheno_ui/models/figma_style_model.dart';
 import '../widgets/figma_frame_layout_none.dart';
-import '../widgets/figma_node.dart';
+import '../widgets/figma_node_old.dart';
 import './tools/figma_dimensions.dart';
 import '../models/figma_dimensions_model.dart';
 import '../models/figma_layout_model.dart';
@@ -26,9 +26,9 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
       return null;
     }
 
-    if (children.length == 1 && children.first is! FigmaNode) {
+    if (children.length == 1 && children.first is! FigmaNodeOld) {
       return children.first;
-    } else if (children.indexWhere((e) => e is FigmaNode) == -1) {
+    } else if (children.indexWhere((e) => e is FigmaNodeOld) == -1) {
       return Stack(children: children);
     }
 
@@ -171,7 +171,7 @@ class FigmaFrameParser extends MiraiParser<FigmaFrameModel> {
         break;
     }
 
-    return FigmaNode.withContext(context,
+    return FigmaNodeOld.withContext(context,
       model: model,
       child: widget,);
   }

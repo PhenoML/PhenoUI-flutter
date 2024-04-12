@@ -8,7 +8,7 @@ import 'package:pheno_ui/parsers/tools/figma_dimensions.dart';
 
 import '../models/figma_lottie_animation_model.dart';
 import '../pheno_ui.dart';
-import '../widgets/figma_node.dart';
+import '../widgets/figma_node_old.dart';
 
 class FigmaLottieAnimationParser extends MiraiParser<FigmaLottieAnimationModel> {
   const FigmaLottieAnimationParser();
@@ -24,7 +24,7 @@ class FigmaLottieAnimationParser extends MiraiParser<FigmaLottieAnimationModel> 
   Widget parse(BuildContext context, FigmaLottieAnimationModel model) {
     Widget widget = FigmaLottieAnimation(model: model);
 
-    widget = FigmaNode.withContext(context,
+    widget = FigmaNodeOld.withContext(context,
       model: model,
       child: widget,
     );
@@ -125,7 +125,7 @@ class _FigmaLottieAnimationState extends State<FigmaLottieAnimation> with Single
       widget = Container();
     }
 
-    widget = FigmaNode.withContext(context,
+    widget = FigmaNodeOld.withContext(context,
       model: this.widget.model,
       child: widget,
     );

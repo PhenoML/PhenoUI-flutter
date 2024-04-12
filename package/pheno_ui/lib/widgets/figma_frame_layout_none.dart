@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 import 'package:pheno_ui/models/figma_dimensions_model.dart';
-import 'package:pheno_ui/widgets/figma_node.dart';
+import 'package:pheno_ui/widgets/figma_node_old.dart';
 
 class FigmaFrameLayoutNone extends MultiChildLayoutDelegate {
   final FigmaDimensionsSelfModel dimensions;
@@ -33,7 +33,7 @@ class FigmaFrameLayoutNone extends MultiChildLayoutDelegate {
   void performLayout(Size size) {
     for (int i = 0, n = children.length; i < n; i++) {
       var child = children[i];
-      if (child is! FigmaNode) {
+      if (child is! FigmaNodeOld) {
         layoutChild(i, BoxConstraints.loose(size));
         positionChild(i, Offset.zero);
       } else {

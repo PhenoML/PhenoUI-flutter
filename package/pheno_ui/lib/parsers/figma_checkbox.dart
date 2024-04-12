@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:pheno_ui/parsers/figma_component.dart';
 import '../models/figma_component_model.dart';
-import '../widgets/figma_node.dart';
+import '../widgets/figma_node_old.dart';
 import 'figma_form.dart';
 import 'tools/figma_dimensions.dart';
 
@@ -14,7 +14,7 @@ class FigmaCheckboxParser extends FigmaComponentParser {
   @override
   Widget parse(BuildContext context, FigmaComponentModel model) {
     GlobalKey key = GlobalKey();
-    Widget widget = FigmaNode.withContext(context,
+    Widget widget = FigmaNodeOld.withContext(context,
       model: model,
       child: GestureDetector(
         onTap: () {

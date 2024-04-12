@@ -4,7 +4,7 @@ import 'package:pheno_ui/interface/screens.dart';
 import 'package:pheno_ui/models/figma_layout_model.dart';
 import 'package:pheno_ui/parsers/tools/figma_dimensions.dart';
 import 'package:pheno_ui/parsers/tools/figma_user_data.dart';
-import 'package:pheno_ui/widgets/figma_node.dart';
+import 'package:pheno_ui/widgets/figma_node_old.dart';
 
 import '../interface/strapi.dart';
 import '../models/figma_component_model.dart';
@@ -21,7 +21,7 @@ class FigmaComponentParser extends MiraiParser<FigmaComponentModel> {
 
   @override
   Widget parse(BuildContext context, FigmaComponentModel model) {
-    Widget widget = FigmaNode.withContext(context,
+    Widget widget = FigmaNodeOld.withContext(context,
       model: model,
       child: FigmaComponent(FigmaComponentState.new, model),
     );

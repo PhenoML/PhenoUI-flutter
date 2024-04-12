@@ -4,16 +4,16 @@ import 'package:pheno_ui/models/figma_node_model.dart';
 
 import '../parsers/figma_component.dart';
 
-class FigmaNode extends StatelessWidget {
+class FigmaNodeOld extends StatelessWidget {
   final FigmaNodeInfoModel? info;
   final FigmaDimensionsSelfModel? dimensions;
   final double opacity;
   final bool visible;
   final Widget? child;
 
-  const FigmaNode({this.info, this.dimensions, this.opacity = 1.0, this.visible = true, this.child, super.key});
+  const FigmaNodeOld({this.info, this.dimensions, this.opacity = 1.0, this.visible = true, this.child, super.key});
 
-  factory FigmaNode.withContext(BuildContext context, { required FigmaNodeModel model, Widget? child }) {
+  factory FigmaNodeOld.withContext(BuildContext context, { required FigmaNodeModel model, Widget? child }) {
     bool visible = true;
 
     if (model.componentRefs != null && model.componentRefs!.containsKey('visible')) {
@@ -23,7 +23,7 @@ class FigmaNode extends StatelessWidget {
       }
     }
 
-    return FigmaNode(
+    return FigmaNodeOld(
       info: model.info,
       dimensions: model.dimensions!.self,
       visible: visible,

@@ -4,7 +4,7 @@ import 'package:pheno_ui/interface/route_arguments.dart';
 import 'package:pheno_ui/parsers/figma_component.dart';
 import 'package:pheno_ui/parsers/tools/figma_enum.dart';
 import '../models/figma_component_model.dart';
-import '../widgets/figma_node.dart';
+import '../widgets/figma_node_old.dart';
 import 'figma_checkbox.dart';
 import 'tools/figma_dimensions.dart';
 
@@ -17,7 +17,7 @@ class FigmaConditionalCheckboxParser extends FigmaComponentParser {
   @override
   Widget parse(BuildContext context, FigmaComponentModel model) {
     GlobalKey key = GlobalKey();
-    Widget widget = FigmaNode.withContext(context,
+    Widget widget = FigmaNodeOld.withContext(context,
         model: model,
         child: GestureDetector(
           onTap: () {

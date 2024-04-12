@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:mirai/mirai.dart';
-import 'package:pheno_ui/widgets/figma_node.dart';
+import 'package:pheno_ui/widgets/figma_node_old.dart';
 import '../models/figma_dimensions_model.dart';
 import '../models/figma_layout_model.dart';
 import './tools/figma_dimensions.dart';
@@ -188,7 +188,7 @@ class FigmaTextParser extends MiraiParser<FigmaTextModel> {
     //   child: widget,
     // );
 
-    widget = FigmaNode.withContext(context,
+    widget = FigmaNodeOld.withContext(context,
       model: model,
       child: widget,
     );

@@ -13,12 +13,12 @@ mixin FigmaNode on Widget {
 }
 
 bool isFigmaNodeVisible(BuildContext context, FigmaNodeModel model) {
-  if (model.componentRefs != null && model.componentRefs!.containsKey('visible')) {
-    var data = FigmaComponentData.maybeOf(context);
-    if (data != null) {
-      return data.userData.maybeGet(model.componentRefs!['visible']) ?? true;
-    }
-  }
+  // if (model.componentRefs != null && model.componentRefs!.containsKey('visible')) {
+  //   var data = FigmaComponentData.maybeOf(context);
+  //   if (data != null) {
+  //     return data.userData.maybeGet(model.componentRefs!['visible']) ?? true;
+  //   }
+  // }
   return true;
 }
 

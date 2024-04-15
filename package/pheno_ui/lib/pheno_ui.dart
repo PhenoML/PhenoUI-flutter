@@ -1,55 +1,54 @@
 library pheno_ui;
 
-import 'package:mirai/mirai.dart';
-import 'package:pheno_ui/parsers/figma_checkbox.dart';
-import 'package:pheno_ui/parsers/figma_conditional_checkbox.dart';
-import 'package:pheno_ui/parsers/figma_form.dart';
-import 'package:pheno_ui/parsers/figma_keep_aspect_ratio.dart';
-import 'package:pheno_ui/parsers/figma_lottie_animation.dart';
-import 'package:pheno_ui/parsers/figma_props_from_route.dart';
-import 'package:pheno_ui/parsers/figma_safe_area.dart';
-import 'package:pheno_ui/parsers/figma_component.dart';
-import 'package:pheno_ui/parsers/figma_frame.dart';
-import 'package:pheno_ui/parsers/figma_image.dart';
-import 'package:pheno_ui/parsers/figma_nav_button.dart';
-import 'package:pheno_ui/parsers/figma_rectangle.dart';
-import 'package:pheno_ui/parsers/figma_submit_button.dart';
-import 'package:pheno_ui/parsers/figma_text.dart';
-import 'package:pheno_ui/parsers/figma_text_from_route.dart';
-import 'package:pheno_ui/parsers/figma_tile_child.dart';
-import 'package:pheno_ui/parsers/figma_web_view.dart';
+import 'widgets/figma_node.dart';
 
-import 'interface/strapi.dart';
+export 'interface/screens.dart';
+export 'interface/strapi.dart';
 
-export 'package:mirai/mirai.dart';
-export 'package:pheno_ui/interface/strapi.dart';
-export 'package:pheno_ui/widgets/figma_screen_renderer.dart';
+typedef FigmaNodeFactory = FigmaNode Function(Map<String, dynamic>);
 
-Future<void> initializePhenoUi({List<MiraiParser> parsers = const []}) async {
-  const List<MiraiParser> defaultParsers = [
-    FigmaFrameParser(),
-    FigmaTextParser(),
-    FigmaImageParser(),
-    FigmaRectangleParser(),
-    FigmaSafeAreaParser(),
-    FigmaNavButtonParser(),
-    FigmaComponentParser(),
-    FigmaCheckboxParser(),
-    FigmaWebViewParser(),
-    FigmaConditionalCheckboxParser(),
-    FigmaFormParser(),
-    FigmaSubmitButtonParser(),
-    FigmaKeepAspectRatioParser(),
-    FigmaTileChildParser(),
-    FigmaTextFromRouteParser(),
-    FigmaPropsFromRouteParser(),
-    FigmaLottieAnimationParser(),
-  ];
+class PhenoUi {
+  static PhenoUi? _instance;
 
-  // merge the parsers giving priority to the ones passed as argument
-  var mergedParsers = <MiraiParser>[...defaultParsers, ...parsers];
+  final Map<String, FigmaNodeFactory> _nodeTypeMap = {};
 
-  await Mirai.initialize(
-      parsers: mergedParsers,
-  );
+  PhenoUi._internal();
+
+  factory PhenoUi() {
+    if (_instance == null) {
+      throw Exception(
+          'PhenoUi not initialized. Call PhenoUi.initialize() first.'
+      );
+    }
+    return _instance!;
+  }
+
+  factory PhenoUi.initialize({Map<String, FigmaNodeFactory> nodeTypes = const {}}) {
+    if (_instance == null) {
+      _instance = PhenoUi._internal();
+
+      Map<String, FigmaNodeFactory> defaultNodeTypes = {
+        // ...
+      };
+
+      // merge the parsers giving priority to the ones passed as argument
+      var mergedParsers = { ...defaultNodeTypes, ...nodeTypes };
+      _instance!._nodeTypeMap.addAll(mergedParsers);
+
+      return _instance!;
+    }
+
+    throw Exception(
+        'PhenoUi already initialized. Call PhenoUi() to get the instance.'
+    );
+  }
+
+  FigmaNode fromJson(Map<String, dynamic> json) {
+    var type = json['type'];
+    if (_nodeTypeMap.containsKey(type)) {
+      return _nodeTypeMap[type]!(json);
+    }
+    // TODO: Return a default widget
+    throw Exception('No parser found for type $type');
+  }
 }

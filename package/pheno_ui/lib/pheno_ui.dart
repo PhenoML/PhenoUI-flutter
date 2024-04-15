@@ -1,5 +1,7 @@
 library pheno_ui;
 
+import 'package:flutter/widgets.dart';
+
 import 'widgets/figma_node.dart';
 
 export 'interface/screens.dart';
@@ -44,6 +46,13 @@ class PhenoUi {
   }
 
   FigmaNode fromJson(Map<String, dynamic> json) {
+    // this function should not be called while the widget tree is building
+    assert(
+      WidgetsBinding.instance.rootElement != null
+      && WidgetsBinding.instance.rootElement!.owner != null
+      && !WidgetsBinding.instance.rootElement!.owner!.debugBuilding
+    );
+
     var type = json['type'];
     if (_nodeTypeMap.containsKey(type)) {
       return _nodeTypeMap[type]!(json);

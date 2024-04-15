@@ -11,7 +11,7 @@ class FigmaComponentModel extends FigmaNodeModel {
     required this.parentLayout,
     required super.type,
     required super.userData,
-    super.info,
+    required super.info,
     super.dimensions,
     super.componentRefs,
   });

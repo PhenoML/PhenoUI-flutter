@@ -6,6 +6,11 @@ class FigmaNodeInfoModel {
   final String? name;
   final String? id;
 
+  FigmaNodeInfoModel({
+    required this.name,
+    required this.id,
+  });
+
   FigmaNodeInfoModel.fromJson(Map<String, dynamic> json):
     name = json['name'],
     id = json['id'];
@@ -13,7 +18,7 @@ class FigmaNodeInfoModel {
 
 class FigmaNodeModel {
   final String type;
-  final FigmaNodeInfoModel? info;
+  final FigmaNodeInfoModel info;
   final FigmaDimensionsModel? dimensions;
   final FigmaStyleModel? style;
   final Map<String, dynamic>? componentRefs;
@@ -22,7 +27,7 @@ class FigmaNodeModel {
   FigmaNodeModel({
     required this.type,
     required this.userData,
-    this.info,
+    required this.info,
     this.dimensions,
     this.style,
     this.componentRefs,
@@ -30,7 +35,7 @@ class FigmaNodeModel {
 
   FigmaNodeModel.fromJson(Map<String, dynamic> json):
     type = json['type'],
-    info = json.containsKey('__info') ? FigmaNodeInfoModel.fromJson(json['__info']) : null,
+    info = FigmaNodeInfoModel.fromJson(json['__info']),
     dimensions = json.containsKey('dimensions') ? FigmaDimensionsModel.fromJson(json['dimensions']) : null,
     style = json.containsKey('style') ? FigmaStyleModel.fromJson(json['style']) : null,
     componentRefs = json['componentRefs'],

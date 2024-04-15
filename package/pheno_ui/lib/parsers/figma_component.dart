@@ -8,6 +8,7 @@ import 'package:pheno_ui/widgets/figma_node_old.dart';
 
 import '../interface/strapi.dart';
 import '../models/figma_component_model.dart';
+import '../models/figma_node_model.dart';
 
 class FigmaComponentParser extends MiraiParser<FigmaComponentModel> {
   const FigmaComponentParser();
@@ -68,6 +69,7 @@ class FigmaComponent<T extends FigmaComponentState> extends StatefulWidget {
     }
     var model = FigmaComponentModel(
       type: 'figma-component-instance',
+      info: FigmaNodeInfoModel(name: component, id: component),
       widgetType: component,
       userData: userData,
       parentLayout: FigmaLayoutParentValuesModel(),

@@ -3,7 +3,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:mirai/mirai.dart';
 import 'package:pheno_ui/models/figma_style_model.dart';
-import '../widgets/figma_frame_layout_none.dart';
+import '../layout/figma_frame_layout_none.dart';
 import '../widgets/figma_node_old.dart';
 import './tools/figma_dimensions.dart';
 import '../models/figma_dimensions_model.dart';

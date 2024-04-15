@@ -3,7 +3,7 @@ import 'package:pheno_ui/models/figma_tile_child_model.dart';
 import 'package:pheno_ui/parsers/tools/figma_dimensions.dart';
 import '../models/figma_node_model.dart';
 import '../pheno_ui.dart';
-import '../widgets/figma_frame_layout_none.dart';
+import '../layout/figma_frame_layout_none.dart';
 import '../widgets/figma_node_old.dart';
 
 class FigmaTileChildParser extends MiraiParser<FigmaTileChildModel> {

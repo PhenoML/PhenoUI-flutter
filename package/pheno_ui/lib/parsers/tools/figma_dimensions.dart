@@ -7,14 +7,14 @@ Widget dimensionWrapWidget(Widget widget, FigmaDimensionsModel dimensions, Figma
     return widget;
   }
 
-  var width = switch (dimensions.self.widthMode) {
-    FigmaDimensionsSizing.fixed => dimensions.self.width,
+  var width = switch (dimensions.widthMode) {
+    FigmaDimensionsSizing.fixed => dimensions.width,
     FigmaDimensionsSizing.fill => parentLayoutMode == FigmaLayoutMode.horizontal ? null : double.infinity,
     _ => null
   };
 
-  var height = switch (dimensions.self.heightMode) {
-    FigmaDimensionsSizing.fixed => dimensions.self.height,
+  var height = switch (dimensions.heightMode) {
+    FigmaDimensionsSizing.fixed => dimensions.height,
     FigmaDimensionsSizing.fill => parentLayoutMode == FigmaLayoutMode.vertical ? null : double.infinity,
     _ => null
   };
@@ -33,11 +33,11 @@ Widget dimensionWrapWidget(Widget widget, FigmaDimensionsModel dimensions, Figma
     );
   }
 
-  if (dimensions.self.widthMode == FigmaDimensionsSizing.hug || dimensions.self.heightMode == FigmaDimensionsSizing.hug) {
+  if (dimensions.widthMode == FigmaDimensionsSizing.hug || dimensions.heightMode == FigmaDimensionsSizing.hug) {
     Axis? constrained;
-    if (dimensions.self.widthMode != FigmaDimensionsSizing.hug) {
+    if (dimensions.widthMode != FigmaDimensionsSizing.hug) {
       constrained = Axis.horizontal;
-    } else if (dimensions.self.heightMode != FigmaDimensionsSizing.hug) {
+    } else if (dimensions.heightMode != FigmaDimensionsSizing.hug) {
       constrained = Axis.vertical;
     }
     widget = UnconstrainedBox(
@@ -47,8 +47,8 @@ Widget dimensionWrapWidget(Widget widget, FigmaDimensionsModel dimensions, Figma
   }
 
   if (
-  (dimensions.self.widthMode == FigmaDimensionsSizing.fill && parentLayoutMode == FigmaLayoutMode.horizontal)
-      || (dimensions.self.heightMode == FigmaDimensionsSizing.fill && parentLayoutMode == FigmaLayoutMode.vertical)
+  (dimensions.widthMode == FigmaDimensionsSizing.fill && parentLayoutMode == FigmaLayoutMode.horizontal)
+      || (dimensions.heightMode == FigmaDimensionsSizing.fill && parentLayoutMode == FigmaLayoutMode.vertical)
   ) {
     widget = Expanded(child: widget);
   }

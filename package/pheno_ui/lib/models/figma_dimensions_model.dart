@@ -65,30 +65,11 @@ class FigmaDimensionsConstraints {
   }
 }
 
-class FigmaDimensionsParentModel {
+class FigmaDimensionsModel {
   double x;
   double y;
   final double width;
   final double height;
-
-  FigmaDimensionsParentModel({
-    required this.x,
-    required this.y,
-    required this.width,
-    required this.height
-  });
-
-  FigmaDimensionsParentModel._fromJson(Map<String, dynamic> json):
-    x = json['x'].toDouble(),
-    y = json['y'].toDouble(),
-    width = json['width'].toDouble(),
-    height = json['height'].toDouble();
-
-  factory FigmaDimensionsParentModel.fromJson(Map<String, dynamic> json) =>
-    FigmaDimensionsParentModel._fromJson(json);
-}
-
-class FigmaDimensionsSelfModel extends FigmaDimensionsParentModel {
   final FigmaDimensionsPositioning positioning;
   final BoxConstraints sizeConstraints;
   final FigmaDimensionsSizing widthMode;
@@ -96,17 +77,20 @@ class FigmaDimensionsSelfModel extends FigmaDimensionsParentModel {
   final double rotation;
   final FigmaDimensionsConstraints constraints;
 
-  FigmaDimensionsSelfModel._fromJson(super.json):
+  FigmaDimensionsModel._fromJson(Map<String, dynamic> json):
+    x = json['x'].toDouble(),
+    y = json['y'].toDouble(),
+    width = json['width'].toDouble(),
+    height = json['height'].toDouble(),
     positioning = FigmaDimensionsPositioning.values.byNameDefault(json['positioning'], FigmaDimensionsPositioning.auto),
     sizeConstraints = _parseSizeConstraints(json),
     widthMode = FigmaDimensionsSizing.values.byNameDefault(json['widthMode'], FigmaDimensionsSizing.fixed),
     heightMode = FigmaDimensionsSizing.values.byNameDefault(json['heightMode'], FigmaDimensionsSizing.fixed),
     rotation = json['rotation'].toDouble(),
-    constraints = FigmaDimensionsConstraints.fromJson(json['constraints']),
-    super._fromJson();
+    constraints = FigmaDimensionsConstraints.fromJson(json['constraints']);
 
-  factory FigmaDimensionsSelfModel.fromJson(Map<String, dynamic> json) =>
-    FigmaDimensionsSelfModel._fromJson(json);
+  factory FigmaDimensionsModel.fromJson(Map<String, dynamic> json) =>
+      FigmaDimensionsModel._fromJson(json);
 
   static BoxConstraints _parseSizeConstraints(Map<String, dynamic> json) {
     return BoxConstraints(
@@ -115,23 +99,5 @@ class FigmaDimensionsSelfModel extends FigmaDimensionsParentModel {
       maxWidth: json['max']['width']?.toDouble() ?? double.infinity,
       maxHeight: json['max']['height']?.toDouble() ?? double.infinity,
     );
-  }
-}
-
-class FigmaDimensionsModel {
-  final FigmaDimensionsSelfModel self;
-  final FigmaDimensionsParentModel? parent;
-
-  FigmaDimensionsModel({
-    required this.self,
-    this.parent
-  });
-
-  factory FigmaDimensionsModel.fromJson(Map<String, dynamic> json) {
-    var r =  FigmaDimensionsModel(
-      self: FigmaDimensionsSelfModel.fromJson(json['self']),
-      parent: json['parent']['x'] == null ? null : FigmaDimensionsParentModel.fromJson(json['parent']),
-    );
-    return r;
   }
 }

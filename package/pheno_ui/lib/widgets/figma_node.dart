@@ -10,7 +10,7 @@ mixin FigmaNode on Widget {
   FigmaNodeModel get model;
   FigmaNodeInfoModel get info => model.info;
   double get opacity => model.style?.opacity ?? 1.0;
-  FigmaDimensionsSelfModel? get dimensions => model.dimensions?.self;
+  FigmaDimensionsModel? get dimensions => model.dimensions;
 }
 
 bool isFigmaNodeVisible(BuildContext context, FigmaNodeModel model) {

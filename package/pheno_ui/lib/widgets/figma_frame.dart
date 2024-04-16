@@ -9,7 +9,7 @@ import '../models/figma_dimensions_model.dart';
 import '../models/figma_layout_model.dart';
 import 'figma_node.dart';
 
-Widget? _buildNoneContainer(FigmaDimensionsSelfModel dimensions, List<Widget> children) {
+Widget? _buildNoneContainer(FigmaDimensionsModel dimensions, List<Widget> children) {
   if (children.isEmpty) {
     return null;
   }
@@ -40,7 +40,7 @@ Widget? _buildChildrenContainer(List<Widget> children, FigmaFrameModel model) {
   }
 
   if (model.layout.mode == FigmaLayoutMode.none) {
-    return _buildNoneContainer(model.dimensions!.self, children);
+    return _buildNoneContainer(model.dimensions!, children);
   }
 
   children = children.map((c) {
@@ -134,7 +134,7 @@ class FigmaFrame extends StatelessFigmaNode<FigmaFrameModel> {
         border: border,
         borderRadius: model.style.borderRadius,
       ),
-      constraints: model.dimensions!.self.sizeConstraints,
+      constraints: model.dimensions!.sizeConstraints,
       child: childrenContainer,
     );
   }

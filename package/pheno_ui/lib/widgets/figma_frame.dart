@@ -105,6 +105,12 @@ Widget? _buildChildrenContainer(List<Widget> children, FigmaFrameModel model) {
   }
 }
 
+typedef FigmaFrameConstructor<T extends FigmaFrame> = T Function({
+  required Widget? childrenContainer,
+  required FigmaFrameModel model,
+  Key? key,
+});
+
 class FigmaFrame extends StatelessFigmaNode<FigmaFrameModel> {
   final Widget? childrenContainer;
 
@@ -114,10 +120,10 @@ class FigmaFrame extends StatelessFigmaNode<FigmaFrameModel> {
     super.key
   });
 
-  static FigmaFrame fromJson(Map<String, dynamic> json) {
+  static FigmaFrame fromJson(Map<String, dynamic> json, [FigmaFrameConstructor constructor = FigmaFrame.new]) {
     final FigmaFrameModel model = FigmaFrameModel.fromJson(json);
     Widget? childrenContainer = _buildChildrenContainer(model.children, model);
-    return FigmaFrame(model: model, childrenContainer: childrenContainer);
+    return constructor(model: model, childrenContainer: childrenContainer);
   }
 
   @override

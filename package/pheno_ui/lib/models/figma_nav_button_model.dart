@@ -1,5 +1,5 @@
 import '../parsers/tools/figma_enum.dart';
-import 'figma_simple_child_model.dart';
+import 'figma_frame_model.dart';
 
 enum FigmaNavButtonAction with FigmaEnum {
   pop,
@@ -13,7 +13,7 @@ enum FigmaNavButtonAction with FigmaEnum {
   const FigmaNavButtonAction([this._figmaName]);
 }
 
-class FigmaNavButtonModel extends FigmaSimpleChildModel {
+class FigmaNavButtonModel extends FigmaFrameModel {
   final FigmaNavButtonAction action;
   final String? target;
 

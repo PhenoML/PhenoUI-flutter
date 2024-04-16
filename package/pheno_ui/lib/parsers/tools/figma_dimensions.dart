@@ -19,7 +19,10 @@ Widget dimensionWrapWidget(Widget widget, FigmaDimensionsModel dimensions, Figma
     _ => null
   };
 
-  if (width != null || height != null) {
+  if (
+    (width != null && width != double.infinity)
+    || (height != null && height != double.infinity)
+  ) {
     widget = SizedBox(
       width: width,
       height: height,

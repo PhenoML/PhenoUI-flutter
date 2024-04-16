@@ -1,4 +1,5 @@
-import 'dart:ui';
+import 'package:flutter/widgets.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../parsers/tools/figma_enum.dart';
 import 'figma_node_model.dart';
@@ -162,6 +163,13 @@ enum FigmaFontStyle with FigmaEnum {
   const FigmaFontStyle([this._figmaName]);
 }
 
+/// Some times the font name in figma is different from the font name in the
+/// Google Fonts package. This map is used to convert the figma font name to the
+/// Google Fonts font name.
+const Map<String, String> kFontNameMap = {
+  "Baloo": "Baloo 2",
+};
+
 /// An object representing a number with a unit. This is similar to how you can
 /// set either 100% or 100px in a lot of CSS properties. It can also be set to
 /// AUTO.
@@ -239,6 +247,7 @@ class FigmaTextSegmentModel {
   final FigmaTextListOptionsModel listOptions;
   final int indentation;
   final FigmaTextHyperlinkTarget? hyperlink;
+  late final TextSpan span = _makeSpan();
 
   FigmaTextSegmentModel(
       this.characters,
@@ -325,6 +334,54 @@ class FigmaTextSegmentModel {
         FigmaTextListOptionsModel.fromJson(json['listOptions']),
         json['indentation'].toInt(),
         json['hyperlink'] == null ? null : FigmaTextHyperlinkTarget.fromJson(json['hyperlink']),
+    );
+  }
+
+  TextSpan _makeSpan() {
+    var text = switch (textCase) {
+      FigmaTextCase.upper => characters.toUpperCase(),
+      FigmaTextCase.lower => characters.toLowerCase(),
+      FigmaTextCase.original => characters,
+      _ => throw 'Unsupported textCase: ${textCase.name}'
+    };
+
+    var decoration = switch (this.decoration) {
+      FigmaTextDecoration.none => TextDecoration.none,
+      FigmaTextDecoration.strikethrough => TextDecoration.lineThrough,
+      FigmaTextDecoration.underline => TextDecoration.underline,
+    };
+
+    var height = switch (lineHeight.unit) {
+      FigmaTextUnit.pixels => (lineHeight.value as double) / (size),
+      FigmaTextUnit.percent => (lineHeight.value as double) * 0.01,
+      FigmaTextUnit.auto => null, // good enough, sorry future Dario :/
+    };
+
+    var spacing = switch (letterSpacing.unit) {
+      FigmaTextUnit.pixels => (letterSpacing.value as double),
+      FigmaTextUnit.percent => (letterSpacing.value as double) * size * 0.01,
+      FigmaTextUnit.auto => null
+    };
+
+    var family = kFontNameMap.containsKey(name.family) ? kFontNameMap[name.family]! : name.family;
+
+    var style = GoogleFonts.getFont(family, textStyle: TextStyle(
+      fontSize: size,
+      fontFamily: family,
+      fontStyle: FontStyle.values.convert(name.style),
+      fontWeight: weight,
+      decoration: decoration,
+      height: height,
+      letterSpacing: spacing,
+      color: color,
+      // list options not supported natively by flutter, implement if needed...
+      // indentation is not supported natively by flutter and the figma documentation is not clear as to how it works, implement in the future if needed...
+      // hyperlinks are not straight forward and require dependencies, implement in the future if needed
+    ));
+
+    return TextSpan(
+      text: text,
+      style: style,
     );
   }
 }

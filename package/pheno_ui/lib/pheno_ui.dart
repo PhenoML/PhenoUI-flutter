@@ -3,6 +3,7 @@ library pheno_ui;
 import 'package:flutter/widgets.dart';
 import 'widgets/figma_frame.dart';
 import 'widgets/figma_image.dart';
+import 'widgets/figma_safe_area.dart';
 import 'widgets/figma_scroll_view.dart';
 import 'widgets/figma_text.dart';
 
@@ -40,6 +41,7 @@ class PhenoUi {
         'figma-scroll-view': FigmaScrollView.fromJson,
         'figma-text': FigmaText.fromJson,
         'figma-image': FigmaImage.fromJson,
+        'figma-safe-area': FigmaSafeArea.fromJson,
       };
 
       // merge the parsers giving priority to the ones passed as argument

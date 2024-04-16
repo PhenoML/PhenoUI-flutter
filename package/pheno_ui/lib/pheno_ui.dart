@@ -3,6 +3,7 @@ library pheno_ui;
 import 'package:flutter/widgets.dart';
 import 'package:pheno_ui/widgets/figma_frame.dart';
 import 'package:pheno_ui/widgets/figma_scroll_view.dart';
+import 'package:pheno_ui/widgets/figma_text.dart';
 
 import 'models/figma_node_model.dart';
 import 'widgets/figma_node.dart';
@@ -35,6 +36,7 @@ class PhenoUi {
       Map<String, FigmaNodeFactory> defaultNodeTypes = {
         'figma-frame': FigmaFrame.fromJson,
         'figma-scroll-view': FigmaScrollView.fromJson,
+        'figma-text': FigmaText.fromJson,
       };
 
       // merge the parsers giving priority to the ones passed as argument

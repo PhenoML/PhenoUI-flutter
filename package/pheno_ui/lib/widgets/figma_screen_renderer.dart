@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:pheno_ui/interface/data/screen_spec.dart';
-import 'package:pheno_ui/interface/route_arguments.dart';
 import 'package:pheno_ui/pheno_ui.dart';
 
 class FigmaScreenRenderer extends StatefulWidget {
@@ -53,19 +52,6 @@ class FigmaScreenRendererState extends State<FigmaScreenRenderer> {
       return const SizedBox();
     }
 
-    var args = ModalRoute.of(context)?.settings.arguments;
-    bool isOpaque;
-    if (args is RouteArguments) {
-      isOpaque = args.type == RouteType.screen;
-    } else {
-      isOpaque = true;
-    }
-
-    // future Dario: once we replace material popups with custom ones, we can
-    // remove the isPopup check and the Material widget
-    return Material(
-      color: isOpaque ? null : Colors.transparent,
-      child: child,
-    );
+    return child!;
   }
 }

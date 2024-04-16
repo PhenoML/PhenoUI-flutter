@@ -3,6 +3,7 @@ library pheno_ui;
 import 'package:flutter/widgets.dart';
 import 'package:pheno_ui/widgets/figma_frame.dart';
 
+import 'models/figma_node_model.dart';
 import 'widgets/figma_node.dart';
 
 export 'interface/screens.dart';
@@ -58,8 +59,7 @@ class PhenoUi {
     if (_nodeTypeMap.containsKey(type)) {
       return _nodeTypeMap[type]!(json);
     }
-    // TODO: Return a default widget
-    throw Exception('No parser found for type $type');
+    return _MissingType.fromJson(json);
   }
 
   List<FigmaNode> fromJsonList(List<dynamic>? json) {
@@ -69,3 +69,23 @@ class PhenoUi {
     return json.map((e) => fromJson(e as Map<String, dynamic>)).toList();
   }
 }
+
+class _MissingType extends StatelessFigmaNode {
+  const _MissingType({required super.model});
+
+  static _MissingType fromJson(Map<String, dynamic> json) {
+    final FigmaNodeModel model = FigmaNodeModel.fromJson(json);
+    return _MissingType(model: model);
+  }
+
+  @override
+  Widget buildFigmaNode(BuildContext context) {
+    return Container(
+      color: const Color(0xFFFF00FF),
+      child: Center(
+        child: Text('Unknown figma node type: ${model.type}'),
+      ),
+    );
+  }
+}
+

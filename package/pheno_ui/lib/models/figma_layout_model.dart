@@ -179,21 +179,8 @@ enum FigmaLayoutPositioning with FigmaEnum {
   const FigmaLayoutPositioning([this._figmaName]);
 }
 
-class FigmaLayoutParentValuesModel {
+class FigmaLayoutModel {
   final FigmaLayoutMode mode;
-
-  FigmaLayoutParentValuesModel({
-    this.mode = FigmaLayoutMode.none,
-  });
-
-  FigmaLayoutParentValuesModel._fromJson(Map<String, dynamic> json):
-      mode = FigmaLayoutMode.values.byNameDefault(json['layoutMode'], FigmaLayoutMode.none);
-
-  factory FigmaLayoutParentValuesModel.fromJson(Map<String, dynamic> json) =>
-      FigmaLayoutParentValuesModel._fromJson(json);
-}
-
-class FigmaLayoutValuesModel extends FigmaLayoutParentValuesModel {
   final FigmaLayoutWrap wrap;
   final FigmaLayoutAxisSizing mainAxisSizing;
   final FigmaLayoutAxisSizing crossAxisSizing;
@@ -225,7 +212,8 @@ class FigmaLayoutValuesModel extends FigmaLayoutParentValuesModel {
   /// primary axis. 0 corresponds to a fixed size and 1 corresponds to stretch.
   final int grow;
 
-  FigmaLayoutValuesModel._fromJson(super.json):
+  FigmaLayoutModel._fromJson(Map<String, dynamic> json):
+    mode = FigmaLayoutMode.values.byNameDefault(json['layoutMode'], FigmaLayoutMode.none),
     wrap = FigmaLayoutWrap.values.byNameDefault(json['layoutWrap'], FigmaLayoutWrap.noWrap),
     padding = _parsePadding(json),
     mainAxisSizing = FigmaLayoutAxisSizing.values.byNameDefault(json['primaryAxisSizingMode'], FigmaLayoutAxisSizing.fixed),
@@ -239,8 +227,7 @@ class FigmaLayoutValuesModel extends FigmaLayoutParentValuesModel {
     strokesIncludedInLayout = json['strokesIncludedInLayout'] ?? false,
     align = FigmaLayoutAlign.values.byNameDefault(json['layoutAlign'], FigmaLayoutAlign.inherit),
     grow = json['layoutGrow'].toInt(),
-    positioning = FigmaLayoutPositioning.values.byNameDefault(json['layoutPositioning'], FigmaLayoutPositioning.auto),
-    super._fromJson();
+    positioning = FigmaLayoutPositioning.values.byNameDefault(json['layoutPositioning'], FigmaLayoutPositioning.auto);
 
   static EdgeInsets _parsePadding(Map<String, dynamic> json) {
     return EdgeInsets.fromLTRB(
@@ -251,24 +238,6 @@ class FigmaLayoutValuesModel extends FigmaLayoutParentValuesModel {
     );
   }
 
-  static FigmaLayoutValuesModel fromJson(Map<String, dynamic> json) =>
-    FigmaLayoutValuesModel._fromJson(json);
+  static FigmaLayoutModel fromJson(Map<String, dynamic> json) =>
+      FigmaLayoutModel._fromJson(json);
 }
-
-class FigmaLayoutModel {
-  final FigmaLayoutValuesModel self;
-  final FigmaLayoutParentValuesModel parent;
-
-  FigmaLayoutModel({
-    required this.self,
-    required this.parent
-  });
-
-  factory FigmaLayoutModel.fromJson(Map<String, dynamic> json) {
-    return FigmaLayoutModel(
-      self: FigmaLayoutValuesModel.fromJson(json['self']),
-      parent: FigmaLayoutParentValuesModel.fromJson(json['parent'])
-    );
-  }
-}
-

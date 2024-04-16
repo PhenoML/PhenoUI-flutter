@@ -39,13 +39,13 @@ Widget? _buildChildrenContainer(List<Widget> children, FigmaFrameModel model) {
     return null;
   }
 
-  if (model.layout.self.mode == FigmaLayoutMode.none) {
+  if (model.layout.mode == FigmaLayoutMode.none) {
     return _buildNoneContainer(model.dimensions!.self, children);
   }
 
   children = children.map((c) {
     if (c is FigmaNode && c.model.dimensions != null) {
-      return dimensionWrapWidget(c, c.model.dimensions!, model.layout.self.mode);
+      return dimensionWrapWidget(c, c.model.dimensions!, model.layout.mode);
     }
     return c;
   }).toList();
@@ -57,9 +57,9 @@ Widget? _buildChildrenContainer(List<Widget> children, FigmaFrameModel model) {
   // combination with OverflowBox. A possible solution is to use a custom layout
   // delegate that allows children to overflow the parent container while
   // maintaining the proper alignment and dimensions.
-  switch (model.layout.self.mode) {
+  switch (model.layout.mode) {
     case FigmaLayoutMode.vertical:
-      var layout = model.layout.self;
+      var layout = model.layout;
       if (layout.itemSpacing != 0.0) {
         children = _addSpacers(children, 0.0, layout.itemSpacing);
       }
@@ -73,7 +73,7 @@ Widget? _buildChildrenContainer(List<Widget> children, FigmaFrameModel model) {
       );
 
     case FigmaLayoutMode.horizontal:
-      var layout = model.layout.self;
+      var layout = model.layout;
       if (layout.wrap == FigmaLayoutWrap.wrap) {
         return Wrap(
           alignment: WrapAlignment.values
@@ -101,7 +101,7 @@ Widget? _buildChildrenContainer(List<Widget> children, FigmaFrameModel model) {
       }
 
     default:
-      throw 'Layout mode ${model.layout.self.mode} not implemented';
+      throw 'Layout mode ${model.layout.mode} not implemented';
   }
 }
 
@@ -122,7 +122,7 @@ class FigmaFrame extends StatelessFigmaNode<FigmaFrameModel> {
 
   @override
   Widget buildFigmaNode(BuildContext context) {
-    var padding = model.layout.self.mode == FigmaLayoutMode.none ? null : model.layout.self.padding;
+    var padding = model.layout.mode == FigmaLayoutMode.none ? null : model.layout.padding;
     var border = model.style.border;
     var blend = model.style.color == null ? null : BlendMode.values.convertDefault(model.style.blendMode, BlendMode.srcOver);
 

@@ -1,7 +1,7 @@
-import 'package:pheno_ui/models/figma_parent_layout_model.dart';
+import '../models/figma_node_model.dart';
 import 'figma_style_model.dart';
 
-class FigmaSimpleStyleModel extends FigmaParentLayoutModel {
+class FigmaSimpleStyleModel extends FigmaNodeModel {
   @override
   FigmaStyleModel get style => super.style!;
 

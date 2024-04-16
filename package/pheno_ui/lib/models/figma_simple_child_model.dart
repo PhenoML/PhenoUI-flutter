@@ -1,6 +1,6 @@
-import 'package:pheno_ui/models/figma_parent_layout_model.dart';
+import '../models/figma_node_model.dart';
 
-class FigmaSimpleChildModel extends FigmaParentLayoutModel {
+class FigmaSimpleChildModel extends FigmaNodeModel {
   final Map<String, dynamic> child;
 
   FigmaSimpleChildModel.fromJson(Map<String, dynamic> json):

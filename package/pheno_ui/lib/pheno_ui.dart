@@ -11,6 +11,7 @@ import 'widgets/figma_node.dart';
 
 export 'interface/screens.dart';
 export 'interface/strapi.dart';
+import 'interface/log.dart';
 
 typedef FigmaNodeFactory = FigmaNode Function(Map<String, dynamic>);
 
@@ -65,6 +66,7 @@ class PhenoUi {
     if (_nodeTypeMap.containsKey(type)) {
       return _nodeTypeMap[type]!(json);
     }
+    logger.e('Unknown figma node type: $type');
     return _MissingType.fromJson(json);
   }
 

@@ -1,6 +1,6 @@
 import '../models/figma_node_model.dart';
 import '../parsers/tools/figma_enum.dart';
-import 'fimga_image_model.dart';
+import 'figma_image_model.dart';
 
 class FigmaLottieAnimationModel extends FigmaNodeModel {
   final double opacity;

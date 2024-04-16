@@ -1,6 +1,7 @@
 library pheno_ui;
 
 import 'package:flutter/widgets.dart';
+import 'package:pheno_ui/widgets/figma_frame.dart';
 
 import 'widgets/figma_node.dart';
 
@@ -30,7 +31,7 @@ class PhenoUi {
       _instance = PhenoUi._internal();
 
       Map<String, FigmaNodeFactory> defaultNodeTypes = {
-        // ...
+        'figma-frame': FigmaFrame.fromJson,
       };
 
       // merge the parsers giving priority to the ones passed as argument

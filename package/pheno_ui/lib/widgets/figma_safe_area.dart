@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:pheno_ui/widgets/figma_frame.dart';
+import '../models/figma_frame_model.dart';
+import 'figma_frame.dart';
 
 class FigmaSafeArea extends FigmaFrame {
   const FigmaSafeArea({
@@ -9,7 +10,7 @@ class FigmaSafeArea extends FigmaFrame {
   });
 
   static FigmaFrame fromJson(Map<String, dynamic> json) {
-    return FigmaFrame.fromJson(json, FigmaSafeArea.new);
+    return figmaFrameFromJson(json, FigmaSafeArea.new, FigmaFrameModel.fromJson);
   }
 
   @override

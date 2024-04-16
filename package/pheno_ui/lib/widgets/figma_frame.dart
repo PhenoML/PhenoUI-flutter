@@ -105,13 +105,25 @@ Widget? _buildChildrenContainer(List<Widget> children, FigmaFrameModel model) {
   }
 }
 
-typedef FigmaFrameConstructor<T extends FigmaFrame> = T Function({
+typedef FigmaFrameConstructor<F extends FigmaFrame, M extends FigmaFrameModel> = F Function({
   required Widget? childrenContainer,
-  required FigmaFrameModel model,
+  required M model,
   Key? key,
 });
 
-class FigmaFrame extends StatelessFigmaNode<FigmaFrameModel> {
+typedef FigmaFrameModelGetter<M extends FigmaFrameModel> = M Function(Map<String, dynamic> json);
+
+F figmaFrameFromJson<F extends FigmaFrame, M extends FigmaFrameModel>(
+  Map<String, dynamic> json,
+  FigmaFrameConstructor<F, M> constructor,
+  FigmaFrameModelGetter<M> modelGetter,
+) {
+  final M model = modelGetter(json);
+  Widget? childrenContainer = _buildChildrenContainer(model.children, model);
+  return constructor(model: model, childrenContainer: childrenContainer);
+}
+
+class FigmaFrame<T extends FigmaFrameModel> extends StatelessFigmaNode<T> {
   final Widget? childrenContainer;
 
   const FigmaFrame({
@@ -120,10 +132,8 @@ class FigmaFrame extends StatelessFigmaNode<FigmaFrameModel> {
     super.key
   });
 
-  static FigmaFrame fromJson(Map<String, dynamic> json, [FigmaFrameConstructor constructor = FigmaFrame.new]) {
-    final FigmaFrameModel model = FigmaFrameModel.fromJson(json);
-    Widget? childrenContainer = _buildChildrenContainer(model.children, model);
-    return constructor(model: model, childrenContainer: childrenContainer);
+  static FigmaFrame fromJson(Map<String, dynamic> json) {
+    return figmaFrameFromJson(json, FigmaFrame.new, FigmaFrameModel.fromJson);
   }
 
   @override

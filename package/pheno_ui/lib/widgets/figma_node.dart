@@ -1,15 +1,16 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pheno_ui/models/figma_dimensions_model.dart';
 
 import '../models/figma_node_model.dart';
 import '../parsers/figma_component.dart';
 
 mixin FigmaNode on Widget {
   FigmaNodeModel get model;
-  get info => model.info;
-  get opacity => model.style?.opacity ?? 1.0;
-  get dimensions => model.dimensions?.self;
+  FigmaNodeInfoModel get info => model.info;
+  double get opacity => model.style?.opacity ?? 1.0;
+  FigmaDimensionsSelfModel? get dimensions => model.dimensions?.self;
 }
 
 bool isFigmaNodeVisible(BuildContext context, FigmaNodeModel model) {
@@ -32,7 +33,7 @@ abstract class StatelessFigmaNode<T extends FigmaNodeModel> extends StatelessWid
   });
 
   static StatelessFigmaNode fromJson(Map<String, dynamic> json) {
-    throw UnimplementedError('sub classes of StatelessFigmaNode must implement a factory constructor `fromJson`');
+    throw UnimplementedError('sub classes of StatelessFigmaNode must implement static function `fromJson`');
   }
 
   @override
@@ -65,7 +66,7 @@ abstract class StatefulFigmaNode<T extends FigmaNodeModel> extends StatefulWidge
   });
 
   static StatefulFigmaNode fromJson(Map<String, dynamic> json) {
-    throw UnimplementedError('sub classes of StatefulFigmaNode must implement a factory constructor `fromJson`');
+    throw UnimplementedError('sub classes of StatefulFigmaNode must implement static function `fromJson`');
   }
 
   @override

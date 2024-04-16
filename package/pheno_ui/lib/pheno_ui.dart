@@ -60,4 +60,11 @@ class PhenoUi {
     // TODO: Return a default widget
     throw Exception('No parser found for type $type');
   }
+
+  List<FigmaNode> fromJsonList(List<dynamic>? json) {
+    if (json == null) {
+      return [];
+    }
+    return json.map((e) => fromJson(e as Map<String, dynamic>)).toList();
+  }
 }

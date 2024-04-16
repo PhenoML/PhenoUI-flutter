@@ -1,9 +1,11 @@
+import 'package:flutter/widgets.dart';
+import 'package:pheno_ui/pheno_ui.dart';
 import '../models/figma_node_model.dart';
 
 class FigmaSimpleChildModel extends FigmaNodeModel {
-  final Map<String, dynamic> child;
+  final Widget child;
 
   FigmaSimpleChildModel.fromJson(Map<String, dynamic> json):
-      child = json['child'] as Map<String, dynamic>,
+      child = PhenoUi().fromJson(json['child']),
       super.fromJson(json);
 }

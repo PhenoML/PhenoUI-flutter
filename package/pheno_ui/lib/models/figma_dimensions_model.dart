@@ -77,6 +77,29 @@ class FigmaDimensionsModel {
   final double rotation;
   final FigmaDimensionsConstraints constraints;
 
+  FigmaDimensionsModel.copy(FigmaDimensionsModel other, {
+    double? x,
+    double? y,
+    double? width,
+    double? height,
+    FigmaDimensionsPositioning? positioning,
+    BoxConstraints? sizeConstraints,
+    FigmaDimensionsSizing? widthMode,
+    FigmaDimensionsSizing? heightMode,
+    double? rotation,
+    FigmaDimensionsConstraints? constraints,
+  }):
+    x = x ?? other.x,
+    y = y ?? other.y,
+    width = width ?? other.width,
+    height = height ?? other.height,
+    positioning = positioning ?? other.positioning,
+    sizeConstraints = sizeConstraints ?? other.sizeConstraints,
+    widthMode = widthMode ?? other.widthMode,
+    heightMode = heightMode ?? other.heightMode,
+    rotation = rotation ?? other.rotation,
+    constraints = constraints ?? other.constraints;
+
   FigmaDimensionsModel._fromJson(Map<String, dynamic> json):
     x = json['x'].toDouble(),
     y = json['y'].toDouble(),

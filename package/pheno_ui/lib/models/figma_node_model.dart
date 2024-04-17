@@ -14,6 +14,11 @@ class FigmaNodeInfoModel {
   FigmaNodeInfoModel.fromJson(Map<String, dynamic> json):
     name = json['name'],
     id = json['id'];
+
+  @override
+  String toString() {
+    return 'FigmaNodeInfoModel(name: $name, id: $id)';
+  }
 }
 
 class FigmaNodeModel {

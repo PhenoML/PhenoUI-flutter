@@ -4,7 +4,7 @@ import '../models/figma_component_model.dart';
 import '../models/figma_dimensions_model.dart';
 import '../tools/figma_user_data.dart';
 import 'figma_component_variant.dart';
-import 'figma_node.dart';
+import 'stateful_figma_node.dart';
 
 typedef FigmaComponentModelGetter<M extends FigmaComponentModel> = M Function(Map<String, dynamic> json);
 typedef FigmaComponentStateCreator<S extends FigmaComponentState> = S Function();

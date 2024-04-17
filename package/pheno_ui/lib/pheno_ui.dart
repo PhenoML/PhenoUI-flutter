@@ -16,6 +16,7 @@ import 'widgets/figma_node.dart';
 export 'interface/screens.dart';
 export 'interface/strapi.dart';
 import 'interface/log.dart';
+import 'widgets/stateless_figma_node.dart';
 
 typedef FigmaNodeFactory = FigmaNode Function(Map<String, dynamic>);
 

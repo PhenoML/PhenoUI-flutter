@@ -8,6 +8,7 @@ import '../layout/figma_frame_layout_none.dart';
 import '../models/figma_dimensions_model.dart';
 import '../models/figma_layout_model.dart';
 import 'figma_node.dart';
+import 'stateless_figma_node.dart';
 
 Widget? _buildNoneContainer(FigmaDimensionsModel dimensions, List<Widget> children) {
   if (children.isEmpty) {

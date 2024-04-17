@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
-import 'package:pheno_ui/models/figma_node_model.dart';
-import 'package:pheno_ui/models/figma_simple_child_model.dart';
-import 'package:pheno_ui/widgets/figma_node.dart';
+import '../models/figma_simple_child_model.dart';
+import 'stateless_figma_node.dart';
 
 class FigmaScrollView extends StatelessFigmaNode<FigmaSimpleChildModel> {
   const FigmaScrollView({ required super.model, super.key });

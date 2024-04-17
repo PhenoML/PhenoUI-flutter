@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import '../tools/figma_enum.dart';
 import '../models/figma_simple_style_model.dart';
-import 'figma_node.dart';
+import 'stateless_figma_node.dart';
 
 class FigmaRectangle extends StatelessFigmaNode<FigmaSimpleStyleModel> {
   const FigmaRectangle({ required super.model, super.key });

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../tools/figma_enum.dart';
 import '../models/figma_text_model.dart';
 import 'figma_component.dart';
-import 'figma_node.dart';
+import 'stateless_figma_node.dart';
 
 class FigmaText extends StatelessFigmaNode<FigmaTextModel> {
   const FigmaText({required super.model, super.key});

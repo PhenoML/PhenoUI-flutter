@@ -4,7 +4,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_svg/svg.dart';
 import '../interface/screens.dart';
 import '../models/figma_image_model.dart';
-import 'figma_node.dart';
+import 'stateless_figma_node.dart';
 
 class FigmaImage extends StatelessFigmaNode<FigmaImageModel> {
   const FigmaImage({ required super.model, super.key });

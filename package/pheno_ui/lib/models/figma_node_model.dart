@@ -6,7 +6,7 @@ class FigmaNodeInfoModel {
   final String? name;
   final String? id;
 
-  FigmaNodeInfoModel({
+  const FigmaNodeInfoModel({
     required this.name,
     required this.id,
   });
@@ -24,7 +24,7 @@ class FigmaNodeModel {
   final Map<String, dynamic>? componentRefs;
   final FigmaUserData userData;
 
-  FigmaNodeModel({
+  const FigmaNodeModel({
     required this.type,
     required this.userData,
     required this.info,

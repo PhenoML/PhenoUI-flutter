@@ -9,7 +9,7 @@ class FigmaSafeArea extends FigmaFrame {
     super.key
   });
 
-  static FigmaFrame fromJson(Map<String, dynamic> json) {
+  static FigmaSafeArea fromJson(Map<String, dynamic> json) {
     return figmaFrameFromJson(json, FigmaSafeArea.new, FigmaFrameModel.fromJson);
   }
 

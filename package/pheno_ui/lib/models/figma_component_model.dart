@@ -1,11 +1,10 @@
-import 'figma_dimensions_model.dart';
-import 'figma_layout_model.dart';
+import '../widgets/figma_component_variant.dart';
 import 'figma_node_model.dart';
 
 class FigmaComponentModel extends FigmaNodeModel {
   final String widgetType;
 
-  FigmaComponentModel({
+  const FigmaComponentModel({
     required this.widgetType,
     required super.type,
     required super.userData,
@@ -14,7 +13,13 @@ class FigmaComponentModel extends FigmaNodeModel {
     super.componentRefs,
   });
 
-  FigmaComponentModel.fromJson(Map<String, dynamic> json):
-    widgetType = json['widgetType'],
+  FigmaComponentModel._fromJson(Map<String, dynamic> json, { required this.widgetType }):
     super.fromJson(json);
+
+  factory FigmaComponentModel.fromJson(Map<String, dynamic> json) {
+    return FigmaComponentModel._fromJson(
+        json,
+        widgetType: json['widgetType'],
+    );
+  }
 }

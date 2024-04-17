@@ -8,13 +8,13 @@ import 'figma_frame.dart';
 
 class FigmaNavButton extends FigmaFrame<FigmaNavButtonModel> {
   const FigmaNavButton({
-    required super.childrenContainer,
     required super.model,
+    super.childrenContainer,
     super.key
   });
 
   static FigmaNavButton fromJson(Map<String, dynamic> json) {
-    return figmaFrameFromJson(json, FigmaNavButton.new, FigmaNavButtonModel.fromJson);
+    return FigmaFrame.fromJson(json, FigmaNavButton.new, FigmaNavButtonModel.fromJson);
   }
 
   @override

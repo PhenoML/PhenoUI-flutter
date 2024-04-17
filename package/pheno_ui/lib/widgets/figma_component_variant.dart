@@ -5,12 +5,12 @@ class FigmaComponentVariant extends FigmaFrame<FigmaComponentVariantModel> {
   Map<String, dynamic> get variantProperties => model.variantProperties;
 
   const FigmaComponentVariant({
-    required super.childrenContainer,
     required super.model,
+    super.childrenContainer,
     super.key
   });
 
   static FigmaComponentVariant fromJson(Map<String, dynamic> json) {
-    return figmaFrameFromJson(json, FigmaComponentVariant.new, FigmaComponentVariantModel.fromJson);
+    return FigmaFrame.fromJson(json, FigmaComponentVariant.new, FigmaComponentVariantModel.fromJson);
   }
 }

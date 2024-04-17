@@ -106,39 +106,46 @@ Widget? _buildChildrenContainer(List<Widget> children, FigmaFrameModel model) {
   }
 }
 
-typedef FigmaFrameConstructor<F extends FigmaFrame, M extends FigmaFrameModel> = F Function({
-  required Widget? childrenContainer,
+typedef FigmaFrameConstructor<F extends FigmaNode, M extends FigmaFrameModel> = F Function({
   required M model,
+  Widget? childrenContainer,
   Key? key,
 });
 
 typedef FigmaFrameModelGetter<M extends FigmaFrameModel> = M Function(Map<String, dynamic> json);
 
-F figmaFrameFromJson<F extends FigmaFrame, M extends FigmaFrameModel>(
-  Map<String, dynamic> json,
-  FigmaFrameConstructor<F, M> constructor,
-  FigmaFrameModelGetter<M> modelGetter,
-) {
-  final M model = modelGetter(json);
-  Widget? childrenContainer = _buildChildrenContainer(model.children, model);
-  return constructor(model: model, childrenContainer: childrenContainer);
-}
-
 class FigmaFrame<T extends FigmaFrameModel> extends StatelessFigmaNode<T> {
   final Widget? childrenContainer;
 
   const FigmaFrame({
-    required this.childrenContainer,
     required super.model,
+    this.childrenContainer,
     super.key
   });
 
-  static FigmaFrame fromJson(Map<String, dynamic> json) {
-    return figmaFrameFromJson(json, FigmaFrame.new, FigmaFrameModel.fromJson);
+  static F fromJson<F extends FigmaNode, M extends FigmaFrameModel>(
+    Map<String, dynamic> json,
+    [
+      FigmaFrameConstructor<F, M>? constructor,
+      FigmaFrameModelGetter<M>? modelGetter
+    ]
+  ) {
+    final M model = modelGetter == null ?
+      FigmaFrameModel.fromJson(json) as M :
+      modelGetter(json);
+
+    Widget? childrenContainer = _buildChildrenContainer(model.children, model);
+
+    return constructor == null ?
+      FigmaFrame(model: model, childrenContainer: childrenContainer) as F:
+      constructor(model: model, childrenContainer: childrenContainer);
   }
 
-  @override
-  Widget buildFigmaNode(BuildContext context) {
+  static Widget buildFigmaFrame<M extends FigmaFrameModel>(
+    BuildContext context,
+    M model,
+    Widget? childrenContainer
+  ) {
     var padding = model.layout.mode == FigmaLayoutMode.none ? null : model.layout.padding;
     var border = model.style.border;
     var blend = model.style.color == null ? null : BlendMode.values.convertDefault(model.style.blendMode, BlendMode.srcOver);
@@ -156,4 +163,8 @@ class FigmaFrame<T extends FigmaFrameModel> extends StatelessFigmaNode<T> {
     );
   }
 
+  @override
+  Widget buildFigmaNode(BuildContext context) {
+    return buildFigmaFrame(context, model, childrenContainer);
+  }
 }

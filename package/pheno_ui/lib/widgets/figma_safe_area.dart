@@ -4,13 +4,13 @@ import 'figma_frame.dart';
 
 class FigmaSafeArea extends FigmaFrame {
   const FigmaSafeArea({
-    required super.childrenContainer,
     required super.model,
+    super.childrenContainer,
     super.key
   });
 
   static FigmaSafeArea fromJson(Map<String, dynamic> json) {
-    return figmaFrameFromJson(json, FigmaSafeArea.new, FigmaFrameModel.fromJson);
+    return FigmaFrame.fromJson(json, FigmaSafeArea.new, FigmaFrameModel.fromJson);
   }
 
   @override

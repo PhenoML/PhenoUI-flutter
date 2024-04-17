@@ -1,6 +1,7 @@
 library pheno_ui;
 
 import 'package:flutter/widgets.dart';
+import 'widgets/figma_component.dart';
 import 'widgets/figma_frame.dart';
 import 'widgets/figma_image.dart';
 import 'widgets/figma_nav_button.dart';
@@ -44,6 +45,7 @@ class PhenoUi {
         'figma-image': FigmaImage.fromJson,
         'figma-safe-area': FigmaSafeArea.fromJson,
         'figma-nav-button': FigmaNavButton.fromJson,
+        'figma-component-instance': FigmaComponent.fromJson,
       };
 
       // merge the parsers giving priority to the ones passed as argument

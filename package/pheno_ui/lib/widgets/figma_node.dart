@@ -4,7 +4,6 @@ import 'package:flutter/widgets.dart';
 import 'package:pheno_ui/models/figma_dimensions_model.dart';
 
 import '../models/figma_node_model.dart';
-import '../parsers/figma_component.dart';
 import 'figma_component.dart';
 
 mixin FigmaNode on Widget {

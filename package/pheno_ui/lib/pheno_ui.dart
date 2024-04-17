@@ -5,6 +5,7 @@ import 'widgets/figma_component.dart';
 import 'widgets/figma_frame.dart';
 import 'widgets/figma_image.dart';
 import 'widgets/figma_nav_button.dart';
+import 'widgets/figma_rectangle.dart';
 import 'widgets/figma_safe_area.dart';
 import 'widgets/figma_scroll_view.dart';
 import 'widgets/figma_text.dart';
@@ -46,6 +47,7 @@ class PhenoUi {
         'figma-safe-area': FigmaSafeArea.fromJson,
         'figma-nav-button': FigmaNavButton.fromJson,
         'figma-component-instance': FigmaComponent.fromJson,
+        'figma-rectangle': FigmaRectangle.fromJson,
       };
 
       // merge the parsers giving priority to the ones passed as argument

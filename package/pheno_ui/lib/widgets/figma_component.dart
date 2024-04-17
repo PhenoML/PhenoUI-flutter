@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import '../models/figma_node_model.dart';
 import '../interface/screens.dart';
 import '../models/figma_component_model.dart';
 import '../models/figma_dimensions_model.dart';
@@ -44,6 +45,37 @@ class FigmaComponent<T extends FigmaComponentModel, S extends FigmaComponentStat
 
   static FigmaComponent fromJson(Map<String, dynamic> json) {
     return figmaComponentFromJson(json, FigmaComponent.new, FigmaComponentModel.fromJson, FigmaComponentState.new);
+  }
+
+  static Future<FigmaComponent> instance<T extends FigmaComponentState>({
+    required String component,
+    T Function()? stateNew,
+    Key? key,
+    Map<String, dynamic>? arguments,
+  }) async  {
+    var spec = await FigmaScreens().provider!.loadComponentSpec(component);
+    var userData = FigmaUserData(spec.arguments);
+
+    if (arguments != null) {
+      for (var entry in arguments.entries) {
+        userData.set(entry.key, entry.value);
+      }
+    }
+
+    var info = FigmaNodeInfoModel(name: component, id: UniqueKey().toString());
+
+    var model = FigmaComponentModel(
+      type: 'figma-component-instance',
+      info: info,
+      widgetType: component,
+      userData: userData,
+    );
+
+    return FigmaComponent(
+      stateNew: stateNew ?? FigmaComponentState.new,
+      model: model,
+      key: key
+    );
   }
 
   @override

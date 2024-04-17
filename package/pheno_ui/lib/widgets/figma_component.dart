@@ -1,9 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:pheno_ui/models/figma_node_model.dart';
 import '../interface/screens.dart';
 import '../models/figma_component_model.dart';
 import '../models/figma_dimensions_model.dart';
-import '../parsers/tools/figma_user_data.dart';
+import '../tools/figma_user_data.dart';
 import 'figma_component_variant.dart';
 import 'figma_node.dart';
 

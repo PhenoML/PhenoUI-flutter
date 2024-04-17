@@ -1,5 +1,5 @@
 import '../models/figma_node_model.dart';
-import '../parsers/tools/figma_enum.dart';
+import '../tools/figma_enum.dart';
 import 'figma_image_model.dart';
 
 class FigmaLottieAnimationModel extends FigmaNodeModel {

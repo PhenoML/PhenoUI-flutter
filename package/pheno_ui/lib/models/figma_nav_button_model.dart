@@ -1,4 +1,4 @@
-import '../parsers/tools/figma_enum.dart';
+import '../tools/figma_enum.dart';
 import 'figma_frame_model.dart';
 
 enum FigmaNavButtonAction with FigmaEnum {

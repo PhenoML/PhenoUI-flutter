@@ -1,5 +1,5 @@
-import 'package:pheno_ui/models/figma_style_model.dart';
-import 'package:pheno_ui/parsers/tools/figma_user_data.dart';
+import '../tools/figma_user_data.dart';
+import 'figma_style_model.dart';
 import 'figma_dimensions_model.dart';
 
 class FigmaNodeInfoModel {

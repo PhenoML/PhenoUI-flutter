@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../parsers/tools/figma_enum.dart';
+import '../tools/figma_enum.dart';
 import '../models/figma_text_model.dart';
 import 'figma_component.dart';
 import 'figma_node.dart';

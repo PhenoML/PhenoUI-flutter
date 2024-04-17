@@ -2,8 +2,8 @@ import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 import 'package:pheno_ui/models/figma_frame_model.dart';
-import '../parsers/tools/figma_dimensions.dart';
-import '../parsers/tools/figma_enum.dart';
+import '../tools/figma_dimensions.dart';
+import '../tools/figma_enum.dart';
 import '../layout/figma_frame_layout_none.dart';
 import '../models/figma_dimensions_model.dart';
 import '../models/figma_layout_model.dart';

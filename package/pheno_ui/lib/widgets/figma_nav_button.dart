@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-import '../parsers/tools/figma_enum.dart';
+import '../tools/figma_enum.dart';
 import '../models/figma_nav_button_model.dart';
 import '../animation/transition_animation.dart';
 import '../interface/route_arguments.dart';

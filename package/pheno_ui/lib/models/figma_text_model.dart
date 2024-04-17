@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../parsers/tools/figma_enum.dart';
+import '../tools/figma_enum.dart';
 import 'figma_node_model.dart';
 
 /// The horizontal alignment of the text with respect to the textbox. Setting

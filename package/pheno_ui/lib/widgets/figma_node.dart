@@ -5,6 +5,7 @@ import 'package:pheno_ui/models/figma_dimensions_model.dart';
 
 import '../models/figma_node_model.dart';
 import '../parsers/figma_component.dart';
+import 'figma_component.dart';
 
 mixin FigmaNode on Widget {
   FigmaNodeModel get model;
@@ -14,12 +15,12 @@ mixin FigmaNode on Widget {
 }
 
 bool isFigmaNodeVisible(BuildContext context, FigmaNodeModel model) {
-  // if (model.componentRefs != null && model.componentRefs!.containsKey('visible')) {
-  //   var data = FigmaComponentData.maybeOf(context);
-  //   if (data != null) {
-  //     return data.userData.maybeGet(model.componentRefs!['visible']) ?? true;
-  //   }
-  // }
+  if (model.componentRefs != null && model.componentRefs!.containsKey('visible')) {
+    var data = FigmaComponentData.maybeOf(context);
+    if (data != null) {
+      return data.userData.maybeGet(model.componentRefs!['visible']) ?? true;
+    }
+  }
   return true;
 }
 

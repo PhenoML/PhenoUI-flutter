@@ -1,7 +1,5 @@
-
-
-import 'package:flutter/cupertino.dart';
-import 'package:pheno_ui/parsers/figma_component.dart';
+import 'package:flutter/widgets.dart';
+import '../../widgets/figma_component.dart';
 
 class FigmaUserData {
   final Map<String, dynamic>? map;

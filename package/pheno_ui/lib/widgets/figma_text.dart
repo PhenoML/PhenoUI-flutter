@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../parsers/tools/figma_enum.dart';
 import '../models/figma_text_model.dart';
+import 'figma_component.dart';
 import 'figma_node.dart';
 
 class FigmaText extends StatelessFigmaNode<FigmaTextModel> {
@@ -12,17 +13,16 @@ class FigmaText extends StatelessFigmaNode<FigmaTextModel> {
   }
 
   List<FigmaTextSegmentModel> getTextSegments(BuildContext context, FigmaTextModel model) {
-    // TODO: Uncomment once FigmaComponentData is implemented
-    // if (model.componentRefs != null &&
-    //     model.componentRefs!.containsKey('characters')) {
-    //   String key = model.componentRefs!['characters']!;
-    //   var data = FigmaComponentData.of(context);
-    //   var characters = data.userData.maybeGet(key);
-    //   if (characters is String) {
-    //     var segment = model.segments.first;
-    //     return [FigmaTextSegmentModel.copy(segment, characters: characters)];
-    //   }
-    // }
+    if (model.componentRefs != null &&
+        model.componentRefs!.containsKey('characters')) {
+      String key = model.componentRefs!['characters']!;
+      var data = FigmaComponentData.of(context);
+      var characters = data.userData.maybeGet(key);
+      if (characters is String) {
+        var segment = model.segments.first;
+        return [FigmaTextSegmentModel.copy(segment, characters: characters)];
+      }
+    }
     return model.segments;
   }
 

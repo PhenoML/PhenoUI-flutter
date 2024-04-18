@@ -1,4 +1,3 @@
-import '../widgets/figma_component_variant.dart';
 import 'figma_node_model.dart';
 
 class FigmaComponentModel extends FigmaNodeModel {

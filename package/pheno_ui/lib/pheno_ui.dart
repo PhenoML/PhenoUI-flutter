@@ -7,6 +7,7 @@ import 'widgets/figma_component.dart';
 import 'widgets/figma_form.dart';
 import 'widgets/figma_frame.dart';
 import 'widgets/figma_image.dart';
+import 'widgets/figma_keep_aspect_ratio.dart';
 import 'widgets/figma_lottie_animation.dart';
 import 'widgets/figma_nav_button.dart';
 import 'widgets/figma_props_from_route.dart';
@@ -65,6 +66,7 @@ class PhenoUi {
         'figma-text-from-route': FigmaTextFromRoute.fromJson,
         'figma-props-from-route': FigmaPropsFromRoute.fromJson,
         'figma-lottie-animation': FigmaLottieAnimation.fromJson,
+        'figma-keep-aspect-ratio': FigmaKeepAspectRatio.fromJson,
       };
 
       // merge the parsers giving priority to the ones passed as argument

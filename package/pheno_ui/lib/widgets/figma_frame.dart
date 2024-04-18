@@ -46,7 +46,7 @@ Widget? _buildChildrenContainer(List<Widget> children, FigmaFrameModel model) {
 
   children = children.map((c) {
     if (c is FigmaNode && c.model.dimensions != null) {
-      return dimensionWrapWidget(c, c.model.dimensions!, model.layout.mode);
+      return dimensionWrapWidget(c, c.model.dimensions!, model.layout);
     }
     return c;
   }).toList();

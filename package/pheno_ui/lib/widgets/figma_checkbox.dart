@@ -49,7 +49,6 @@ class FigmaCheckboxState extends FigmaComponentState {
 
     return GestureDetector(
       onTap: () {
-        print('onTap ${widget.model.info.name}');
         checked = !checked;
       },
       child: super.buildFigmaNode(context),

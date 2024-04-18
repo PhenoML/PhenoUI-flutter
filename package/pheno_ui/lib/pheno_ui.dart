@@ -19,6 +19,7 @@ import 'widgets/figma_text.dart';
 import 'interface/log.dart';
 import 'widgets/figma_text_field.dart';
 import 'widgets/figma_text_from_route.dart';
+import 'widgets/figma_tile_child.dart';
 import 'widgets/figma_web_view.dart';
 import 'widgets/stateless_figma_node.dart';
 import 'models/figma_node_model.dart';
@@ -67,6 +68,7 @@ class PhenoUi {
         'figma-props-from-route': FigmaPropsFromRoute.fromJson,
         'figma-lottie-animation': FigmaLottieAnimation.fromJson,
         'figma-keep-aspect-ratio': FigmaKeepAspectRatio.fromJson,
+        'figma-tile-child': FigmaTileChild.fromJson,
       };
 
       // merge the parsers giving priority to the ones passed as argument

@@ -192,12 +192,15 @@ class FigmaComponentData extends InheritedWidget {
 
   const FigmaComponentData({required this.userData, required super.child, super.key});
 
-  static FigmaComponentData? maybeOf(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<FigmaComponentData>();
+  static FigmaComponentData? maybeOf(BuildContext context, { bool listen = true }) {
+    if (listen) {
+      return context.dependOnInheritedWidgetOfExactType<FigmaComponentData>();
+    }
+    return context.getInheritedWidgetOfExactType<FigmaComponentData>();
   }
 
-  static FigmaComponentData of(BuildContext context) {
-    final FigmaComponentData? result = maybeOf(context);
+  static FigmaComponentData of(BuildContext context, { bool listen = true }) {
+    final FigmaComponentData? result = maybeOf(context, listen: listen);
     assert(result != null, 'No FigmaComponentData found in context');
     return result!;
   }

@@ -34,10 +34,8 @@ class FigmaTextFieldState extends StatefulFigmaNodeState<FigmaTextField> {
   @override
   Widget buildFigmaNode(BuildContext context) {
     // if this text field belongs to a form, check if it should be displayed
-    if (form != null) {
-      if (!form!.shouldDisplayInput(_id)) {
-        return const SizedBox();
-      }
+    if (form != null && !form!.shouldDisplayInput(_id)) {
+      return const SizedBox();
     }
 
     var modelSegments = FigmaText.getTextSegments(context, widget.model);

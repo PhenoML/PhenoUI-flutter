@@ -33,19 +33,19 @@ class FigmaUserData {
     map![key] = value;
   }
 
-  T get<T>(String key, { BuildContext? context }) {
+  T get<T>(String key, { BuildContext? context, bool listen = true }) {
     if (map == null) {
       throw 'User data map is null';
     }
 
-    var value = maybeGet(key, context: context);
+    var value = maybeGet(key, context: context, listen: listen);
     if (value == null) {
       throw 'Key not found: $key';
     }
     return value as T;
   }
 
-  T? maybeGet<T>(String key, { BuildContext? context }) {
+  T? maybeGet<T>(String key, { BuildContext? context, bool listen = true }) {
     if (map == null) {
       return null;
     }
@@ -56,7 +56,7 @@ class FigmaUserData {
         if (context == null) {
           throw 'Context is required to parse a component';
         }
-        var data = FigmaComponentData.maybeOf(context);
+        var data = FigmaComponentData.maybeOf(context, listen: listen);
         if (data == null) {
           throw 'FigmaComponentData not found in context';
         }

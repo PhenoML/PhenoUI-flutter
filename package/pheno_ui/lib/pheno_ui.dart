@@ -1,6 +1,7 @@
 library pheno_ui;
 
 import 'package:flutter/widgets.dart';
+import 'widgets/figma_checkbox.dart';
 import 'widgets/figma_component.dart';
 import 'widgets/figma_form.dart';
 import 'widgets/figma_frame.dart';
@@ -55,6 +56,7 @@ class PhenoUi {
         'figma-rectangle': FigmaRectangle.fromJson,
         'figma-form': FigmaForm.fromJson,
         'figma-submit-button': FigmaSubmitButton.fromJson,
+        'figma-checkbox': FigmaCheckbox.fromJson,
       };
 
       // merge the parsers giving priority to the ones passed as argument

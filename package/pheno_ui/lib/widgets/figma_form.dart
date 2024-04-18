@@ -118,13 +118,6 @@ class FigmaFormState extends StatefulFigmaNodeState<FigmaForm> {
 
   @override
   Widget buildFigmaNode(BuildContext context) {
-    Navigator.of(context);
-    return NotificationListener<FigmaFormNotification>(
-      onNotification: (notification) {
-        print(notification);
-        return true;
-      },
-      child: FigmaFrame.buildFigmaFrame(context, widget.model, widget.childrenContainer),
-    );
+    return FigmaFrame.buildFigmaFrame(context, widget.model, widget.childrenContainer);
   }
 }

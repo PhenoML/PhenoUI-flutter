@@ -7,6 +7,7 @@ import 'widgets/figma_component.dart';
 import 'widgets/figma_form.dart';
 import 'widgets/figma_frame.dart';
 import 'widgets/figma_image.dart';
+import 'widgets/figma_lottie_animation.dart';
 import 'widgets/figma_nav_button.dart';
 import 'widgets/figma_props_from_route.dart';
 import 'widgets/figma_rectangle.dart';
@@ -63,6 +64,7 @@ class PhenoUi {
         'figma-web-view': FigmaWebView.fromJson,
         'figma-text-from-route': FigmaTextFromRoute.fromJson,
         'figma-props-from-route': FigmaPropsFromRoute.fromJson,
+        'figma-lottie-animation': FigmaLottieAnimation.fromJson,
       };
 
       // merge the parsers giving priority to the ones passed as argument

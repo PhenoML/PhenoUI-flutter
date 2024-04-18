@@ -5,16 +5,15 @@ import '../models/figma_node_model.dart';
 import 'figma_node.dart';
 
 abstract class StatelessFigmaNode<T extends FigmaNodeModel> extends StatelessWidget with FigmaNode {
-  final void Function(BuildContext context)? onMount;
-
   @override
   final T model;
 
   const StatelessFigmaNode({
     required this.model,
-    this.onMount,
     super.key
   });
+
+  void onMount(BuildContext context) { /* nothing */ }
 
   @override
   createElement() => StatelessFigmaNodeElement(this);
@@ -51,9 +50,7 @@ class StatelessFigmaNodeElement extends StatelessElement {
     super.mount(parent, newSlot);
     if (widget is StatelessFigmaNode) {
       StatelessFigmaNode figmaNode = widget as StatelessFigmaNode;
-      if (figmaNode.onMount != null) {
-        figmaNode.onMount!(this);
-      }
+      figmaNode.onMount(this);
     }
   }
 }

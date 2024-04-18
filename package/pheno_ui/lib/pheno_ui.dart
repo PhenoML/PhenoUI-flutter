@@ -8,6 +8,7 @@ import 'widgets/figma_form.dart';
 import 'widgets/figma_frame.dart';
 import 'widgets/figma_image.dart';
 import 'widgets/figma_nav_button.dart';
+import 'widgets/figma_props_from_route.dart';
 import 'widgets/figma_rectangle.dart';
 import 'widgets/figma_safe_area.dart';
 import 'widgets/figma_scroll_view.dart';
@@ -61,6 +62,7 @@ class PhenoUi {
         'figma-checkbox': FigmaCheckbox.fromJson,
         'figma-web-view': FigmaWebView.fromJson,
         'figma-text-from-route': FigmaTextFromRoute.fromJson,
+        'figma-props-from-route': FigmaPropsFromRoute.fromJson,
       };
 
       // merge the parsers giving priority to the ones passed as argument

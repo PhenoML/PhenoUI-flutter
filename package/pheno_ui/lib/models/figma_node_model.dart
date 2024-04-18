@@ -1,28 +1,38 @@
-import 'package:pheno_ui/models/figma_style_model.dart';
-import 'package:pheno_ui/parsers/tools/figma_user_data.dart';
+import '../tools/figma_user_data.dart';
+import 'figma_style_model.dart';
 import 'figma_dimensions_model.dart';
 
 class FigmaNodeInfoModel {
   final String? name;
   final String? id;
 
+  const FigmaNodeInfoModel({
+    required this.name,
+    required this.id,
+  });
+
   FigmaNodeInfoModel.fromJson(Map<String, dynamic> json):
     name = json['name'],
     id = json['id'];
+
+  @override
+  String toString() {
+    return 'FigmaNodeInfoModel(name: $name, id: $id)';
+  }
 }
 
 class FigmaNodeModel {
   final String type;
-  final FigmaNodeInfoModel? info;
+  final FigmaNodeInfoModel info;
   final FigmaDimensionsModel? dimensions;
   final FigmaStyleModel? style;
   final Map<String, dynamic>? componentRefs;
   final FigmaUserData userData;
 
-  FigmaNodeModel({
+  const FigmaNodeModel({
     required this.type,
     required this.userData,
-    this.info,
+    required this.info,
     this.dimensions,
     this.style,
     this.componentRefs,
@@ -30,7 +40,7 @@ class FigmaNodeModel {
 
   FigmaNodeModel.fromJson(Map<String, dynamic> json):
     type = json['type'],
-    info = json.containsKey('__info') ? FigmaNodeInfoModel.fromJson(json['__info']) : null,
+    info = FigmaNodeInfoModel.fromJson(json['__info']),
     dimensions = json.containsKey('dimensions') ? FigmaDimensionsModel.fromJson(json['dimensions']) : null,
     style = json.containsKey('style') ? FigmaStyleModel.fromJson(json['style']) : null,
     componentRefs = json['componentRefs'],

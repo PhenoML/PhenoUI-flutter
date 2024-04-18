@@ -1,8 +1,8 @@
 import 'package:flutter/widgets.dart';
-import 'package:pheno_ui/animation/multi_tween.dart';
-import 'package:pheno_ui/animation/transition_player.dart';
-import 'package:pheno_ui/interface/route_arguments.dart';
-import 'package:pheno_ui/parsers/tools/figma_enum.dart';
+import 'multi_tween.dart';
+import 'transition_player.dart';
+import '../interface/route_arguments.dart';
+import '../tools/figma_enum.dart';
 
 class TransitionAnimation {
   final MultiTween primary;

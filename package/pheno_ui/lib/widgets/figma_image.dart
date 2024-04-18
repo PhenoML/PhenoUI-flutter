@@ -1,22 +1,18 @@
 import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:mirai/mirai.dart';
-import 'package:pheno_ui/widgets/figma_node.dart';
+
+import 'package:flutter/widgets.dart';
+import 'package:flutter_svg/svg.dart';
 import '../interface/screens.dart';
-import './tools/figma_dimensions.dart';
+import '../models/figma_image_model.dart';
+import 'stateless_figma_node.dart';
 
-import '../models/fimga_image_model.dart';
+class FigmaImage extends StatelessFigmaNode<FigmaImageModel> {
+  const FigmaImage({ required super.model, super.key });
 
-class FigmaImageParser extends MiraiParser<FigmaImageModel> {
-  const FigmaImageParser();
-
-  @override
-  FigmaImageModel getModel(Map<String, dynamic> json) =>
-      FigmaImageModel.fromJson(json);
-
-  @override
-  String get type => 'figma-image';
+  static FigmaImage fromJson(Map<String, dynamic> json) {
+    final FigmaImageModel model = FigmaImageModel.fromJson(json);
+    return FigmaImage(model: model);
+  }
 
   _loadImage(FigmaImageModel model) {
     if (model.method == FigmaImageDataMethod.embed) {
@@ -33,7 +29,7 @@ class FigmaImageParser extends MiraiParser<FigmaImageModel> {
   }
 
   @override
-  Widget parse(BuildContext context, FigmaImageModel model) {
+  Widget buildFigmaNode(BuildContext context) {
     Widget widget = switch (model.format) {
       FigmaImageFormat.png =>_loadImage(model),
       FigmaImageFormat.jpeg =>_loadImage(model),
@@ -41,11 +37,6 @@ class FigmaImageParser extends MiraiParser<FigmaImageModel> {
       _ => throw 'ERROR: Unknown image format [${model.format.name}]',
     };
 
-    widget = FigmaNode.withContext(context,
-      model: model,
-      child: widget,
-    );
-
-    return dimensionWrapWidget(widget, model.dimensions!, model.parentLayout);
+    return widget;
   }
 }

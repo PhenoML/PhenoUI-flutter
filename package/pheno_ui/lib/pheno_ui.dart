@@ -1,55 +1,128 @@
 library pheno_ui;
 
-import 'package:mirai/mirai.dart';
-import 'package:pheno_ui/parsers/figma_checkbox.dart';
-import 'package:pheno_ui/parsers/figma_conditional_checkbox.dart';
-import 'package:pheno_ui/parsers/figma_form.dart';
-import 'package:pheno_ui/parsers/figma_keep_aspect_ratio.dart';
-import 'package:pheno_ui/parsers/figma_lottie_animation.dart';
-import 'package:pheno_ui/parsers/figma_props_from_route.dart';
-import 'package:pheno_ui/parsers/figma_safe_area.dart';
-import 'package:pheno_ui/parsers/figma_component.dart';
-import 'package:pheno_ui/parsers/figma_frame.dart';
-import 'package:pheno_ui/parsers/figma_image.dart';
-import 'package:pheno_ui/parsers/figma_nav_button.dart';
-import 'package:pheno_ui/parsers/figma_rectangle.dart';
-import 'package:pheno_ui/parsers/figma_submit_button.dart';
-import 'package:pheno_ui/parsers/figma_text.dart';
-import 'package:pheno_ui/parsers/figma_text_from_route.dart';
-import 'package:pheno_ui/parsers/figma_tile_child.dart';
-import 'package:pheno_ui/parsers/figma_web_view.dart';
+import 'package:flutter/widgets.dart';
 
-import 'interface/strapi.dart';
+import 'widgets/figma_checkbox.dart';
+import 'widgets/figma_component.dart';
+import 'widgets/figma_form.dart';
+import 'widgets/figma_frame.dart';
+import 'widgets/figma_image.dart';
+import 'widgets/figma_keep_aspect_ratio.dart';
+import 'widgets/figma_lottie_animation.dart';
+import 'widgets/figma_nav_button.dart';
+import 'widgets/figma_props_from_route.dart';
+import 'widgets/figma_rectangle.dart';
+import 'widgets/figma_safe_area.dart';
+import 'widgets/figma_scroll_view.dart';
+import 'widgets/figma_submit_button.dart';
+import 'widgets/figma_text.dart';
+import 'interface/log.dart';
+import 'widgets/figma_text_field.dart';
+import 'widgets/figma_text_from_route.dart';
+import 'widgets/figma_tile_child.dart';
+import 'widgets/figma_web_view.dart';
+import 'widgets/stateless_figma_node.dart';
+import 'models/figma_node_model.dart';
+import 'widgets/figma_node.dart';
 
-export 'package:mirai/mirai.dart';
-export 'package:pheno_ui/interface/strapi.dart';
-export 'package:pheno_ui/widgets/figma_screen_renderer.dart';
+export 'interface/screens.dart';
+export 'interface/strapi.dart';
 
-Future<void> initializePhenoUi({List<MiraiParser> parsers = const []}) async {
-  const List<MiraiParser> defaultParsers = [
-    FigmaFrameParser(),
-    FigmaTextParser(),
-    FigmaImageParser(),
-    FigmaRectangleParser(),
-    FigmaSafeAreaParser(),
-    FigmaNavButtonParser(),
-    FigmaComponentParser(),
-    FigmaCheckboxParser(),
-    FigmaWebViewParser(),
-    FigmaConditionalCheckboxParser(),
-    FigmaFormParser(),
-    FigmaSubmitButtonParser(),
-    FigmaKeepAspectRatioParser(),
-    FigmaTileChildParser(),
-    FigmaTextFromRouteParser(),
-    FigmaPropsFromRouteParser(),
-    FigmaLottieAnimationParser(),
-  ];
+typedef FigmaNodeFactory = FigmaNode Function(Map<String, dynamic>);
 
-  // merge the parsers giving priority to the ones passed as argument
-  var mergedParsers = <MiraiParser>[...defaultParsers, ...parsers];
+class PhenoUi {
+  static PhenoUi? _instance;
 
-  await Mirai.initialize(
-      parsers: mergedParsers,
-  );
+  final Map<String, FigmaNodeFactory> _nodeTypeMap = {};
+
+  PhenoUi._internal();
+
+  factory PhenoUi() {
+    if (_instance == null) {
+      throw Exception(
+          'PhenoUi not initialized. Call PhenoUi.initialize() first.'
+      );
+    }
+    return _instance!;
+  }
+
+  factory PhenoUi.initialize({Map<String, FigmaNodeFactory> nodeTypes = const {}}) {
+    if (_instance == null) {
+      _instance = PhenoUi._internal();
+
+      Map<String, FigmaNodeFactory> defaultNodeTypes = {
+        'figma-frame': FigmaFrame.fromJson,
+        'figma-scroll-view': FigmaScrollView.fromJson,
+        'figma-text': FigmaText.fromJson,
+        'figma-text-field': FigmaTextField.fromJson,
+        'figma-image': FigmaImage.fromJson,
+        'figma-safe-area': FigmaSafeArea.fromJson,
+        'figma-nav-button': FigmaNavButton.fromJson,
+        'figma-component-instance': FigmaComponent.fromJson,
+        'figma-rectangle': FigmaRectangle.fromJson,
+        'figma-form': FigmaForm.fromJson,
+        'figma-submit-button': FigmaSubmitButton.fromJson,
+        'figma-checkbox': FigmaCheckbox.fromJson,
+        'figma-web-view': FigmaWebView.fromJson,
+        'figma-text-from-route': FigmaTextFromRoute.fromJson,
+        'figma-props-from-route': FigmaPropsFromRoute.fromJson,
+        'figma-lottie-animation': FigmaLottieAnimation.fromJson,
+        'figma-keep-aspect-ratio': FigmaKeepAspectRatio.fromJson,
+        'figma-tile-child': FigmaTileChild.fromJson,
+      };
+
+      // merge the parsers giving priority to the ones passed as argument
+      var mergedParsers = { ...defaultNodeTypes, ...nodeTypes };
+      _instance!._nodeTypeMap.addAll(mergedParsers);
+
+      return _instance!;
+    }
+
+    throw Exception(
+        'PhenoUi already initialized. Call PhenoUi() to get the instance.'
+    );
+  }
+
+  FigmaNode fromJson(Map<String, dynamic> json) {
+    // this function should not be called while the widget tree is building
+    assert(
+      WidgetsBinding.instance.rootElement != null
+      && WidgetsBinding.instance.rootElement!.owner != null
+      && !WidgetsBinding.instance.rootElement!.owner!.debugBuilding
+    );
+
+    var type = json['type'];
+    if (_nodeTypeMap.containsKey(type)) {
+      return _nodeTypeMap[type]!(json);
+    }
+    logger.e('Unknown figma node type: $type');
+    return _MissingType.fromJson(json);
+  }
+
+  List<FigmaNode> fromJsonList(List<dynamic>? json) {
+    if (json == null) {
+      return [];
+    }
+    return json.map((e) => fromJson(e as Map<String, dynamic>)).toList();
+  }
 }
+
+class _MissingType extends StatelessFigmaNode {
+  const _MissingType({required super.model});
+
+  static _MissingType fromJson(Map<String, dynamic> json) {
+    final FigmaNodeModel model = FigmaNodeModel.fromJson(json);
+    return _MissingType(model: model);
+  }
+
+  @override
+  Widget buildFigmaNode(BuildContext context) {
+    return Container(
+      color: const Color(0xFFFF00FF),
+      child: Center(
+        child: Text('Unknown figma node type: ${model.type}'),
+      ),
+    );
+  }
+}
+

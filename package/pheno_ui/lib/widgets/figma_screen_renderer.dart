@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:mirai/mirai.dart';
 import 'package:pheno_ui/interface/data/screen_spec.dart';
-import 'package:pheno_ui/interface/route_arguments.dart';
+import 'package:pheno_ui/pheno_ui.dart';
 
 class FigmaScreenRenderer extends StatefulWidget {
   final Future<PhenoScreenSpec>? future;
@@ -36,12 +35,12 @@ class FigmaScreenRendererState extends State<FigmaScreenRenderer> {
   loadContent() {
     if (widget.future != null) {
       widget.future!.then((spec) => setState(() {
-        child = Mirai.fromJson(spec.spec, context) ?? const SizedBox();
+        child = PhenoUi().fromJson(spec.spec);
       }));
       return;
     } else if (widget.spec != null) {
       setState(() {
-        child = Mirai.fromJson(widget.spec!.spec, context) ?? const SizedBox();
+        child = PhenoUi().fromJson(widget.spec!.spec);
       });
       return;
     }
@@ -53,19 +52,6 @@ class FigmaScreenRendererState extends State<FigmaScreenRenderer> {
       return const SizedBox();
     }
 
-    var args = ModalRoute.of(context)?.settings.arguments;
-    bool isOpaque;
-    if (args is RouteArguments) {
-      isOpaque = args.type == RouteType.screen;
-    } else {
-      isOpaque = true;
-    }
-
-    // future Dario: once we replace material popups with custom ones, we can
-    // remove the isPopup check and the Material widget
-    return Material(
-      color: isOpaque ? null : Colors.transparent,
-      child: child,
-    );
+    return child!;
   }
 }

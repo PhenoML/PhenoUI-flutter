@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../parsers/tools/figma_enum.dart';
+import '../tools/figma_enum.dart';
 
 enum FigmaStyleBlendMode with FigmaEnum {
   passThrough("PASS_THROUGH"),

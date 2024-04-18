@@ -1,17 +1,19 @@
 import 'package:flutter/widgets.dart';
-import 'package:pheno_ui/interface/route_arguments.dart';
 
+import '../interface/route_arguments.dart';
 import '../models/figma_text_model.dart';
 import 'figma_text.dart';
 
-class FigmaTextFromRouteParser extends FigmaTextParser {
-  const FigmaTextFromRouteParser();
+class FigmaTextFromRoute extends FigmaText {
+  const FigmaTextFromRoute({required super.model, super.key});
+
+  static FigmaTextFromRoute fromJson(Map<String, dynamic> json) {
+    final FigmaTextModel model = FigmaTextModel.fromJson(json);
+    return FigmaTextFromRoute(model: model);
+  }
 
   @override
-  String get type => 'figma-text-from-route';
-
-  @override
-  List<FigmaTextSegmentModel> getTextSegments(BuildContext context, FigmaTextModel model) {
+  List<FigmaTextSegmentModel> getTextSegments(BuildContext context) {
     String? key = model.userData.maybeGet('key');
     if (key is String) {
       var arguments = ModalRoute.of(context)?.settings.arguments;
@@ -24,8 +26,8 @@ class FigmaTextFromRouteParser extends FigmaTextParser {
             return [FigmaTextSegmentModel.copy(segment, characters: text)];
           }
         }
-        }
+      }
     }
-    return super.getTextSegments(context, model);
+    return super.getTextSegments(context);
   }
 }

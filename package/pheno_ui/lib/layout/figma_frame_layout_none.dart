@@ -2,15 +2,16 @@ import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 import 'package:pheno_ui/models/figma_dimensions_model.dart';
-import 'package:pheno_ui/widgets/figma_node.dart';
+
+import '../widgets/figma_node.dart';
 
 class FigmaFrameLayoutNone extends MultiChildLayoutDelegate {
-  final FigmaDimensionsSelfModel dimensions;
+  final FigmaDimensionsModel dimensions;
   final List<Widget> children;
 
   FigmaFrameLayoutNone._create({ required this.dimensions, required this.children });
 
-  static CustomMultiChildLayout layoutWithChildren(FigmaDimensionsSelfModel dimensions, List<Widget> children) {
+  static CustomMultiChildLayout layoutWithChildren(FigmaDimensionsModel dimensions, List<Widget> children) {
     List<Widget> figmaChildren = [];
     List<LayoutId> layoutChildren = [];
 

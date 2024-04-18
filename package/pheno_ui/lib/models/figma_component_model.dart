@@ -1,23 +1,25 @@
-import 'figma_dimensions_model.dart';
-import 'figma_layout_model.dart';
+import '../widgets/figma_component_variant.dart';
 import 'figma_node_model.dart';
 
 class FigmaComponentModel extends FigmaNodeModel {
   final String widgetType;
-  final FigmaLayoutParentValuesModel parentLayout;
 
-  FigmaComponentModel({
+  const FigmaComponentModel({
     required this.widgetType,
-    required this.parentLayout,
     required super.type,
     required super.userData,
-    super.info,
+    required super.info,
     super.dimensions,
     super.componentRefs,
   });
 
-  FigmaComponentModel.fromJson(Map<String, dynamic> json):
-    widgetType = json['widgetType'],
-    parentLayout = FigmaLayoutParentValuesModel.fromJson(json['parentLayout']),
+  FigmaComponentModel._fromJson(Map<String, dynamic> json, { required this.widgetType }):
     super.fromJson(json);
+
+  factory FigmaComponentModel.fromJson(Map<String, dynamic> json) {
+    return FigmaComponentModel._fromJson(
+        json,
+        widgetType: json['widgetType'],
+    );
+  }
 }

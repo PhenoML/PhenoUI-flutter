@@ -29,17 +29,17 @@ class FigmaTileChildModel extends FigmaSimpleChildModel {
 
   factory FigmaTileChildModel.fromJson(Map<String, dynamic> json) {
     var childSize = Size(
-      json['child']['dimensions']['self']['width'].toDouble(),
-      json['child']['dimensions']['self']['height'].toDouble(),
+      json['child']['dimensions']['width'].toDouble(),
+      json['child']['dimensions']['height'].toDouble(),
     );
 
     var childPosition = Offset(
-      json['child']['dimensions']['self']['x'].toDouble(),
-      json['child']['dimensions']['self']['y'].toDouble(),
+      json['child']['dimensions']['x'].toDouble(),
+      json['child']['dimensions']['y'].toDouble(),
     );
 
-    var horizontal = json['child']['dimensions']['self']['constraints']['horizontal'];
-    var vertical = json['child']['dimensions']['self']['constraints']['vertical'];
+    var horizontal = json['child']['dimensions']['constraints']['horizontal'];
+    var vertical = json['child']['dimensions']['constraints']['vertical'];
 
     var hDirection = horizontal == 'MAX' ? FigmaTileChildHorizontalDirection.left :
       horizontal == 'CENTER' ? FigmaTileChildHorizontalDirection.center :

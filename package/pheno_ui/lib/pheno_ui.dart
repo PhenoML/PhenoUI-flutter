@@ -1,6 +1,7 @@
 library pheno_ui;
 
 import 'package:flutter/widgets.dart';
+
 import 'widgets/figma_checkbox.dart';
 import 'widgets/figma_component.dart';
 import 'widgets/figma_form.dart';
@@ -12,16 +13,16 @@ import 'widgets/figma_safe_area.dart';
 import 'widgets/figma_scroll_view.dart';
 import 'widgets/figma_submit_button.dart';
 import 'widgets/figma_text.dart';
-
+import 'interface/log.dart';
+import 'widgets/figma_text_field.dart';
+import 'widgets/figma_text_from_route.dart';
+import 'widgets/figma_web_view.dart';
+import 'widgets/stateless_figma_node.dart';
 import 'models/figma_node_model.dart';
 import 'widgets/figma_node.dart';
 
 export 'interface/screens.dart';
 export 'interface/strapi.dart';
-import 'interface/log.dart';
-import 'widgets/figma_text_field.dart';
-import 'widgets/figma_web_view.dart';
-import 'widgets/stateless_figma_node.dart';
 
 typedef FigmaNodeFactory = FigmaNode Function(Map<String, dynamic>);
 
@@ -59,6 +60,7 @@ class PhenoUi {
         'figma-submit-button': FigmaSubmitButton.fromJson,
         'figma-checkbox': FigmaCheckbox.fromJson,
         'figma-web-view': FigmaWebView.fromJson,
+        'figma-text-from-route': FigmaTextFromRoute.fromJson,
       };
 
       // merge the parsers giving priority to the ones passed as argument

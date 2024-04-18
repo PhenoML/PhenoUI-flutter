@@ -9,6 +9,7 @@ import 'widgets/figma_nav_button.dart';
 import 'widgets/figma_rectangle.dart';
 import 'widgets/figma_safe_area.dart';
 import 'widgets/figma_scroll_view.dart';
+import 'widgets/figma_submit_button.dart';
 import 'widgets/figma_text.dart';
 
 import 'models/figma_node_model.dart';
@@ -53,6 +54,7 @@ class PhenoUi {
         'figma-component-instance': FigmaComponent.fromJson,
         'figma-rectangle': FigmaRectangle.fromJson,
         'figma-form': FigmaForm.fromJson,
+        'figma-submit-button': FigmaSubmitButton.fromJson,
       };
 
       // merge the parsers giving priority to the ones passed as argument

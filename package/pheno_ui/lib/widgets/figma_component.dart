@@ -87,9 +87,11 @@ class FigmaComponentState extends StatefulFigmaNodeState<FigmaComponent> {
   late final FigmaUserData userData;
   late FigmaDimensionsModel dimensions = widget.model.dimensions!;
   final Map<String, dynamic> variantValues = {};
+
   Map<String, FigmaComponentVariant>? variants;
   FigmaComponentVariant? variant;
   bool loaded = false;
+  Size variantScale = const Size(1.0, 1.0);
 
   @override
   void initState() {
@@ -112,6 +114,14 @@ class FigmaComponentState extends StatefulFigmaNodeState<FigmaComponent> {
       }
     });
 
+    var initialVariant = _getVariant(null, null);
+    if (initialVariant != null) {
+      variantScale = Size(
+        widget.model.dimensions!.width / initialVariant.model.dimensions!.width,
+        widget.model.dimensions!.height / initialVariant.model.dimensions!.height,
+      );
+    }
+
     loaded = true;
     initVariant();
   }
@@ -120,6 +130,23 @@ class FigmaComponentState extends StatefulFigmaNodeState<FigmaComponent> {
   void initVariant() {
     // use the variant set in the model
     setVariant();
+  }
+
+  FigmaComponentVariant? _getVariant(String? key, String? value) {
+    if (variants == null || variants!.isEmpty) {
+      return null;
+    }
+
+    if (variantValues.isNotEmpty) {
+      for (String key in variants!.keys) {
+        Map<String, dynamic> values = variants![key]!.variantProperties;
+        if (values.entries.every((entry) => variantValues[entry.key] == entry.value)) {
+          return variants![key];
+        }
+      }
+    }
+
+    return variants!['default'];
   }
 
   void setVariant([String? key, String? value]) {
@@ -135,28 +162,13 @@ class FigmaComponentState extends StatefulFigmaNodeState<FigmaComponent> {
       variantValues[key] = value;
     }
 
-    if (variantValues.isNotEmpty) {
-      for (String key in variants!.keys) {
-        Map<String, dynamic> values = variants![key]!.variantProperties;
-        if (values.entries.every((entry) => variantValues[entry.key] == entry.value)) {
-          variant = variants![key];
-          break;
-        }
-      }
-    }
+    variant = _getVariant(key, value);
 
     setState(() {
-      variant ??= variants!['default'];
       if (variant != null) {
-        // Future Dario:
-        // This is going to be an issue because the width and height of the
-        // variant should not be forwarded verbatim because the component
-        // instance could potentially be scaled. Instead the scale between the
-        // original size of the component and the size of the instance should be
-        // calculated and applied to the dimensions of the variant.
         dimensions = FigmaDimensionsModel.copy(widget.model.dimensions!,
-          width: variant!.model.dimensions!.width,
-          height: variant!.model.dimensions!.height,
+          width: variant!.model.dimensions!.width * variantScale.width,
+          height: variant!.model.dimensions!.height * variantScale.height,
         );
       } else {
         dimensions = widget.model.dimensions!;

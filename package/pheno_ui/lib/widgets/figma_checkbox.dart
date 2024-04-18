@@ -4,9 +4,7 @@ import '../models/figma_component_model.dart';
 import 'figma_component.dart';
 import 'figma_form.dart';
 
-class FigmaCheckbox extends FigmaComponent {
-  const FigmaCheckbox({required super.stateNew, required super.model, required super.key});
-
+class FigmaCheckbox {
   static FigmaComponent fromJson(Map<String, dynamic> json) {
     return figmaComponentFromJson(json, FigmaComponent.new, FigmaComponentModel.fromJson, FigmaCheckboxState.new);
   }

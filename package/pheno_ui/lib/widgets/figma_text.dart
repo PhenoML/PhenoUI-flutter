@@ -12,7 +12,7 @@ class FigmaText extends StatelessFigmaNode<FigmaTextModel> {
     return FigmaText(model: model);
   }
 
-  List<FigmaTextSegmentModel> getTextSegments(BuildContext context, FigmaTextModel model) {
+  static List<FigmaTextSegmentModel> getTextSegments(BuildContext context, FigmaTextModel model) {
     if (model.componentRefs != null &&
         model.componentRefs!.containsKey('characters')) {
       String key = model.componentRefs!['characters']!;
@@ -26,66 +26,10 @@ class FigmaText extends StatelessFigmaNode<FigmaTextModel> {
     return model.segments;
   }
 
-
-
   @override
   Widget buildFigmaNode(BuildContext context) {
-    // if this is a text field and belongs to a form, check if it should be displayed
-    // TODO: Uncomment once FigmaFormInterface is implemented
-    // if (model.isTextField) {
-    //   var form = FigmaFormInterface.maybeOf(context);
-    //   if (form != null) {
-    //     String id = model.userData.get('id', context: context);
-    //     if (!form.shouldDisplayInput(id)) {
-    //       return const SizedBox();
-    //     }
-    //   }
-    // }
-
     var modelSegments = getTextSegments(context, model);
-
     List<TextSpan> segments = modelSegments.map((m) => m.span).toList();
-
-    Widget widget;
-    if (model.isTextField) {
-      String id = model.userData.get('id', context: context);
-      // TODO: Uncomment once FigmaFormInterface is implemented, text field should be implemented as a stateful widget
-      var form = null; // FigmaFormInterface.maybeOf(context);
-      FocusNode? focusNode;
-      if (form != null) {
-        focusNode = form.registerInput(id, '');
-      }
-
-      widget = TextField(
-        focusNode: focusNode,
-        onTapOutside: (_) => focusNode?.unfocus(),
-        style: segments[0].style,
-        obscureText: model.userData.maybeGet('isPasswordField', context: context) ?? false,
-        onChanged: form == null ? null : (value) {
-          form.inputValueChanged(id, value);
-        },
-        onEditingComplete: form == null ? null : () {
-          form.inputEditingComplete(id);
-        },
-        onSubmitted: form == null ? null : (value) {
-          form.inputSubmitted(id, value);
-        },
-        decoration: InputDecoration(
-          contentPadding: EdgeInsets.zero,
-          border: const OutlineInputBorder(borderSide: BorderSide.none),
-          hintText: segments[0].text,
-          // hintStyle: segments[0].style,
-        ),
-      );
-    } else {
-      widget = RichText(
-        text: TextSpan(
-          children: segments,
-        ),
-        overflow: TextOverflow.visible,
-        textAlign: TextAlign.values.convertDefault(model.alignHorizontal, TextAlign.left),
-      );
-    }
 
     var alignment = Alignment(
         switch (model.alignHorizontal) {
@@ -103,8 +47,13 @@ class FigmaText extends StatelessFigmaNode<FigmaTextModel> {
 
     return Align(
       alignment: alignment,
-      child: widget,
+      child: RichText(
+        text: TextSpan(
+          children: segments,
+        ),
+        overflow: TextOverflow.visible,
+        textAlign: TextAlign.values.convertDefault(model.alignHorizontal, TextAlign.left),
+      ),
     );
   }
-
 }

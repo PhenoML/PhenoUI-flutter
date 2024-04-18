@@ -17,6 +17,7 @@ import 'widgets/figma_node.dart';
 export 'interface/screens.dart';
 export 'interface/strapi.dart';
 import 'interface/log.dart';
+import 'widgets/figma_text_field.dart';
 import 'widgets/stateless_figma_node.dart';
 
 typedef FigmaNodeFactory = FigmaNode Function(Map<String, dynamic>);
@@ -45,6 +46,7 @@ class PhenoUi {
         'figma-frame': FigmaFrame.fromJson,
         'figma-scroll-view': FigmaScrollView.fromJson,
         'figma-text': FigmaText.fromJson,
+        'figma-text-field': FigmaTextField.fromJson,
         'figma-image': FigmaImage.fromJson,
         'figma-safe-area': FigmaSafeArea.fromJson,
         'figma-nav-button': FigmaNavButton.fromJson,

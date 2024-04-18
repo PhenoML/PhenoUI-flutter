@@ -12,7 +12,7 @@ class FigmaText extends StatelessFigmaNode<FigmaTextModel> {
     return FigmaText(model: model);
   }
 
-  static List<FigmaTextSegmentModel> getTextSegments(BuildContext context, FigmaTextModel model) {
+  static List<FigmaTextSegmentModel> textSegmentsFromModel(BuildContext context, FigmaTextModel model) {
     if (model.componentRefs != null &&
         model.componentRefs!.containsKey('characters')) {
       String key = model.componentRefs!['characters']!;
@@ -26,9 +26,13 @@ class FigmaText extends StatelessFigmaNode<FigmaTextModel> {
     return model.segments;
   }
 
+  List<FigmaTextSegmentModel> getTextSegments(BuildContext context) {
+    return textSegmentsFromModel(context, model);
+  }
+
   @override
   Widget buildFigmaNode(BuildContext context) {
-    var modelSegments = getTextSegments(context, model);
+    var modelSegments = getTextSegments(context);
     List<TextSpan> segments = modelSegments.map((m) => m.span).toList();
 
     var alignment = Alignment(

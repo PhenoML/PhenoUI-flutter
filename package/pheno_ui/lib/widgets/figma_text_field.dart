@@ -38,7 +38,7 @@ class FigmaTextFieldState extends StatefulFigmaNodeState<FigmaTextField> {
       return const SizedBox();
     }
 
-    var modelSegments = FigmaText.getTextSegments(context, widget.model);
+    var modelSegments = FigmaText.textSegmentsFromModel(context, widget.model);
     List<TextSpan> segments = modelSegments.map((m) => m.span).toList();
 
     var alignment = Alignment(

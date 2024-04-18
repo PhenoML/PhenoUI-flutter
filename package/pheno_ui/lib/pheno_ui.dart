@@ -20,6 +20,7 @@ export 'interface/screens.dart';
 export 'interface/strapi.dart';
 import 'interface/log.dart';
 import 'widgets/figma_text_field.dart';
+import 'widgets/figma_web_view.dart';
 import 'widgets/stateless_figma_node.dart';
 
 typedef FigmaNodeFactory = FigmaNode Function(Map<String, dynamic>);
@@ -57,6 +58,7 @@ class PhenoUi {
         'figma-form': FigmaForm.fromJson,
         'figma-submit-button': FigmaSubmitButton.fromJson,
         'figma-checkbox': FigmaCheckbox.fromJson,
+        'figma-web-view': FigmaWebView.fromJson,
       };
 
       // merge the parsers giving priority to the ones passed as argument

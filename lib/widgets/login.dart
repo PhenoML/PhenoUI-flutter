@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:pheno_ui/interface/strapi.dart';
 import 'package:pheno_ui_tester/widgets/loading_screen.dart';

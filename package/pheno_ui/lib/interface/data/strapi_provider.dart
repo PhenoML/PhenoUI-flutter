@@ -53,16 +53,46 @@ class StrapiDataProvider extends PhenoDataProvider {
 
   @override
   Image loadImage(String path, { required BoxFit fit }) {
-    return Image.network(path, fit: fit);
+    // make sure that the path is retrieving the image from the server
+    // configured in the strapi class
+    Uri uri = Uri.parse(path);
+    Uri strapiServer = Uri.parse(Strapi().server);
+    Uri newUri = Uri(
+      scheme: strapiServer.scheme,
+      host: strapiServer.host,
+      port: strapiServer.port,
+      path: uri.path,
+    );
+    return Image.network(newUri.toString(), fit: fit);
   }
 
   @override
   SvgPicture loadSvg(String path, { required BoxFit fit }) {
-    return SvgPicture.network(path, fit: fit);
+    // make sure that the path is retrieving the image from the server
+    // configured in the strapi class
+    Uri uri = Uri.parse(path);
+    Uri strapiServer = Uri.parse(Strapi().server);
+    Uri newUri = Uri(
+      scheme: strapiServer.scheme,
+      host: strapiServer.host,
+      port: strapiServer.port,
+      path: uri.path,
+    );
+    return SvgPicture.network(newUri.toString(), fit: fit);
   }
 
   @override
   Future<LottieComposition> doLoadAnimation(String path) async {
-    return NetworkLottie(path).load();
+    // make sure that the path is retrieving the image from the server
+    // configured in the strapi class
+    Uri uri = Uri.parse(path);
+    Uri strapiServer = Uri.parse(Strapi().server);
+    Uri newUri = Uri(
+      scheme: strapiServer.scheme,
+      host: strapiServer.host,
+      port: strapiServer.port,
+      path: uri.path,
+    );
+    return NetworkLottie(newUri.toString()).load();
   }
 }

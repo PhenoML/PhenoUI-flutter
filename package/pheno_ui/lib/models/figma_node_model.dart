@@ -1,3 +1,5 @@
+import 'package:pheno_ui/models/figma_effects_model.dart';
+
 import '../tools/figma_user_data.dart';
 import 'figma_style_model.dart';
 import 'figma_dimensions_model.dart';
@@ -26,6 +28,7 @@ class FigmaNodeModel {
   final FigmaNodeInfoModel info;
   final FigmaDimensionsModel? dimensions;
   final FigmaStyleModel? style;
+  final FigmaEffectsModel? effects;
   final Map<String, dynamic>? componentRefs;
   final FigmaUserData userData;
 
@@ -35,6 +38,7 @@ class FigmaNodeModel {
     required this.info,
     this.dimensions,
     this.style,
+    this.effects,
     this.componentRefs,
   });
 
@@ -43,6 +47,7 @@ class FigmaNodeModel {
     info = FigmaNodeInfoModel.fromJson(json['__info']),
     dimensions = json.containsKey('dimensions') ? FigmaDimensionsModel.fromJson(json['dimensions']) : null,
     style = json.containsKey('style') ? FigmaStyleModel.fromJson(json['style']) : null,
+    effects = json.containsKey('effects') ? FigmaEffectsModel.fromJson(json['effects']) : null,
     componentRefs = json['componentRefs'],
     userData = FigmaUserData(json['__userData'])
   ;

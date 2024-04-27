@@ -3,13 +3,13 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 class InnerShadow extends SingleChildRenderObjectWidget {
-  const InnerShadow({
-    Key? key,
-    this.shadows = const <BoxShadow>[],
-    Widget? child,
-  }) : super(key: key, child: child);
-
   final List<BoxShadow> shadows;
+
+  const InnerShadow({
+    this.shadows = const <BoxShadow>[],
+    super.child,
+    super.key,
+  });
 
   @override
   RenderObject createRenderObject(BuildContext context) {
@@ -53,10 +53,8 @@ class RenderInnerShadow extends RenderProxyBox {
         ..colorFilter = ColorFilter.mode(shadow.color, BlendMode.srcOut)
         ..imageFilter = ImageFilter.compose(
           outer: ImageFilter.blur(sigmaX: shadow.blurSigma, sigmaY: shadow.blurSigma),
-          // outer: ImageFilter.erode(radiusX: shadow.spreadRadius, radiusY: shadow.spreadRadius),
           inner: ImageFilter.matrix(matrix.storage),
         );
-      // ..imageFilter = ImageFilter.matrix(matrix.storage);
       context.canvas
         ..saveLayer(bounds, shadowPaint)
         ..translate(shadow.offset.dx, shadow.offset.dy);

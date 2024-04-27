@@ -4,28 +4,28 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
 class OuterShadow extends SingleChildRenderObjectWidget {
-  const OuterShadow({
-    Key? key,
-    this.shadows = const <BoxShadow>[],
-    Widget? child,
-  }) : super(key: key, child: child);
-
   final List<BoxShadow> shadows;
+  
+  const OuterShadow({
+    this.shadows = const <BoxShadow>[],
+    super.child,
+    super.key,
+  });
 
   @override
   RenderObject createRenderObject(BuildContext context) {
-    final renderObject = RenderInnerShadow();
+    final renderObject = RenderOuterShadow();
     updateRenderObject(context, renderObject);
     return renderObject;
   }
 
   @override
-  void updateRenderObject(BuildContext context, RenderInnerShadow renderObject) {
+  void updateRenderObject(BuildContext context, RenderOuterShadow renderObject) {
     renderObject.shadows = shadows;
   }
 }
 
-class RenderInnerShadow extends RenderProxyBox {
+class RenderOuterShadow extends RenderProxyBox {
   late List<BoxShadow> shadows;
 
   @override
@@ -52,10 +52,8 @@ class RenderInnerShadow extends RenderProxyBox {
         ..colorFilter = ColorFilter.mode(shadow.color, BlendMode.srcIn)
         ..imageFilter = ImageFilter.compose(
           outer: ImageFilter.blur(sigmaX: shadow.blurSigma, sigmaY: shadow.blurSigma, tileMode: TileMode.decal),
-          // outer: ImageFilter.erode(radiusX: shadow.spreadRadius, radiusY: shadow.spreadRadius),
           inner: ImageFilter.matrix(matrix.storage),
         );
-      // ..imageFilter = ImageFilter.matrix(matrix.storage);
       context.canvas
         ..saveLayer(shadowBounds, shadowPaint)
         ..translate(shadow.offset.dx, shadow.offset.dy);
@@ -64,8 +62,6 @@ class RenderInnerShadow extends RenderProxyBox {
     }
 
     context.canvas.saveLayer(bounds, Paint());
-    context.canvas.scale(1.0, 1.0);
-    // context.canvas.translate(100.0, 100.0);
     context.paintChild(child!, offset);
 
     context.canvas.restore();

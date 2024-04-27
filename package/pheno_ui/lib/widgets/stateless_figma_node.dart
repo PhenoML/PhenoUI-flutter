@@ -26,15 +26,16 @@ abstract class StatelessFigmaNode<T extends FigmaNodeModel> extends StatelessWid
   @nonVirtual
   Widget build(BuildContext context) {
     bool visible = isFigmaNodeVisible(context, model);
+    Widget child = buildFigmaNode(context);
 
     if (visible) {
       if (opacity != 1.0) {
-        return Opacity(
+        child = Opacity(
           opacity: opacity,
-          child: buildFigmaNode(context),
+          child: child,
         );
       }
-      return buildFigmaNode(context);
+      return model.effects == null ? child : model.effects!.apply(child);
     }
     return const SizedBox();
   }

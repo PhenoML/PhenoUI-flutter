@@ -27,14 +27,16 @@ abstract class StatefulFigmaNodeState<T extends StatefulFigmaNode> extends State
   Widget build(BuildContext context) {
     bool visible = isFigmaNodeVisible(context, widget.model);
 
+    Widget child = buildFigmaNode(context);
     if (visible) {
       if (widget.opacity != 1.0) {
-        return Opacity(
+        child = Opacity(
           opacity: widget.opacity,
-          child: buildFigmaNode(context),
+          child: child,
         );
       }
-      return buildFigmaNode(context);
+      print(widget.model.type);
+      return widget.model.effects == null ? child : widget.model.effects!.apply(child);
     }
     return const SizedBox();
   }

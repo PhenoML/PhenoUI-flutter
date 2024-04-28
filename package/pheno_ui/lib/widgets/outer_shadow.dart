@@ -31,12 +31,13 @@ class RenderOuterShadow extends RenderProxyBox {
   @override
   void paint(PaintingContext context, Offset offset) {
     if (child == null) return;
+
     final bounds = offset & size;
 
     for (final shadow in shadows) {
       final scale = Size(
-        1.0 + shadow.spreadRadius / (bounds.width * 0.5),
-        1.0 + shadow.spreadRadius / (bounds.height * 0.5),
+        1.0 + (shadow.spreadRadius * 0.5) / (bounds.width),
+        1.0 + (shadow.spreadRadius * 0.5) / (bounds.height),
       );
       final anchor = Offset(
         bounds.left + bounds.width * 0.5,
@@ -48,22 +49,22 @@ class RenderOuterShadow extends RenderProxyBox {
       final matrix = centerMatrix * scaleMatrix * anchorMatrix;
       final shadowBounds = bounds.inflate(shadow.spreadRadius * 0.5 + shadow.blurSigma + max(shadow.offset.dx, shadow.offset.dy));
       final shadowPaint = Paint()
-        ..blendMode = BlendMode.srcATop
         ..colorFilter = ColorFilter.mode(shadow.color, BlendMode.srcIn)
         ..imageFilter = ImageFilter.compose(
-          outer: ImageFilter.blur(sigmaX: shadow.blurSigma, sigmaY: shadow.blurSigma, tileMode: TileMode.decal),
+          outer: ImageFilter.blur(sigmaX: shadow.blurSigma * 0.5, sigmaY: shadow.blurSigma * 0.5, tileMode: TileMode.decal),
           inner: ImageFilter.matrix(matrix.storage),
-        );
+        )
+      ;
       context.canvas
         ..saveLayer(shadowBounds, shadowPaint)
-        ..translate(shadow.offset.dx, shadow.offset.dy);
+        ..translate(shadow.offset.dx, shadow.offset.dy)
+      ;
       context.paintChild(child!, offset);
       context.canvas.restore();
     }
 
     context.canvas.saveLayer(bounds, Paint());
     context.paintChild(child!, offset);
-
     context.canvas.restore();
   }
 }

@@ -37,8 +37,8 @@ class RenderInnerShadow extends RenderProxyBox {
 
     for (final shadow in shadows) {
       final scale = Size(
-        1.0 - shadow.spreadRadius / (bounds.width * 0.5),
-        1.0 - shadow.spreadRadius / (bounds.height * 0.5),
+        1.0 - (shadow.spreadRadius * 0.5) / bounds.width,
+        1.0 - (shadow.spreadRadius * 0.5) / bounds.height,
       );
       final anchor = Offset(
         bounds.left + bounds.width * 0.5,
@@ -52,7 +52,7 @@ class RenderInnerShadow extends RenderProxyBox {
         ..blendMode = BlendMode.srcATop
         ..colorFilter = ColorFilter.mode(shadow.color, BlendMode.srcOut)
         ..imageFilter = ImageFilter.compose(
-          outer: ImageFilter.blur(sigmaX: shadow.blurSigma, sigmaY: shadow.blurSigma),
+          outer: ImageFilter.blur(sigmaX: shadow.blurSigma * 0.5, sigmaY: shadow.blurSigma * 0.5),
           inner: ImageFilter.matrix(matrix.storage),
         );
       context.canvas

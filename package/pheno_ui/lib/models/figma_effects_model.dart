@@ -2,9 +2,9 @@ import 'dart:ui';
 
 import 'package:flutter/widgets.dart';
 
-import '../interface/log.dart';
 import '../widgets/inner_shadow.dart';
 import '../widgets/outer_shadow.dart';
+import '../widgets/background_blur.dart';
 
 class FigmaEffectsModel {
   final List<_FigmaEffect> _effects;
@@ -218,11 +218,9 @@ class _FigmaBackgroundBlur extends _FigmaEffect {
   Widget apply(Widget child) {
     if (!visible) return child;
 
-    return ClipRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: radius * 0.5, sigmaY: radius * 0.5),
-        child: child,
-      ),
+    return BackgroundBlur(
+      radius: radius,
+      child: child,
     );
   }
 }

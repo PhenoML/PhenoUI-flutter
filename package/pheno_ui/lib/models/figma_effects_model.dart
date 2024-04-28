@@ -190,7 +190,9 @@ class _FigmaLayerBlur extends _FigmaEffect {
     if (!visible) return child;
 
     return ImageFiltered(
-      imageFilter: ImageFilter.blur(sigmaX: radius * 0.5, sigmaY: radius * 0.5, tileMode: TileMode.decal),
+      // Future Dario: 0.4 ... wtf?!?!?!
+      // different blur types, I guess?
+      imageFilter: ImageFilter.blur(sigmaX: radius * 0.4, sigmaY: radius * 0.4, tileMode: TileMode.decal),
       child: child,
     );
   }

@@ -2,7 +2,7 @@ library pheno_ui;
 
 import 'package:flutter/widgets.dart';
 
-import 'widgets/figma-button.dart';
+import 'widgets/figma_button.dart';
 import 'widgets/figma_checkbox.dart';
 import 'widgets/figma_component.dart';
 import 'widgets/figma_form.dart';

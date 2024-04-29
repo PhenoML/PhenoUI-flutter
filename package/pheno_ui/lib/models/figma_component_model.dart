@@ -8,7 +8,9 @@ class FigmaComponentModel extends FigmaNodeModel {
     required super.type,
     required super.userData,
     required super.info,
-    super.dimensions,
+    required super.dimensions,
+    required super.opacity,
+    required super.effects,
     super.componentRefs,
   });
 

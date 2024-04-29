@@ -61,7 +61,6 @@ class FigmaStyleBorder extends Border {
 
 class FigmaStyleModel {
   final Color? color;
-  final double opacity;
   final BorderRadius? borderRadius;
   final Border? border;
   final FigmaStyleBlendMode blendMode;
@@ -73,7 +72,6 @@ class FigmaStyleModel {
       (json['color']['b'] * 255.0).round(),
       (json['color']['o'] ?? 1.0).toDouble(),
     ),
-    opacity = json['opacity'].toDouble(),
     borderRadius = json['border']['radius']['tl'] == null ? null : BorderRadius.only(
       topLeft: Radius.circular(json['border']['radius']['tl'].toDouble()),
       topRight: Radius.circular(json['border']['radius']['tr'].toDouble()),

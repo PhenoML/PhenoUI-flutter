@@ -20,7 +20,7 @@ class FigmaRectangle extends StatelessFigmaNode<FigmaSimpleStyleModel> {
         border: model.style.border,
         borderRadius: model.style.borderRadius,
       ),
-      constraints: model.dimensions!.sizeConstraints,
+      constraints: model.dimensions.sizeConstraints,
     );
   }
 }

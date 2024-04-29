@@ -2,9 +2,9 @@ import '../models/figma_node_model.dart';
 import 'figma_style_model.dart';
 
 class FigmaSimpleStyleModel extends FigmaNodeModel {
-  @override
-  FigmaStyleModel get style => super.style!;
+  final FigmaStyleModel style;
 
   FigmaSimpleStyleModel.fromJson(Map<String, dynamic> json):
-        super.fromJson(json);
+      style = FigmaStyleModel.fromJson(json['style']),
+      super.fromJson(json);
 }

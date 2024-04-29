@@ -26,29 +26,29 @@ class FigmaNodeInfoModel {
 class FigmaNodeModel {
   final String type;
   final FigmaNodeInfoModel info;
-  final FigmaDimensionsModel? dimensions;
-  final FigmaStyleModel? style;
-  final FigmaEffectsModel? effects;
+  final FigmaDimensionsModel dimensions;
+  final FigmaEffectsModel effects;
   final Map<String, dynamic>? componentRefs;
   final FigmaUserData userData;
+  final double opacity;
 
   const FigmaNodeModel({
     required this.type,
     required this.userData,
     required this.info,
-    this.dimensions,
-    this.style,
-    this.effects,
+    required this.dimensions,
+    required this.effects,
+    required this.opacity,
     this.componentRefs,
   });
 
   FigmaNodeModel.fromJson(Map<String, dynamic> json):
     type = json['type'],
     info = FigmaNodeInfoModel.fromJson(json['__info']),
-    dimensions = json.containsKey('dimensions') ? FigmaDimensionsModel.fromJson(json['dimensions']) : null,
-    style = json.containsKey('style') ? FigmaStyleModel.fromJson(json['style']) : null,
-    effects = json.containsKey('effects') ? FigmaEffectsModel.fromJson(json['effects']) : null,
+    dimensions = FigmaDimensionsModel.fromJson(json['dimensions']),
+    effects = FigmaEffectsModel.fromJson(json['effects']),
     componentRefs = json['componentRefs'],
+    opacity = json['opacity'].toDouble(),
     userData = FigmaUserData(json['__userData'])
   ;
 }

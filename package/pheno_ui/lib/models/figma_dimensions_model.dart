@@ -52,7 +52,7 @@ class FigmaDimensionsConstraints {
   final FigmaDimensionsConstraintType horizontal;
   final FigmaDimensionsConstraintType vertical;
 
-  FigmaDimensionsConstraints({
+  const FigmaDimensionsConstraints({
     required this.horizontal,
     required this.vertical
   });
@@ -76,6 +76,32 @@ class FigmaDimensionsModel {
   final FigmaDimensionsSizing heightMode;
   final double rotation;
   final FigmaDimensionsConstraints constraints;
+
+  FigmaDimensionsModel({
+    double? x,
+    double? y,
+    double? width,
+    double? height,
+    FigmaDimensionsPositioning? positioning,
+    BoxConstraints? sizeConstraints,
+    FigmaDimensionsSizing? widthMode,
+    FigmaDimensionsSizing? heightMode,
+    double? rotation,
+    FigmaDimensionsConstraints? constraints,
+  }):
+    x = x ?? 0,
+    y = y ?? 0,
+    width = width ?? 0,
+    height = height ?? 0,
+    positioning = positioning ?? FigmaDimensionsPositioning.absolute,
+    sizeConstraints = sizeConstraints ?? const BoxConstraints(),
+    widthMode = widthMode ?? FigmaDimensionsSizing.fixed,
+    heightMode = heightMode ?? FigmaDimensionsSizing.fixed,
+    rotation = rotation ?? 0.0,
+    constraints = constraints ?? const FigmaDimensionsConstraints(
+      horizontal: FigmaDimensionsConstraintType.min,
+      vertical: FigmaDimensionsConstraintType.min,
+    );
 
   FigmaDimensionsModel.copy(FigmaDimensionsModel other, {
     double? x,

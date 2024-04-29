@@ -8,7 +8,8 @@ import '../widgets/background_blur.dart';
 
 class FigmaEffectsModel {
   final List<_FigmaEffect> _effects;
-  FigmaEffectsModel._(this._effects);
+
+  FigmaEffectsModel([this._effects = const []]);
 
   factory FigmaEffectsModel.fromJson(List<dynamic> json) {
     List<_FigmaEffect> effects = [];
@@ -56,7 +57,7 @@ class FigmaEffectsModel {
       return bVal - aVal;
     });
 
-    return FigmaEffectsModel._(effects);
+    return FigmaEffectsModel(effects);
   }
 
   Widget apply(Widget child) {

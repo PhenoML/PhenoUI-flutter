@@ -7,8 +7,8 @@ import 'figma_component.dart';
 mixin FigmaNode on Widget {
   FigmaNodeModel get model;
   FigmaNodeInfoModel get info => model.info;
-  double get opacity => model.style?.opacity ?? 1.0;
-  FigmaDimensionsModel? get dimensions => model.dimensions;
+  double get opacity => model.opacity;
+  FigmaDimensionsModel get dimensions => model.dimensions;
 }
 
 bool isFigmaNodeVisible(BuildContext context, FigmaNodeModel model) {

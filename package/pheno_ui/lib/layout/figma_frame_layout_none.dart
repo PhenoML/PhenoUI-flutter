@@ -38,28 +38,28 @@ class FigmaFrameLayoutNone extends MultiChildLayoutDelegate {
         layoutChild(i, BoxConstraints.loose(size));
         positionChild(i, Offset.zero);
       } else {
-        var left = child.dimensions!.x;
-        var right = dimensions.width - child.dimensions!.x - child.dimensions!.width;
-        var top = child.dimensions!.y;
-        var bottom = dimensions.height - child.dimensions!.y - child.dimensions!.height;
+        var left = child.dimensions.x;
+        var right = dimensions.width - child.dimensions.x - child.dimensions.width;
+        var top = child.dimensions.y;
+        var bottom = dimensions.height - child.dimensions.y - child.dimensions.height;
 
         var widthScale = (size.width / dimensions.width);
         var heightScale = (size.height / dimensions.height);
 
-        var width = switch (child.dimensions!.constraints.horizontal) {
-          FigmaDimensionsConstraintType.min => child.dimensions!.width,
-          FigmaDimensionsConstraintType.max => child.dimensions!.width,
-          FigmaDimensionsConstraintType.center => child.dimensions!.width,
+        var width = switch (child.dimensions.constraints.horizontal) {
+          FigmaDimensionsConstraintType.min => child.dimensions.width,
+          FigmaDimensionsConstraintType.max => child.dimensions.width,
+          FigmaDimensionsConstraintType.center => child.dimensions.width,
           FigmaDimensionsConstraintType.stretch => (size.width - left - right).abs(),
-          FigmaDimensionsConstraintType.scale => child.dimensions!.width * widthScale,
+          FigmaDimensionsConstraintType.scale => child.dimensions.width * widthScale,
         };
 
-        var height = switch (child.dimensions!.constraints.vertical) {
-          FigmaDimensionsConstraintType.min => child.dimensions!.height,
-          FigmaDimensionsConstraintType.max => child.dimensions!.height,
-          FigmaDimensionsConstraintType.center => child.dimensions!.height,
+        var height = switch (child.dimensions.constraints.vertical) {
+          FigmaDimensionsConstraintType.min => child.dimensions.height,
+          FigmaDimensionsConstraintType.max => child.dimensions.height,
+          FigmaDimensionsConstraintType.center => child.dimensions.height,
           FigmaDimensionsConstraintType.stretch => (size.height - top - bottom).abs(),
-          FigmaDimensionsConstraintType.scale => child.dimensions!.height * heightScale,
+          FigmaDimensionsConstraintType.scale => child.dimensions.height * heightScale,
         };
 
         layoutChild(i, BoxConstraints.tightFor(
@@ -67,18 +67,18 @@ class FigmaFrameLayoutNone extends MultiChildLayoutDelegate {
             height: height,
         ));
 
-        var x = switch (child.dimensions!.constraints.horizontal) {
+        var x = switch (child.dimensions.constraints.horizontal) {
           FigmaDimensionsConstraintType.min => left,
           FigmaDimensionsConstraintType.max => size.width - right - width,
-          FigmaDimensionsConstraintType.center => size.width * 0.5 + (left + child.dimensions!.width * 0.5) - dimensions.width * 0.5 - width * 0.5,
+          FigmaDimensionsConstraintType.center => size.width * 0.5 + (left + child.dimensions.width * 0.5) - dimensions.width * 0.5 - width * 0.5,
           FigmaDimensionsConstraintType.stretch => min(left, size.width - right),
           FigmaDimensionsConstraintType.scale => left * widthScale,
         };
 
-        var y = switch (child.dimensions!.constraints.vertical) {
+        var y = switch (child.dimensions.constraints.vertical) {
           FigmaDimensionsConstraintType.min => top,
           FigmaDimensionsConstraintType.max => size.height - bottom - height,
-          FigmaDimensionsConstraintType.center => size.height * 0.5 + (top + child.dimensions!.height * 0.5) - dimensions.height * 0.5 - height * 0.5,
+          FigmaDimensionsConstraintType.center => size.height * 0.5 + (top + child.dimensions.height * 0.5) - dimensions.height * 0.5 - height * 0.5,
           FigmaDimensionsConstraintType.stretch => min(top, size.height - bottom),
           FigmaDimensionsConstraintType.scale => top * heightScale,
         };

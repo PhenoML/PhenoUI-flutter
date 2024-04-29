@@ -41,12 +41,12 @@ Widget? _buildChildrenContainer(List<Widget> children, FigmaFrameModel model) {
   }
 
   if (model.layout.mode == FigmaLayoutMode.none) {
-    return _buildNoneContainer(model.dimensions!, children);
+    return _buildNoneContainer(model.dimensions, children);
   }
 
   children = children.map((c) {
     if (c is FigmaNode && c.model.dimensions != null) {
-      return dimensionWrapWidget(c, c.model.dimensions!, model.layout);
+      return dimensionWrapWidget(c, c.model.dimensions, model.layout);
     }
     return c;
   }).toList();
@@ -158,7 +158,7 @@ class FigmaFrame<T extends FigmaFrameModel> extends StatelessFigmaNode<T> {
         border: border,
         borderRadius: model.style.borderRadius,
       ),
-      constraints: model.dimensions!.sizeConstraints,
+      constraints: model.dimensions.sizeConstraints,
       child: childrenContainer,
     );
   }

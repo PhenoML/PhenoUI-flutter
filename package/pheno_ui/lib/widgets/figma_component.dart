@@ -1,4 +1,5 @@
 import 'package:flutter/widgets.dart';
+import '../models/figma_effects_model.dart';
 import '../models/figma_node_model.dart';
 import '../interface/screens.dart';
 import '../models/figma_component_model.dart';
@@ -33,7 +34,7 @@ class FigmaComponent<T extends FigmaComponentModel, S extends FigmaComponentStat
   GlobalKey<S> get key => super.key as GlobalKey<S>;
 
   @override
-  FigmaDimensionsModel? get dimensions {
+  FigmaDimensionsModel get dimensions {
     return key.currentState?.dimensions ?? super.dimensions;
   }
 
@@ -69,6 +70,9 @@ class FigmaComponent<T extends FigmaComponentModel, S extends FigmaComponentStat
       info: info,
       widgetType: component,
       userData: userData,
+      dimensions: FigmaDimensionsModel(),
+      effects: FigmaEffectsModel(),
+      opacity: 1.0,
     );
 
     return FigmaComponent(
@@ -85,7 +89,7 @@ class FigmaComponent<T extends FigmaComponentModel, S extends FigmaComponentStat
 
 class FigmaComponentState extends StatefulFigmaNodeState<FigmaComponent> {
   late final FigmaUserData userData;
-  late FigmaDimensionsModel dimensions = widget.model.dimensions!;
+  late FigmaDimensionsModel dimensions = widget.model.dimensions;
   final Map<String, dynamic> variantValues = {};
 
   Map<String, FigmaComponentVariant>? variants;
@@ -117,8 +121,8 @@ class FigmaComponentState extends StatefulFigmaNodeState<FigmaComponent> {
     var initialVariant = _getVariant(null, null);
     if (initialVariant != null) {
       variantScale = Size(
-        widget.model.dimensions!.width / initialVariant.model.dimensions!.width,
-        widget.model.dimensions!.height / initialVariant.model.dimensions!.height,
+        widget.model.dimensions.width / initialVariant.model.dimensions.width,
+        widget.model.dimensions.height / initialVariant.model.dimensions.height,
       );
     }
 
@@ -153,7 +157,7 @@ class FigmaComponentState extends StatefulFigmaNodeState<FigmaComponent> {
     if (variants == null || variants!.isEmpty) {
       setState(() {
         variant = null;
-        dimensions = widget.model.dimensions!;
+        dimensions = widget.model.dimensions;
       });
       return;
     }
@@ -166,12 +170,12 @@ class FigmaComponentState extends StatefulFigmaNodeState<FigmaComponent> {
 
     setState(() {
       if (variant != null) {
-        dimensions = FigmaDimensionsModel.copy(widget.model.dimensions!,
-          width: variant!.model.dimensions!.width * variantScale.width,
-          height: variant!.model.dimensions!.height * variantScale.height,
+        dimensions = FigmaDimensionsModel.copy(widget.model.dimensions,
+          width: variant!.model.dimensions.width * variantScale.width,
+          height: variant!.model.dimensions.height * variantScale.height,
         );
       } else {
-        dimensions = widget.model.dimensions!;
+        dimensions = widget.model.dimensions;
       }
     });
   }

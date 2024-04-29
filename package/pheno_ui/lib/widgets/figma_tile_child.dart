@@ -39,7 +39,7 @@ class FigmaTileChild extends StatelessFigmaNode<FigmaTileChildModel> {
           children.add(child);
         }
       } else {
-        double start = constraints.maxWidth - (model.dimensions!.width - model.childPosition.dx);
+        double start = constraints.maxWidth - (model.dimensions.width - model.childPosition.dx);
         int count = (start / model.childSize.width).ceil() + 1;
 
         for (int i = 0; i < count; i++) {
@@ -51,9 +51,9 @@ class FigmaTileChild extends StatelessFigmaNode<FigmaTileChildModel> {
         }
       }
 
-      Widget child = FigmaFrameLayoutNone.layoutWithChildren(model.dimensions!, children);
+      Widget child = FigmaFrameLayoutNone.layoutWithChildren(model.dimensions, children);
       return Container(
-        constraints: model.dimensions!.sizeConstraints,
+        constraints: model.dimensions.sizeConstraints,
         child: child,
       );
     });
@@ -76,7 +76,7 @@ class _FigmaTileChild extends StatelessWidget with FigmaNode {
     double? y,
   }) {
     dimensions = FigmaDimensionsModel.copy(
-      child.dimensions!,
+      child.dimensions,
       x: x,
       y: y,
     );

@@ -354,7 +354,7 @@ class FigmaTextSegmentModel {
     var height = switch (lineHeight.unit) {
       FigmaTextUnit.pixels => (lineHeight.value as double) / (size),
       FigmaTextUnit.percent => (lineHeight.value as double) * 0.01,
-      FigmaTextUnit.auto => null, // good enough, sorry future Dario :/
+      FigmaTextUnit.auto => 1.2, // good enough, sorry future Dario :/
     };
 
     var spacing = switch (letterSpacing.unit) {

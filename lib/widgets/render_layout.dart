@@ -20,11 +20,12 @@ class RenderLayout extends StatefulWidget {
   State<RenderLayout> createState() => RenderLayoutState();
 }
 
-
 class RenderLayoutState extends State<RenderLayout> {
   final GlobalKey _key = GlobalKey<NavigatorState>();
   bool _initialized = false;
   Navigator? navigator;
+  Size? contentSize;
+  double contentScale = 1.0;
 
   RenderLayoutState();
 
@@ -55,9 +56,6 @@ class RenderLayoutState extends State<RenderLayout> {
       onGenerateRoute: (settings) => FigmaScreens().generateRoute(settings),
     );
 
-    Size? contentSize;
-    double contentScale = 1.0;
-
     return Material(
       child: NotificationListener<ResizeNotification>(
         onNotification: (notification) {
@@ -81,16 +79,14 @@ class RenderLayoutState extends State<RenderLayout> {
                 }, constraints),
                 Expanded(
                     child: ClipRect(
-                      child: Transform.scale(
-                        scale: contentScale,
-                        child: OverflowBox(
-                          maxWidth: double.infinity,
-                          maxHeight: double.infinity,
-                          child: SizedBox.fromSize(
+                      child: Flow(
+                        delegate: _FlowDelegate(this),
+                        children: [
+                          SizedBox.fromSize(
                             size: contentSize ?? constraints.biggest,
                             child: navigator,
-                          ),
-                        ),
+                          )
+                        ],
                       )
                     )
                 ),
@@ -101,4 +97,25 @@ class RenderLayoutState extends State<RenderLayout> {
       ),
     );
   }
+}
+
+class _FlowDelegate extends FlowDelegate {
+  final RenderLayoutState state;
+  _FlowDelegate(this.state);
+
+  @override
+  void paintChildren(FlowPaintingContext context) {
+    context.paintChild(0, transform: Matrix4.identity()..scale(state.contentScale));
+  }
+
+  @override
+  bool shouldRepaint(covariant FlowDelegate oldDelegate) {
+    return oldDelegate != this;
+  }
+
+  @override
+  BoxConstraints getConstraintsForChild(int i, BoxConstraints constraints) {
+    return BoxConstraints.tight(state.contentSize ?? constraints.biggest);
+  }
+
 }

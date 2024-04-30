@@ -1,9 +1,10 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 import 'package:window_manager/window_manager.dart';
 
 enum ContentSize {
@@ -18,6 +19,7 @@ enum ContentSize {
   ;
   final double width;
   final double height;
+  Size get size => Size(width, height);
   const ContentSize(this.width, this.height);
 }
 
@@ -71,8 +73,28 @@ Widget topBar(BuildContext context, [String? title, void Function()? refresh, Bo
               // get the window diff from the content size
               var windowSize = await windowManager.getSize();
               var diff = Size(windowSize.width - constraints.maxWidth, windowSize.height - constraints.maxHeight);
-              windowManager.setSize(
-                  Size(value.width + diff.width, value.height + diff.height + _kTopBarHeight));
+              var targetSize = Size(value.width + diff.width, value.height + diff.height + _kTopBarHeight);
+              if (context.mounted) {
+                final notification = ResizeNotification(value.size, 1.0);
+                notification.dispatch(context);
+              }
+              await windowManager.setSize(targetSize);
+              windowSize = await windowManager.getSize();
+              if (windowSize.width != targetSize.width || windowSize.height != targetSize.height) {
+                double scale = min(
+                  windowSize.width / targetSize.width,
+                  windowSize.height / targetSize.height
+                );
+                var scaledSize = Size(
+                  (targetSize.width * scale).floorToDouble(),
+                  (targetSize.height * scale).floorToDouble(),
+                );
+                if (context.mounted) {
+                  final notification = ResizeNotification(value.size, scale);
+                  notification.dispatch(context);
+                }
+                await windowManager.setSize(scaledSize);
+              }
             }
           },
           dropdownMenuEntries: ContentSize.values.map((e) => DropdownMenuEntry(
@@ -80,13 +102,20 @@ Widget topBar(BuildContext context, [String? title, void Function()? refresh, Bo
             label: '${e.name} (${e.width.toInt()}x${e.height.toInt()})',
           )).toList(),
         ),
-        Text(
-          '(${constraints.maxWidth.toInt()}x${constraints.maxHeight.toInt() - _kTopBarHeight.toInt()})',
-          textAlign: TextAlign.center,
-          style: const TextStyle(
-            color: Colors.white,
-            fontSize: 12,
-            overflow: TextOverflow.ellipsis,
+        Expanded(
+          child: ConstrainedBox(
+            constraints: BoxConstraints.tight(const Size.fromHeight(18)),
+            child: FittedBox(
+              child: Text(
+                '(${constraints.maxWidth.toInt()}x${constraints.maxHeight.toInt() - _kTopBarHeight.toInt()})',
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  color: Colors.white,
+                  fontSize: 12,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            ),
           ),
         ),
       ]
@@ -117,5 +146,14 @@ Widget topBar(BuildContext context, [String? title, void Function()? refresh, Bo
     child: Row(
       children: children,
     ),
+  );
+}
+
+class ResizeNotification extends Notification {
+  final Size targetSize;
+  final double scale;
+  ResizeNotification(
+    this.targetSize,
+    this.scale
   );
 }

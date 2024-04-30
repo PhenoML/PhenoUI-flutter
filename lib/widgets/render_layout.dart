@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pheno_ui/interface/data/entry.dart';
 import 'package:pheno_ui/interface/data/strapi_provider.dart';
-import 'package:pheno_ui/interface/screens.dart';
 import 'package:pheno_ui/pheno_ui.dart';
 import 'package:pheno_ui_tester/widgets/top_bar.dart';
 
@@ -56,29 +55,49 @@ class RenderLayoutState extends State<RenderLayout> {
       onGenerateRoute: (settings) => FigmaScreens().generateRoute(settings),
     );
 
+    Size? contentSize;
+    double contentScale = 1.0;
+
     return Material(
-      child: LayoutBuilder(
-        builder: (_, constraints) {
-          return Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              topBar(context, widget.initialRoute, () async {
-                setState(() {
-                  _initialized = false;
-                });
-                await FigmaScreens().refreshScreens();
-                setState(() {
-                  _initialized = true;
-                });
-              }, constraints),
-              Expanded(
-                  child: ClipRect(
-                    child: navigator!,
-                  )
-              ),
-            ],
-          );
-        }
+      child: NotificationListener<ResizeNotification>(
+        onNotification: (notification) {
+          contentSize = notification.targetSize;
+          contentScale = notification.scale;
+          return true;
+        },
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                topBar(context, widget.initialRoute, () async {
+                  setState(() {
+                    _initialized = false;
+                  });
+                  await FigmaScreens().refreshScreens();
+                  setState(() {
+                    _initialized = true;
+                  });
+                }, constraints),
+                Expanded(
+                    child: ClipRect(
+                      child: Transform.scale(
+                        scale: contentScale,
+                        child: OverflowBox(
+                          maxWidth: double.infinity,
+                          maxHeight: double.infinity,
+                          child: SizedBox.fromSize(
+                            size: contentSize ?? constraints.biggest,
+                            child: navigator,
+                          ),
+                        ),
+                      )
+                    )
+                ),
+              ],
+            );
+          }
+        ),
       ),
     );
   }

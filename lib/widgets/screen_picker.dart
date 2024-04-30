@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pheno_ui/interface/data/entry.dart';
+import 'package:pheno_ui/interface/screens.dart';
 import 'package:pheno_ui/interface/strapi.dart';
 import 'package:pheno_ui_tester/widgets/picker_state.dart';
 import 'package:pheno_ui_tester/widgets/render_layout.dart';
@@ -36,8 +37,9 @@ class ScreenPicker extends PickerWidget {
     await Strapi().deleteScreen(entry.id);
   }
 
-  Future<List<PhenoDataEntry>> _getList() {
-    return Strapi().getScreenList(entry.id);
+  Future<List<PhenoDataEntry>> _getList() async {
+    await FigmaScreens().refreshScreens();
+    return await Strapi().getScreenList(entry.id);
   }
 
   @override

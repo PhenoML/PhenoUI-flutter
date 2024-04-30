@@ -35,8 +35,7 @@ abstract class StatefulFigmaNodeState<T extends StatefulFigmaNode> extends State
           child: child,
         );
       }
-      print(widget.model.type);
-      return widget.model.effects == null ? child : widget.model.effects!.apply(child);
+      return widget.model.effects.apply(child);
     }
     return const SizedBox();
   }

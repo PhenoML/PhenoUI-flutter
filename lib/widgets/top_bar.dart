@@ -82,12 +82,12 @@ Widget topBar(BuildContext context, [String? title, void Function()? refresh, Bo
               windowSize = await windowManager.getSize();
               if (windowSize.width != targetSize.width || windowSize.height != targetSize.height) {
                 double scale = min(
-                  windowSize.width / targetSize.width,
-                  windowSize.height / targetSize.height
+                  (windowSize.width - diff.width) / value.width,
+                  (windowSize.height - diff.height - _kTopBarHeight) / value.height
                 );
                 var scaledSize = Size(
-                  (targetSize.width * scale).floorToDouble(),
-                  (targetSize.height * scale).floorToDouble(),
+                  (value.width * scale).floorToDouble() + diff.width,
+                  (value.height * scale).floorToDouble() + diff.height + _kTopBarHeight,
                 );
                 if (context.mounted) {
                   final notification = ResizeNotification(value.size, scale);

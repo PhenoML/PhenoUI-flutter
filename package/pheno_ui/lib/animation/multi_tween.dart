@@ -190,4 +190,16 @@ extension MultiTweenLibrary on MultiTween {
         ),
       }
   );
+
+  static const MultiTween fadeIn = MultiTween.from(
+    {
+      'opacity': ImmutableTween(begin: 0.0, end: 1.0, curve: Curves.easeIn),
+    }
+  );
+
+  static const MultiTween fadeOut = MultiTween.from(
+    {
+      'opacity': ImmutableTween(begin: 1.0, end: 0.0, curve: Curves.easeOut),
+    }
+  );
 }

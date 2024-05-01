@@ -127,6 +127,12 @@ enum TransitionLibrary {
     reverseDuration: Duration(milliseconds: 300),
   )),
 
+  fade(TransitionAnimation(
+    primary: MultiTweenLibrary.fadeIn,
+    duration: Duration(milliseconds: 300),
+    reverseDuration: Duration(milliseconds: 200),
+  )),
+
   ;
   final TransitionAnimation animation;
   const TransitionLibrary(this.animation);

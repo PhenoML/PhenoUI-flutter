@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../models/figma_text_model.dart';
+import '../tools/figma_form_types.dart';
 import 'figma_form.dart';
 import 'figma_text.dart';
 import 'stateful_figma_node.dart';
 
-class FigmaTextField extends StatefulFigmaNode<FigmaTextModel> {
+class FigmaTextField extends StatefulFigmaNode<FigmaTextModel> with FigmaFormWidget {
   const FigmaTextField({required super.model, super.key});
 
   static FigmaTextField fromJson(Map<String, dynamic> json) {
@@ -33,11 +34,6 @@ class FigmaTextFieldState extends StatefulFigmaNodeState<FigmaTextField> {
 
   @override
   Widget buildFigmaNode(BuildContext context) {
-    // if this text field belongs to a form, check if it should be displayed
-    if (form != null && !form!.shouldDisplayInput(_id)) {
-      return const SizedBox();
-    }
-
     var modelSegments = FigmaText.textSegmentsFromModel(context, widget.model);
     List<TextSpan> segments = modelSegments.map((m) => m.span).toList();
 

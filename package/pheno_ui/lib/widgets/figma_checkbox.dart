@@ -1,12 +1,19 @@
 import 'package:flutter/widgets.dart';
 
 import '../models/figma_component_model.dart';
+import '../tools/figma_form_types.dart';
 import 'figma_component.dart';
 import 'figma_form.dart';
 
-class FigmaCheckbox {
+class FigmaCheckbox extends FigmaComponent with FigmaFormWidget {
+  const FigmaCheckbox({
+    required super.stateNew,
+    required super.model,
+    required super.key
+  });
+
   static FigmaComponent fromJson(Map<String, dynamic> json) {
-    return figmaComponentFromJson(json, FigmaComponent.new, FigmaComponentModel.fromJson, FigmaCheckboxState.new);
+    return figmaComponentFromJson(json, FigmaCheckbox.new, FigmaComponentModel.fromJson, FigmaCheckboxState.new);
   }
 }
 
@@ -41,10 +48,6 @@ class FigmaCheckboxState extends FigmaComponentState {
 
   @override
   Widget buildFigmaNode(BuildContext context) {
-    if (form != null && !form!.shouldDisplayInput(_id)) {
-      return const SizedBox();
-    }
-
     return GestureDetector(
       onTap: () {
         checked = !checked;

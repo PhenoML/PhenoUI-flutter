@@ -20,3 +20,19 @@ bool isFigmaNodeVisible(BuildContext context, FigmaNodeModel model) {
   }
   return true;
 }
+
+Widget baseBuildFigmaNode(FigmaNode widget, BuildContext context, WidgetBuilder builder) {
+  bool visible = isFigmaNodeVisible(context, widget);
+  Widget child = builder(context);
+
+  if (visible) {
+    if (widget.opacity != 1.0) {
+      child = Opacity(
+        opacity: widget.opacity,
+        child: child,
+      );
+    }
+    return widget.model.effects.apply(child);
+  }
+  return const SizedBox();
+}

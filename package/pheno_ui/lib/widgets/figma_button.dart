@@ -4,7 +4,6 @@ import 'package:pheno_ui/widgets/figma_frame.dart';
 class FigmaButton extends FigmaFrame {
   const FigmaButton({
     required super.model,
-    super.childrenContainer,
     super.key
   });
 

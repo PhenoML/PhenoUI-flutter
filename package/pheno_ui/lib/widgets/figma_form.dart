@@ -118,6 +118,6 @@ class FigmaFormState extends StatefulFigmaNodeState<FigmaForm> {
 
   @override
   Widget buildFigmaNode(BuildContext context) {
-    return FigmaFrame.buildFigmaFrame(context, widget.model, widget.childrenContainer);
+    return FigmaFrame.buildFigmaFrame(context, widget.model);
   }
 }

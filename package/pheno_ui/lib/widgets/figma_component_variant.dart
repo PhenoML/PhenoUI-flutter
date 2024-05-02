@@ -6,7 +6,6 @@ class FigmaComponentVariant extends FigmaFrame<FigmaComponentVariantModel> {
 
   const FigmaComponentVariant({
     required super.model,
-    super.childrenContainer,
     super.key
   });
 

@@ -7,7 +7,6 @@ import 'figma_frame.dart';
 class FigmaSubmitButton extends FigmaFrame with FigmaFormWidget {
   const FigmaSubmitButton({
     required super.model,
-    super.childrenContainer,
     super.key
   });
 

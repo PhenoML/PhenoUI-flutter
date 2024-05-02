@@ -9,7 +9,6 @@ import 'figma_frame.dart';
 class FigmaNavButton extends FigmaFrame<FigmaNavButtonModel> {
   const FigmaNavButton({
     required super.model,
-    super.childrenContainer,
     super.key
   });
 

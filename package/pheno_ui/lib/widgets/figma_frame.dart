@@ -35,7 +35,14 @@ List<Widget> _addSpacers(List<Widget> widgets, double width, double height) {
   return widgets;
 }
 
-Widget? _buildChildrenContainer(List<Widget> children, FigmaFrameModel model) {
+Widget? _buildChildrenContainer(List<Widget> children, FigmaFrameModel model, BuildContext context) {
+  children = children.where((c) {
+    if (c is FigmaNode) {
+      return isFigmaNodeVisible(context, c);
+    }
+    return true;
+  }).toList();
+
   if (children.isEmpty) {
     return null;
   }
@@ -108,18 +115,14 @@ Widget? _buildChildrenContainer(List<Widget> children, FigmaFrameModel model) {
 
 typedef FigmaFrameConstructor<F extends FigmaNode, M extends FigmaFrameModel> = F Function({
   required M model,
-  Widget? childrenContainer,
   Key? key,
 });
 
 typedef FigmaFrameModelGetter<M extends FigmaFrameModel> = M Function(Map<String, dynamic> json);
 
 class FigmaFrame<T extends FigmaFrameModel> extends StatelessFigmaNode<T> {
-  final Widget? childrenContainer;
-
   const FigmaFrame({
     required super.model,
-    this.childrenContainer,
     super.key
   });
 
@@ -134,18 +137,16 @@ class FigmaFrame<T extends FigmaFrameModel> extends StatelessFigmaNode<T> {
       FigmaFrameModel.fromJson(json) as M :
       modelGetter(json);
 
-    Widget? childrenContainer = _buildChildrenContainer(model.children, model);
-
     return constructor == null ?
-      FigmaFrame(model: model, childrenContainer: childrenContainer) as F:
-      constructor(model: model, childrenContainer: childrenContainer);
+      FigmaFrame(model: model) as F:
+      constructor(model: model);
   }
 
   static Widget buildFigmaFrame<M extends FigmaFrameModel>(
     BuildContext context,
-    M model,
-    Widget? childrenContainer
+    M model
   ) {
+    Widget? childrenContainer = _buildChildrenContainer(model.children, model, context);
     var padding = model.layout.mode == FigmaLayoutMode.none ? null : model.layout.padding;
     var border = model.style.border;
     var blend = model.style.color == null ? null : BlendMode.values.convertDefault(model.style.blendMode, BlendMode.srcOver);
@@ -166,6 +167,6 @@ class FigmaFrame<T extends FigmaFrameModel> extends StatelessFigmaNode<T> {
 
   @override
   Widget buildFigmaNode(BuildContext context) {
-    return buildFigmaFrame(context, model, childrenContainer);
+    return buildFigmaFrame(context, model);
   }
 }

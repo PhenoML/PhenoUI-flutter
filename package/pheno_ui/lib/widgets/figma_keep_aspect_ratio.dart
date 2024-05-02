@@ -5,7 +5,6 @@ import 'figma_frame.dart';
 class FigmaKeepAspectRatio extends FigmaFrame {
   const FigmaKeepAspectRatio({
     required super.model,
-    super.childrenContainer,
     super.key
   });
 

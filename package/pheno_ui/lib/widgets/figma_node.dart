@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:pheno_ui/models/figma_dimensions_model.dart';
 
 import '../models/figma_node_model.dart';
+import '../tools/figma_form_types.dart';
 import 'figma_component.dart';
 
 mixin FigmaNode on Widget {
@@ -11,13 +12,16 @@ mixin FigmaNode on Widget {
   FigmaDimensionsModel get dimensions => model.dimensions;
 }
 
-bool isFigmaNodeVisible(BuildContext context, FigmaNodeModel model) {
-  if (model.componentRefs != null && model.componentRefs!.containsKey('visible')) {
+bool isFigmaNodeVisible(BuildContext context, FigmaNode node) {
+  if (node.model.componentRefs != null && node.model.componentRefs!.containsKey('visible')) {
     var data = FigmaComponentData.maybeOf(context);
     if (data != null) {
-      return data.userData.maybeGet(model.componentRefs!['visible']) ?? true;
+      return data.userData.maybeGet(node.model.componentRefs!['visible']) ?? true;
     }
+  } else if (node is FigmaFormWidget) {
+    return node.isVisible(context);
   }
+
   return true;
 }
 

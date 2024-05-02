@@ -66,11 +66,11 @@ class FigmaStyleModel {
   final FigmaStyleBlendMode blendMode;
 
   FigmaStyleModel._fromJson(Map<String, dynamic> json) :
-    color = json['color'] == null || json['color']['r'] == null ? null : Color.fromRGBO(
-      (json['color']['r'] * 255.0).round(),
-      (json['color']['g'] * 255.0).round(),
-      (json['color']['b'] * 255.0).round(),
-      (json['color']['o'] ?? 1.0).toDouble(),
+    color = json['fill']['color'] == null ? null : Color.fromRGBO(
+      (json['fill']['color']['r'] * 255.0).round(),
+      (json['fill']['color']['g'] * 255.0).round(),
+      (json['fill']['color']['b'] * 255.0).round(),
+      (json['fill']['opacity'] ?? 1.0).toDouble(),
     ),
     borderRadius = json['border']['radius']['tl'] == null ? null : BorderRadius.only(
       topLeft: Radius.circular(json['border']['radius']['tl'].toDouble()),
@@ -78,12 +78,12 @@ class FigmaStyleModel {
       bottomLeft: Radius.circular(json['border']['radius']['bl'].toDouble()),
       bottomRight: Radius.circular(json['border']['radius']['br'].toDouble())
     ),
-    border = json['border']['color'] == null || json['border']['color']['r'] == null ? null : FigmaStyleBorder.all(
+    border = json['border']['color'] == null ? null : FigmaStyleBorder.all(
       color: Color.fromRGBO(
         (json['border']['color']['r'] * 255.0).round(),
         (json['border']['color']['g'] * 255.0).round(),
         (json['border']['color']['b'] * 255.0).round(),
-        (json['color']['o'] ?? 1.0).toDouble(),
+        (json['border']['opacity'] ?? 1.0).toDouble(),
       ),
       width: json['border']['width'].toDouble()
     ),

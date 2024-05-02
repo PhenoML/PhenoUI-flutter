@@ -159,6 +159,7 @@ class FigmaFrame<T extends FigmaFrameModel> extends StatelessFigmaNode<T> {
         borderRadius: model.style.borderRadius,
       ),
       constraints: model.dimensions.sizeConstraints,
+      clipBehavior: model.clipBehavior,
       child: childrenContainer,
     );
   }

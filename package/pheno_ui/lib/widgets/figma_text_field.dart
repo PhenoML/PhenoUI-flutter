@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../models/figma_text_model.dart';
@@ -21,6 +22,8 @@ class FigmaTextField extends StatefulFigmaNode<FigmaTextModel> with FigmaFormWid
 class FigmaTextFieldState extends StatefulFigmaNodeState<FigmaTextField> {
   FigmaFormState? form;
   FocusNode? focusNode;
+  bool _hasInitialValue = false;
+  final TextEditingController _controller = TextEditingController();
   late final String _id = widget.model.userData.get('id', context: context, listen: false);
 
   @override
@@ -28,12 +31,20 @@ class FigmaTextFieldState extends StatefulFigmaNodeState<FigmaTextField> {
     super.initState();
     form = FigmaForm.maybeOf(context);
     if (form != null) {
-      focusNode = form!.registerInput(_id, '');
+      form!.registerInput(_id, '').then((value) {
+        focusNode = value.$1;
+        _controller.text = value.$2;
+        _hasInitialValue = true;
+      });
     }
   }
 
   @override
   Widget buildFigmaNode(BuildContext context) {
+    if (!_hasInitialValue) {
+      return const SizedBox();
+    }
+
     var modelSegments = FigmaText.textSegmentsFromModel(context, widget.model);
     List<TextSpan> segments = modelSegments.map((m) => m.span).toList();
 
@@ -54,6 +65,7 @@ class FigmaTextFieldState extends StatefulFigmaNodeState<FigmaTextField> {
     return Align(
       alignment: alignment,
       child: TextField(
+        controller: _controller,
         focusNode: focusNode,
         onTapOutside: (_) => focusNode?.unfocus(),
         style: segments[0].style,

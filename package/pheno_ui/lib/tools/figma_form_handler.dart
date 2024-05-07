@@ -6,6 +6,7 @@ import 'figma_user_data.dart';
 abstract class FigmaFormHandler {
   const FigmaFormHandler();
   bool shouldDisplayInput(String id) => true;
+  Future<T?> initialValueForInputID<T>(BuildContext context, Map<String, FigmaFormInput> inputs, String id) async => null;
   void onInputRegistered<T>(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaFormInput<T> input) { /* nothing */ }
   void onInputValueChanged<T>(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaFormInput<T> input) { /* nothing */ }
   void onInputEditingComplete<T>(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaFormInput<T> input) { /* nothing */ }

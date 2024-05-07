@@ -21,6 +21,7 @@ class FigmaCheckboxState extends FigmaComponentState {
   FigmaFormState? form;
   FocusNode? focusNode;
   String _state = 'unchecked';
+  bool _hasInitialValue = false;
   late final String _id = userData.get('id', context: context, listen: false);
 
   bool get checked => _state == 'checked';
@@ -37,7 +38,11 @@ class FigmaCheckboxState extends FigmaComponentState {
     super.initState();
     form = FigmaForm.maybeOf(context);
     if (form != null) {
-      focusNode = form!.registerInput(_id, checked);
+      form!.registerInput(_id, checked).then((value) {
+        focusNode = value.$1;
+        checked = value.$2;
+        _hasInitialValue = true;
+      });
     }
   }
 
@@ -48,6 +53,10 @@ class FigmaCheckboxState extends FigmaComponentState {
 
   @override
   Widget buildFigmaNode(BuildContext context) {
+    if (!_hasInitialValue) {
+      return const SizedBox();
+    }
+
     return GestureDetector(
       onTap: () {
         checked = !checked;

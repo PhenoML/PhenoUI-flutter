@@ -79,14 +79,17 @@ class FigmaFormState extends StatefulFigmaNodeState<FigmaForm> {
     return handler.shouldDisplayInput(id) ?? true;
   }
 
-  FocusNode registerInput<T>(String id, T initialValue) {
+  Future<(FocusNode, T)> registerInput<T>(String id, T initialValue) async {
     if (inputs.containsKey(id)) {
       logger.w('Input with id $id already exists.');
     }
     FocusNode node = FocusNode();
-    inputs[id] = FigmaFormInput<T>(node, id, initialValue);
-    handler.onInputRegistered(context, inputs, inputs[id]!);
-    return node;
+    T value = await handler.initialValueForInputID<T>(context, inputs, id) ?? initialValue;
+    inputs[id] = FigmaFormInput<T>(node, id, value);
+    if (context.mounted && mounted) {
+      handler.onInputRegistered(context, inputs, inputs[id]!);
+    }
+    return (node, value);
   }
 
   void inputValueChanged<T>(String id, T value) {

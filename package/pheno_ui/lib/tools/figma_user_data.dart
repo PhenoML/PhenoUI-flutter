@@ -1,10 +1,15 @@
 import 'package:flutter/widgets.dart';
 import '../../widgets/figma_component.dart';
 
+abstract class FigmaUserDataDelegate {
+  onUserDataChanged<T>(String key, T value);
+}
+
 class FigmaUserData {
   final Map<String, dynamic>? map;
+  FigmaUserDataDelegate? delegate;
 
-  FigmaUserData(Map<String, dynamic>? map) : map = map == null ? null : {...map};
+  FigmaUserData(Map<String, dynamic>? map, { this.delegate }) : map = map == null ? null : {...map};
 
   void set<T>(String key, T value) {
     if (map == null) {
@@ -31,6 +36,7 @@ class FigmaUserData {
       throw 'Bound values and groups cannot be overwritten';
     }
     map![key] = value;
+    delegate?.onUserDataChanged(key, value);
   }
 
   T get<T>(String key, { BuildContext? context, bool listen = true }) {

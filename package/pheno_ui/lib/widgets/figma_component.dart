@@ -87,7 +87,7 @@ class FigmaComponent<T extends FigmaComponentModel, S extends FigmaComponentStat
   S createState() => stateNew();
 }
 
-class FigmaComponentState extends StatefulFigmaNodeState<FigmaComponent> {
+class FigmaComponentState extends StatefulFigmaNodeState<FigmaComponent> implements FigmaUserDataDelegate {
   late final FigmaUserData userData;
   late FigmaDimensionsModel dimensions = widget.model.dimensions;
   final Map<String, dynamic> variantValues = {};
@@ -100,6 +100,7 @@ class FigmaComponentState extends StatefulFigmaNodeState<FigmaComponent> {
   @override
   void initState() {
     userData = widget.model.userData;
+    userData.delegate = this;
     loadContent();
     super.initState();
   }
@@ -200,6 +201,13 @@ class FigmaComponentState extends StatefulFigmaNodeState<FigmaComponent> {
         )
       ),
     );
+  }
+
+  @override
+  onUserDataChanged<T>(String _, T __) {
+    if (mounted) {
+      setState(() {});
+    }
   }
 }
 

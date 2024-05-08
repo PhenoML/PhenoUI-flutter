@@ -20,7 +20,7 @@ class FigmaTextField extends StatefulFigmaNode<FigmaTextModel> with FigmaFormWid
 }
 
 class FigmaTextFieldState extends StatefulFigmaNodeState<FigmaTextField> {
-  FigmaFormState? form;
+  FigmaFormInterface? form;
   FocusNode? focusNode;
   bool _hasInitialValue = false;
   final TextEditingController _controller = TextEditingController();
@@ -29,7 +29,7 @@ class FigmaTextFieldState extends StatefulFigmaNodeState<FigmaTextField> {
   @override
   void initState() {
     super.initState();
-    form = FigmaForm.maybeOf(context);
+    form = FigmaForm.maybeOf(context, listen: false);
     if (form != null) {
       form!.registerInput(_id, '').then((value) {
         focusNode = value.$1;

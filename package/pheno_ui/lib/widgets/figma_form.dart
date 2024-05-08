@@ -25,22 +25,17 @@ class FigmaForm extends StatefulFigmaNode<FigmaFrameModel> {
     return FigmaFrame.fromJson(json, FigmaForm.new);
   }
 
-  static FigmaFormState? maybeOf(BuildContext context) {
-    // Handles the case where the input context is a FigmaForm element.
-    FigmaFormState? state;
-
-    if (context is StatefulElement && context.state is FigmaFormState) {
-      state = context.state as FigmaFormState;
+  static FigmaFormInterface? maybeOf(BuildContext context, { bool listen = true }) {
+    if (listen) {
+      return context.dependOnInheritedWidgetOfExactType<FigmaFormInterface>();
     }
-    state = state ?? context.findAncestorStateOfType<FigmaFormState>();
-
-    return state;
+    return context.getInheritedWidgetOfExactType<FigmaFormInterface>();
   }
 
-  static FigmaFormState of(BuildContext context) {
-    FigmaFormState? state = maybeOf(context);
+  static FigmaFormInterface of(BuildContext context) {
+    FigmaFormInterface? interface = maybeOf(context);
     assert(() {
-      if (state == null) {
+      if (interface == null) {
         throw FlutterError(
           'FigmaForm operation requested with a context that does not include a FigmaForm.\n'
               'The context used to access the state must be that of a widget that'
@@ -49,7 +44,7 @@ class FigmaForm extends StatefulFigmaNode<FigmaFrameModel> {
       }
       return true;
     }());
-    return state!;
+    return interface!;
   }
 
   @override
@@ -59,6 +54,23 @@ class FigmaForm extends StatefulFigmaNode<FigmaFrameModel> {
 class FigmaFormState extends StatefulFigmaNodeState<FigmaForm> {
   late final FigmaFormHandler handler;
   Map<String, FigmaFormInput> inputs = {};
+
+  bool _figmaFormHandlerChanged = false;
+  bool get figmaFormHandlerChanged => _figmaFormHandlerChanged;
+  set figmaFormHandlerChanged(bool value) {
+    if (value != _figmaFormHandlerChanged) {
+      if (value) {
+        setState(() {
+          _figmaFormHandlerChanged = value;
+          WidgetsBinding.instance.addPostFrameCallback(
+            (_) => _figmaFormHandlerChanged = false
+          );
+        });
+      } else {
+        _figmaFormHandlerChanged = value;
+      }
+    }
+  }
 
   @override
   void initState() {
@@ -78,7 +90,7 @@ class FigmaFormState extends StatefulFigmaNodeState<FigmaForm> {
   }
 
   bool shouldDisplayInput(String id) {
-    return handler.shouldDisplayInput(id) ?? true;
+    return handler.shouldDisplayInput(id);
   }
 
   Future<(FocusNode, T)> registerInput<T>(String id, T initialValue) async {
@@ -123,6 +135,50 @@ class FigmaFormState extends StatefulFigmaNodeState<FigmaForm> {
 
   @override
   Widget buildFigmaNode(BuildContext context) {
-    return FigmaFrame.buildFigmaFrame(context, widget.model);
+    return FigmaFormInterface(
+      shouldDisplayInput: shouldDisplayInput,
+      registerInput: registerInput,
+      inputValueChanged: inputValueChanged,
+      inputEditingComplete: inputEditingComplete,
+      inputSubmitted: inputSubmitted,
+      submit: submit,
+      getFigmaFormHandlerChanged: () => figmaFormHandlerChanged,
+      child: FigmaFrame.buildFigmaFrame(context, widget.model),
+    );
+  }
+}
+
+typedef ShouldDisplayInputFunction = bool Function(String id);
+typedef RegisterInputFunction = Future<(FocusNode, T)> Function<T>(String id, T initialValue);
+typedef InputValueChangedFunction = void Function<T>(String id, T value);
+typedef InputEditingCompleteFunction = void Function(String id);
+typedef InputSubmittedFunction = void Function<T>(String id, T value);
+typedef SubmitFunction = void Function(String id, Map<String, dynamic>? buttonData);
+
+
+class FigmaFormInterface extends InheritedWidget {
+  final ShouldDisplayInputFunction shouldDisplayInput;
+  final RegisterInputFunction registerInput;
+  final InputValueChangedFunction inputValueChanged;
+  final InputEditingCompleteFunction inputEditingComplete;
+  final InputSubmittedFunction inputSubmitted;
+  final SubmitFunction submit;
+  final bool Function() getFigmaFormHandlerChanged;
+
+  const FigmaFormInterface({
+    required this.shouldDisplayInput,
+    required this.registerInput,
+    required this.inputValueChanged,
+    required this.inputEditingComplete,
+    required this.inputSubmitted,
+    required this.submit,
+    required this.getFigmaFormHandlerChanged,
+    required super.child,
+    super.key
+  });
+
+  @override
+  bool updateShouldNotify(covariant InheritedWidget oldWidget) {
+    return getFigmaFormHandlerChanged();
   }
 }

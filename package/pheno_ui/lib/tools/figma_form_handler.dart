@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/widgets.dart';
 
 import 'figma_form_types.dart';
@@ -6,7 +7,7 @@ import 'figma_user_data.dart';
 abstract class FigmaFormHandler {
   const FigmaFormHandler();
   bool shouldDisplayInput(String id) => true;
-  Future<T?> initialValueForInputID<T>(BuildContext context, Map<String, FigmaFormInput> inputs, String id) async => null;
+  FutureOr<T?> initialValueForInputID<T>(BuildContext context, String id) => null;
   void onInputRegistered<T>(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaFormInput<T> input) { /* nothing */ }
   void onInputValueChanged<T>(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaFormInput<T> input) { /* nothing */ }
   void onInputEditingComplete<T>(BuildContext context, Map<String, FigmaFormInput> inputs, FigmaFormInput<T> input) { /* nothing */ }

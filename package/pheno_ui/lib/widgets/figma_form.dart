@@ -84,7 +84,7 @@ class FigmaFormState extends StatefulFigmaNodeState<FigmaForm> {
       logger.w('Input with id $id already exists.');
     }
     FocusNode node = FocusNode();
-    T value = await handler.initialValueForInputID<T>(context, inputs, id) ?? initialValue;
+    T value = await handler.initialValueForInputID<T>(context, id) ?? initialValue;
     inputs[id] = FigmaFormInput<T>(node, id, value);
     if (context.mounted && mounted) {
       handler.onInputRegistered(context, inputs, inputs[id]!);

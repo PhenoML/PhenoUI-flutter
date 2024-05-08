@@ -59,7 +59,7 @@ class FigmaFormState extends StatefulFigmaNodeState<FigmaForm> {
   bool get figmaFormHandlerChanged => _figmaFormHandlerChanged;
   set figmaFormHandlerChanged(bool value) {
     if (value != _figmaFormHandlerChanged) {
-      if (value) {
+      if (mounted && value) {
         setState(() {
           _figmaFormHandlerChanged = value;
           WidgetsBinding.instance.addPostFrameCallback(

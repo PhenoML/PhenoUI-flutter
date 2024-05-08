@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../tools/figma_enum.dart';
 import '../animation/transition_animation.dart';
 import '../interface/route_arguments.dart';
 import 'figma_form_handler.dart';
@@ -83,17 +84,6 @@ class _DefaultFormHandler extends FigmaFormHandler {
         break;
     }
 
-    if (buttonData != null && buttonData.containsKey('route')){
-      RouteType type = RouteType.screen;
-      String? transitionName = buttonData['transition'];
-
-      var arguments = RouteArguments(
-        type: type,
-        transition: TransitionLibrary.getTransition(transitionName, type),
-        data: userData.maybeGet('data'),
-      );
-
-      Navigator.of(context).pushReplacementNamed(buttonData['route']!, arguments: arguments);
-    }
+    FigmaFormHandler.handleDefaultButtonNavigation(Navigator.of(context), userData, buttonData);
   }
 }

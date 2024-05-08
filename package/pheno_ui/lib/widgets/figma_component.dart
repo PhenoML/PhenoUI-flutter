@@ -97,6 +97,28 @@ class FigmaComponentState extends StatefulFigmaNodeState<FigmaComponent> impleme
   bool loaded = false;
   Size variantScale = const Size(1.0, 1.0);
 
+  bool _userDataChanged = false;
+  bool get userDataChanged => _userDataChanged;
+  set userDataChanged(bool value) {
+    if (value != _userDataChanged) {
+      if (mounted && value) {
+        setState(() {
+          _userDataChanged = value;
+          WidgetsBinding.instance.addPostFrameCallback(
+            (_) => _userDataChanged = false
+          );
+        });
+      } else {
+        _userDataChanged = value;
+      }
+    }
+  }
+
+  @override
+  onUserDataChanged<T>(String _, T __) {
+    userDataChanged = true;
+  }
+
   @override
   void initState() {
     userData = widget.model.userData;
@@ -194,6 +216,7 @@ class FigmaComponentState extends StatefulFigmaNodeState<FigmaComponent> impleme
 
     return FigmaComponentData(
       userData: userData,
+      getUserDataChanged: () => userDataChanged,
       child: variant ?? Container(
         color: const Color(0xFFFF00FF),
         child: Center(
@@ -202,19 +225,18 @@ class FigmaComponentState extends StatefulFigmaNodeState<FigmaComponent> impleme
       ),
     );
   }
-
-  @override
-  onUserDataChanged<T>(String _, T __) {
-    if (mounted) {
-      setState(() {});
-    }
-  }
 }
 
 class FigmaComponentData extends InheritedWidget {
   final FigmaUserData userData;
+  final bool Function() getUserDataChanged;
 
-  const FigmaComponentData({required this.userData, required super.child, super.key});
+  const FigmaComponentData({
+    required this.userData,
+    required this.getUserDataChanged,
+    required super.child,
+    super.key
+  });
 
   static FigmaComponentData? maybeOf(BuildContext context, { bool listen = true }) {
     if (listen) {
@@ -231,6 +253,6 @@ class FigmaComponentData extends InheritedWidget {
 
   @override
   bool updateShouldNotify(covariant FigmaComponentData oldWidget) {
-    return oldWidget.userData != userData;
+    return getUserDataChanged();
   }
 }

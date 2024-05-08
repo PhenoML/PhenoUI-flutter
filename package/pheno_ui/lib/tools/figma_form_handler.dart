@@ -4,6 +4,7 @@ import 'package:flutter/widgets.dart';
 import '../tools/figma_enum.dart';
 import '../animation/transition_animation.dart';
 import '../interface/route_arguments.dart';
+import '../widgets/figma_form.dart';
 import 'figma_form_types.dart';
 import 'figma_user_data.dart';
 
@@ -18,6 +19,9 @@ abstract class FigmaFormHandler {
     BuildContext context,
     String id
   ) => null;
+
+  void onInit(FigmaFormState state) { /* nothing */ }
+  void onDispose(FigmaFormState state) { /* nothing */ }
 
   void onInputRegistered<T>(
     BuildContext context,

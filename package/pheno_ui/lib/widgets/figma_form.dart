@@ -65,10 +65,12 @@ class FigmaFormState extends StatefulFigmaNodeState<FigmaForm> {
     super.initState();
     var formId = widget.model.userData.maybeGet('form');
     handler = FigmaFormHandlerRegistry().getHandler(formId);
+    handler.onInit(this);
   }
 
   @override
   void dispose() {
+    handler.onDispose(this);
     inputs.forEach((key, value) {
       value.node.dispose();
     });

@@ -35,7 +35,7 @@ class FigmaTextField extends StatefulFigmaNode<FigmaTextModel> with FigmaFormWid
 
   static FigmaTextField fromJson(Map<String, dynamic> json) {
     final FigmaTextModel model = FigmaTextModel.fromJson(json);
-    final FigmaTextInputType keyboardType = FigmaTextInputType.values.byNameDefault(json['userData']['keyboardType'], FigmaTextInputType.text);
+    final FigmaTextInputType keyboardType = FigmaTextInputType.values.byNameDefault(model.userData.maybeGet('keyboardType'), FigmaTextInputType.text);
     return FigmaTextField(keyboardType: keyboardType, model: model);
   }
 

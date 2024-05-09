@@ -1,5 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:pheno_ui/tools/figma_enum.dart';
 
 import '../models/figma_text_model.dart';
 import '../tools/figma_form_types.dart';
@@ -7,12 +7,36 @@ import 'figma_form.dart';
 import 'figma_text.dart';
 import 'stateful_figma_node.dart';
 
+enum FigmaTextInputType {
+  text(TextInputType.text),
+  multiline(TextInputType.multiline),
+  number(TextInputType.number),
+  phone(TextInputType.phone),
+  datetime(TextInputType.datetime),
+  email(TextInputType.emailAddress),
+  url(TextInputType.url),
+  visiblePassword(TextInputType.visiblePassword),
+  name(TextInputType.name),
+  streetAddress(TextInputType.streetAddress),
+  none(TextInputType.none),
+  ;
+  final TextInputType value;
+  const FigmaTextInputType(this.value);
+}
+
 class FigmaTextField extends StatefulFigmaNode<FigmaTextModel> with FigmaFormWidget {
-  const FigmaTextField({required super.model, super.key});
+  final FigmaTextInputType keyboardType;
+
+  const FigmaTextField({
+    required this.keyboardType,
+    required super.model,
+    super.key
+  });
 
   static FigmaTextField fromJson(Map<String, dynamic> json) {
     final FigmaTextModel model = FigmaTextModel.fromJson(json);
-    return FigmaTextField(model: model);
+    final FigmaTextInputType keyboardType = FigmaTextInputType.values.byNameDefault(json['userData']['keyboardType'], FigmaTextInputType.text);
+    return FigmaTextField(keyboardType: keyboardType, model: model);
   }
 
   @override
@@ -66,6 +90,7 @@ class FigmaTextFieldState extends StatefulFigmaNodeState<FigmaTextField> {
       alignment: alignment,
       child: TextField(
         controller: _controller,
+        keyboardType: widget.keyboardType.value,
         focusNode: focusNode,
         onTapOutside: (_) => focusNode?.unfocus(),
         style: segments[0].style,

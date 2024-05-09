@@ -14,8 +14,15 @@ class FigmaSafeArea extends FigmaFrame {
 
   @override
   Widget buildFigmaNode(BuildContext context) {
-    return SafeArea(
-      child: super.buildFigmaNode(context),
+    Matrix4 bottomInset = Matrix4.identity();
+    bottomInset.translate(0.0, -MediaQuery.of(context).viewInsets.bottom * 0.7, 0.0);
+
+    return Transform(
+      transform: bottomInset,
+      child: SafeArea(
+        maintainBottomViewPadding: true,
+        child: super.buildFigmaNode(context),
+      ),
     );
   }
 }

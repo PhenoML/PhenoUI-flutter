@@ -77,6 +77,10 @@ Widget topBar(BuildContext context, [String? title, void Function()? refresh, Bo
                 notification.dispatch(context);
               }
               await windowManager.setSize(targetSize);
+              if (Platform.isLinux) {
+                // ugly hack to get around the fact that linux takes a while to resize the window
+                await Future.delayed(const Duration(milliseconds: 100));
+              }
               windowSize = await windowManager.getSize();
               if (windowSize.width != targetSize.width || windowSize.height != targetSize.height) {
                 double scale = min(

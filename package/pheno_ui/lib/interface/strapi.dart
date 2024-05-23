@@ -76,18 +76,22 @@ class Strapi {
       path: '/api/users/me',
     );
 
-    var response = await http.get(
-      url,
-      headers: {
-        'Authorization': 'Bearer $jwt',
-      }
-    );
+    try {
+      var response = await http.get(
+          url,
+          headers: {
+            'Authorization': 'Bearer $jwt',
+          }
+      );
 
-    var body = jsonDecode(response.body) as Map<String, dynamic>;
-    if (body.containsKey('username')) {
-      _user = body['username'];
-      _jwt = jwt;
-      return true;
+      var body = jsonDecode(response.body) as Map<String, dynamic>;
+      if (body.containsKey('username')) {
+        _user = body['username'];
+        _jwt = jwt;
+        return true;
+      }
+    } catch (e) {
+      print('Error: $e');
     }
 
     return false;

@@ -65,6 +65,7 @@ class FigmaText extends StatelessFigmaNode<FigmaTextModel> {
                 textAlign: TextAlign.values.convertDefault(model.alignHorizontal, TextAlign.left),
                 selectionRegistrar: SelectionContainer.maybeOf(context),
                 selectionColor: model.segments.first.color.withAlpha(64),
+                maxLines: 1, // sorry future Dario
               ),
             );
           }

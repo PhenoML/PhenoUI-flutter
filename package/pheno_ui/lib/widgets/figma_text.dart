@@ -49,15 +49,29 @@ class FigmaText extends StatelessFigmaNode<FigmaTextModel> {
         }
     );
 
-    return Align(
-      alignment: alignment,
-      child: RichText(
+    Widget widget;
+
+    if (model.userData.maybeGet('selectable') == true) {
+      widget = SelectableText.rich(
+        TextSpan(
+          children: segments,
+        ),
+        textAlign: TextAlign.values.convertDefault(model.alignHorizontal, TextAlign.left),
+        maxLines: 1, // Future Dario... I am soooo sorry...
+      );
+    } else {
+      widget = RichText(
         text: TextSpan(
           children: segments,
         ),
         overflow: TextOverflow.visible,
         textAlign: TextAlign.values.convertDefault(model.alignHorizontal, TextAlign.left),
-      ),
+      );
+    }
+
+    return Align(
+      alignment: alignment,
+      child: widget,
     );
   }
 }

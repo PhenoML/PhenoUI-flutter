@@ -61,7 +61,6 @@ class FigmaText extends StatelessFigmaNode<FigmaTextModel> {
                 text: TextSpan(
                   children: segments,
                 ),
-                overflow: TextOverflow.visible,
                 textAlign: TextAlign.values.convertDefault(model.alignHorizontal, TextAlign.left),
                 selectionRegistrar: SelectionContainer.maybeOf(context),
                 selectionColor: model.segments.first.color.withAlpha(64),

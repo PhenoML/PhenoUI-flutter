@@ -32,13 +32,25 @@ class RenderInnerShadow extends RenderProxyBox {
     if (child == null) return;
     final bounds = offset & size;
 
+    const forceWhite = ColorFilter.matrix(<double>[
+      255, 0, 0, 0, 255,
+      0, 255, 0, 0, 255,
+      0, 0, 255, 0, 255,
+      0, 0, 0, 255, 0,
+    ]);
+    final maskPaint = Paint()
+      ..imageFilter = ImageFilter.compose(
+        inner: forceWhite,
+        outer: ImageFilter.blur(sigmaX: 0.25, sigmaY: 0.25),
+      )
+    ;
     context.canvas.saveLayer(bounds, Paint());
     context.paintChild(child!, offset);
 
     for (final shadow in shadows) {
       final scale = Size(
-        1.0 - (shadow.spreadRadius * 0.5) / bounds.width,
-        1.0 - (shadow.spreadRadius * 0.5) / bounds.height,
+        1.0 - (shadow.spreadRadius) / bounds.width,
+        1.0 - (shadow.spreadRadius) / bounds.height,
       );
       final anchor = Offset(
         bounds.left + bounds.width * 0.5,
@@ -48,17 +60,53 @@ class RenderInnerShadow extends RenderProxyBox {
       final scaleMatrix = Matrix4.identity()..scale(scale.width, scale.height);
       final centerMatrix = Matrix4.identity()..translate(anchor.dx, anchor.dy);
       final matrix = centerMatrix * scaleMatrix * anchorMatrix;
+      final forceColor = ColorFilter.matrix(<double>[
+        0, 0, 0, 0, shadow.color.red.toDouble(),
+        0, 0, 0, 0, shadow.color.green.toDouble(),
+        0, 0, 0, 0, shadow.color.blue.toDouble(),
+        0, 0, shadow.color.opacity, 0, 0,
+      ]);
+      final blur = ImageFilter.blur(sigmaX: shadow.blurSigma, sigmaY: shadow.blurSigma);
+      final spread = ImageFilter.matrix(matrix.storage);
+
       final shadowPaint = Paint()
-        ..blendMode = BlendMode.srcATop
+        ..blendMode = BlendMode.srcIn
         ..colorFilter = ColorFilter.mode(shadow.color, BlendMode.srcOut)
         ..imageFilter = ImageFilter.compose(
-          outer: ImageFilter.blur(sigmaX: shadow.blurSigma * 0.5, sigmaY: shadow.blurSigma * 0.5),
-          inner: ImageFilter.matrix(matrix.storage),
-        );
+            inner: spread,
+            outer: ImageFilter.compose(outer: blur, inner: forceColor)
+        )
+      ;
+      // context.canvas
+      //   ..saveLayer(bounds, shadowPaint)
+      //   ..translate(shadow.offset.dx, shadow.offset.dy);
+      // context.paintChild(child!, offset);
+      // context.canvas.restore();
+
+      const forceWhite = ColorFilter.matrix(<double>[
+        255, 0, 0, 0, 255,
+        0, 255, 0, 0, 255,
+        0, 0, 255, 0, 255,
+        0, 0, 0, 255, 0,
+      ]);
+      final maskPaint = Paint()
+        ..imageFilter = ImageFilter.compose(
+          inner: forceWhite,
+          outer: ImageFilter.blur(sigmaX: 0.25, sigmaY: 0.25),
+        )
+      ;
+      context.canvas.saveLayer(bounds, Paint());
+
+        context.canvas.saveLayer(bounds, maskPaint);
+        context.paintChild(child!, offset);
+        context.canvas.restore();
+
       context.canvas
         ..saveLayer(bounds, shadowPaint)
         ..translate(shadow.offset.dx, shadow.offset.dy);
       context.paintChild(child!, offset);
+      context.canvas.restore();
+
       context.canvas.restore();
     }
 

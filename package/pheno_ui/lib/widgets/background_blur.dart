@@ -66,6 +66,6 @@ class RenderBackgroundBlur extends RenderProxyBox {
 
     // paint the original child on top of the effect
     // NOTE: The children must be translucent for the effect to be visible
-    context.paintChild(child!, offset);
+    // context.paintChild(child!, offset);
   }
 }

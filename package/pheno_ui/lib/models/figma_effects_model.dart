@@ -37,35 +37,64 @@ class FigmaEffectsModel {
       }
     }
 
+    getSortValue(effect) {
+      switch (effect.runtimeType) {
+        case _FigmaDropShadow:
+          return 1;
+        case _FigmaInnerShadow:
+          return 3;
+        case _FigmaLayerBlur:
+          return 4;
+        case _FigmaBackgroundBlur:
+          return 2;
+        default:
+          return 0;
+      }
+    }
+
     effects.sort((a, b) {
-      int aVal = switch (a.runtimeType) {
-        _FigmaDropShadow => 1,
-        _FigmaInnerShadow => 2,
-        _FigmaLayerBlur => 3,
-        _FigmaBackgroundBlur => 4,
-        _ => 0,
-      };
+      int aVal = getSortValue(a);
+      int bVal = getSortValue(b);
 
-      int bVal = switch (b.runtimeType) {
-        _FigmaDropShadow => 1,
-        _FigmaInnerShadow => 2,
-        _FigmaLayerBlur => 3,
-        _FigmaBackgroundBlur => 4,
-        _ => 0,
-      };
-
-      return bVal - aVal;
+      return aVal - bVal;
     });
 
     return FigmaEffectsModel(effects);
   }
 
   Widget apply(Widget child) {
-    return _effects.fold(child, (child, effect) => effect.apply(child));
+    List<Widget> children = [];
+    _FigmaLayerBlur? layerBlur;
+    bool addedChild = false;
+
+    for (var effect in _effects) {
+      if (effect.visible) {
+        if (effect is _FigmaLayerBlur) {
+          layerBlur = effect;
+        } else if (!addedChild && effect is _FigmaInnerShadow) {
+          children.add(child);
+          children.add(effect.apply(child));
+          addedChild = true;
+        } else {
+          children.add(effect.apply(child));
+        }
+      }
+    }
+
+    if (children.isNotEmpty && !addedChild) {
+      children.add(child);
+    }
+
+    Widget result = children.isEmpty ? child : Stack(children: children);
+    if (layerBlur != null) {
+      result = layerBlur.apply(result);
+    }
+    return result;
   }
 }
 
 abstract class _FigmaEffect {
+  bool get visible;
   Widget apply(Widget child);
 }
 
@@ -74,6 +103,8 @@ class _FigmaDropShadow extends _FigmaEffect {
   final double radius;
   final Color color;
   final double spread;
+  final bool showBehindNode;
+  @override
   final bool visible;
 
   _FigmaDropShadow({
@@ -81,6 +112,7 @@ class _FigmaDropShadow extends _FigmaEffect {
     required this.radius,
     required this.color,
     required this.spread,
+    required this.showBehindNode,
     required this.visible,
   });
 
@@ -97,17 +129,19 @@ class _FigmaDropShadow extends _FigmaEffect {
       radius: json['radius'].toDouble(),
       color: color,
       spread: json['spread'].toDouble(),
+      showBehindNode: json['showShadowBehindNode'],
       visible: json['visible'] ?? true,
     );
   }
 
   @override
   Widget apply(Widget child) {
-    if (!visible) return child;
+    if (!visible) return const SizedBox();
 
     return OuterShadow(
       shadows: [
-        BoxShadow(
+        OuterShadowEntry(
+          showBehindNode: showBehindNode,
           offset: offset,
           blurRadius: radius,
           color: color,
@@ -125,6 +159,7 @@ class _FigmaInnerShadow extends _FigmaEffect {
   final double radius;
   final Color color;
   final double spread;
+  @override
   final bool visible;
 
   _FigmaInnerShadow({
@@ -154,7 +189,7 @@ class _FigmaInnerShadow extends _FigmaEffect {
 
   @override
   Widget apply(Widget child) {
-    if (!visible) return child;
+    if (!visible) return const SizedBox();
 
     return InnerShadow(
       shadows: [
@@ -172,6 +207,7 @@ class _FigmaInnerShadow extends _FigmaEffect {
 
 class _FigmaLayerBlur extends _FigmaEffect {
   final double radius;
+  @override
   final bool visible;
 
   _FigmaLayerBlur({
@@ -201,6 +237,7 @@ class _FigmaLayerBlur extends _FigmaEffect {
 
 class _FigmaBackgroundBlur extends _FigmaEffect {
   final double radius;
+  @override
   final bool visible;
 
   _FigmaBackgroundBlur({
@@ -217,7 +254,7 @@ class _FigmaBackgroundBlur extends _FigmaEffect {
 
   @override
   Widget apply(Widget child) {
-    if (!visible) return child;
+    if (!visible) return const SizedBox();
 
     return BackgroundBlur(
       radius: radius,

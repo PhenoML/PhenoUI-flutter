@@ -56,9 +56,11 @@ class FigmaTextFieldState extends StatefulFigmaNodeState<FigmaTextField> {
     form = FigmaForm.maybeOf(context, listen: false);
     if (form != null) {
       form!.registerInput(_id, '').then((value) {
-        focusNode = value.$1;
-        _controller.text = value.$2;
-        _hasInitialValue = true;
+        setState(() {
+          focusNode = value.$1;
+          _controller.text = value.$2;
+          _hasInitialValue = true;
+        });
       });
     }
   }

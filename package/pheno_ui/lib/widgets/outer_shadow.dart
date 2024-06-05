@@ -66,7 +66,7 @@ class RenderOuterShadow extends RenderProxyBox {
         0, 0, 0, 0, shadow.color.blue.toDouble(),
         0, 0, shadow.color.opacity, 0, 0,
       ]);
-      final blur = ImageFilter.blur(sigmaX: shadow.blurSigma / scale.width, sigmaY: shadow.blurSigma / scale.height, tileMode: TileMode.decal);
+      final blur = ImageFilter.blur(sigmaX: shadow.blurSigma * 0.5 / scale.width, sigmaY: shadow.blurSigma * 0.5 / scale.height, tileMode: TileMode.decal);
       final spread = ImageFilter.matrix(matrix.storage);
 
       final shadowPaint = Paint()

@@ -22,7 +22,7 @@ class LoginState extends State<Login> {
   bool _loaded = false;
 
   final ButtonStyle _buttonStyle = ButtonStyle(
-    minimumSize: MaterialStateProperty.all(const Size(200, 50)),
+    minimumSize: WidgetStateProperty.all(const Size(200, 50)),
   );
 
   final Widget _gap = const SizedBox(height: 20);

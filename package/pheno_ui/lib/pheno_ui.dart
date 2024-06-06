@@ -2,6 +2,7 @@ library pheno_ui;
 
 import 'package:flutter/widgets.dart';
 
+import 'widgets/figma_auto_navigation.dart';
 import 'widgets/figma_button.dart';
 import 'widgets/figma_checkbox.dart';
 import 'widgets/figma_component.dart';
@@ -71,6 +72,7 @@ class PhenoUi {
         'figma-keep-aspect-ratio': FigmaKeepAspectRatio.fromJson,
         'figma-tile-child': FigmaTileChild.fromJson,
         'figma-button': FigmaButton.fromJson,
+        'figma-auto-navigation': FigmaAutoNavigation.fromJson,
       };
 
       // merge the parsers giving priority to the ones passed as argument

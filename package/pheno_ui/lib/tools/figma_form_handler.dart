@@ -75,16 +75,34 @@ abstract class FigmaFormHandler {
 
       if (routeHandler != null) {
         routeHandler(buttonData['route']!, arguments);
-      } else if (arguments.type == RouteType.popup) {
-        navigator.pushNamed(
-            buttonData['route']!,
-            arguments: arguments
-        );
       } else {
-        navigator.pushReplacementNamed(
-            buttonData['route']!,
-            arguments: arguments
-        );
+        switch (buttonData['action']) {
+          case 'pop':
+            navigator.pop(arguments.data);
+            break;
+
+          case 'push':
+            navigator.pushNamed(buttonData['route']!, arguments: arguments);
+            break;
+
+          case 'replace':
+            navigator.pushReplacementNamed(
+                buttonData['route']!, arguments: arguments);
+            break;
+
+          default:
+            if (arguments.type == RouteType.popup) {
+              navigator.pushNamed(
+                  buttonData['route']!,
+                  arguments: arguments
+              );
+            } else {
+              navigator.pushReplacementNamed(
+                  buttonData['route']!,
+                  arguments: arguments
+              );
+            }
+        }
       }
       return true;
     }

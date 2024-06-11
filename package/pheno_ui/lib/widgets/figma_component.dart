@@ -51,7 +51,7 @@ class FigmaComponent<T extends FigmaComponentModel, S extends FigmaComponentStat
   static Future<FigmaComponent> instance<T extends FigmaComponentState>({
     required String component,
     T Function()? stateNew,
-    Key? key,
+    GlobalKey<T>? key,
     Map<String, dynamic>? arguments,
   }) async  {
     var spec = await FigmaScreens().provider!.loadComponentSpec(component);
@@ -63,7 +63,9 @@ class FigmaComponent<T extends FigmaComponentModel, S extends FigmaComponentStat
       }
     }
 
-    var info = FigmaNodeInfoModel(name: component, id: UniqueKey().toString());
+    key = key ?? GlobalKey<T>();
+
+    var info = FigmaNodeInfoModel(name: component, id: key.toString());
 
     var model = FigmaComponentModel(
       type: 'figma-component-instance',

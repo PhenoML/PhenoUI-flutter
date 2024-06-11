@@ -1,8 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
+import 'package:pheno_ui/widgets/figma_component.dart';
+import '../models/figma_component_model.dart';
 import '../models/figma_frame_model.dart';
+import 'figma_button.dart';
 import 'figma_frame.dart';
+import 'figma_node.dart';
 import 'stateful_figma_node.dart';
 
 class FigmaSafeArea extends StatefulFigmaNode<FigmaFrameModel> {
@@ -124,11 +128,71 @@ class FigmaSafeAreaState extends StatefulFigmaNodeState<FigmaSafeArea>
 
     Matrix4 offset = Matrix4.identity()..translate(0.0, -yOffset, 0.0);
 
+    // for the sake of not creating a custom widget for this, I will be
+    // modifying the SafeArea widget to implement all the business logic, this
+    // is just a test though, in reality a custom widget should be created
     return Transform(
       transform: offset,
       child: SafeArea(
         maintainBottomViewPadding: true,
-        child: FigmaFrame.buildFigmaFrame(context, widget.model),
+        // use a builder here as a hack to be able to find the child element when
+        // when the button is clicked, in reality you should use custom widgets,
+        // inherited widgets and the like to get access to your child elements
+        child: Builder(
+          builder: (context) {
+            return NotificationListener<ButtonNotification>(
+              onNotification: (notification) {
+                // when the button is clicked, find the `widget_container`
+                // element, doing it this way is an anti-pattern in Flutter
+                // so in reality it should be done using custom widgets
+                // inherited widgets and the likes
+                Element el = context as Element;
+                Element? frameElement = null;
+                findFrame(Element el) {
+                  el.visitChildren((child) {
+                    if (frameElement == null) {
+                      if (child.widget is FigmaNode) {
+                        FigmaNode node = child.widget as FigmaNode;
+                        if (node.info.name == 'widget_container') {
+                          frameElement = child;
+                        }
+                      } else {
+                        findFrame(child);
+                      }
+                    }
+                  });
+                }
+                findFrame(el);
+
+                // if the element was found, add the new widget to it based on
+                // based on the notification data
+                if (frameElement != null) {
+                  String componentName = notification.data['component'];
+                  FigmaFrame frame = frameElement!.widget as FigmaFrame;
+                  FigmaComponent.instance(
+                    component: componentName,
+                    arguments: {
+                      'Label': 'Widget #${frame.model.children.length + 1}',
+                    }
+                  ).then((component) {
+                    // add the new widget to the frame's children
+                    // we can also use the result of the `instance` method
+                    // as any other widget in the widget tree, so it could be
+                    // returned from the `build` method of a custom widget
+                    frame.model.children.add(component);
+                    // mark the element to be rebuilt, this is only needed
+                    // because of the way we are finding the element, in reality
+                    // you would use a stateful widget and call `setState` to
+                    // rebuild the widget
+                    frameElement!.markNeedsBuild();
+                  });
+                }
+                return true;
+              },
+              child: FigmaFrame.buildFigmaFrame(context, widget.model),
+            );
+          }
+        ),
       ),
     );
   }

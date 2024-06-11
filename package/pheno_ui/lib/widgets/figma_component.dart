@@ -72,7 +72,7 @@ class FigmaComponent<T extends FigmaComponentModel, S extends FigmaComponentStat
       info: info,
       widgetType: component,
       userData: userData,
-      dimensions: FigmaDimensionsModel(),
+      dimensions: FigmaDimensionsModel.fromJson(spec.variants[spec.defaultVariant]['dimensions']),
       effects: FigmaEffectsModel(),
       opacity: 1.0,
     );

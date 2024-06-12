@@ -26,6 +26,8 @@ import 'widgets/figma_web_view.dart';
 import 'widgets/stateless_figma_node.dart';
 import 'models/figma_node_model.dart';
 import 'widgets/figma_node.dart';
+import 'widgets/widget_adder.dart';
+import 'widgets/widget_container.dart';
 
 export 'interface/screens.dart';
 export 'interface/strapi.dart';
@@ -73,6 +75,8 @@ class PhenoUi {
         'figma-tile-child': FigmaTileChild.fromJson,
         'figma-button': FigmaButton.fromJson,
         'figma-auto-navigation': FigmaAutoNavigation.fromJson,
+        'WidgetAdder': WidgetAdder.fromJson,
+        'WidgetContainer': WidgetContainer.fromJson,
       };
 
       // merge the parsers giving priority to the ones passed as argument

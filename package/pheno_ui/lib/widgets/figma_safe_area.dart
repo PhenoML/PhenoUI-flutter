@@ -1,10 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/widgets.dart';
-import 'package:pheno_ui/widgets/figma_component.dart';
-import '../models/figma_component_model.dart';
 import '../models/figma_frame_model.dart';
-import 'figma_button.dart';
 import 'figma_frame.dart';
 import 'stateful_figma_node.dart';
 

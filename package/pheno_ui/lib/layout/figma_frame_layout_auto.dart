@@ -156,7 +156,7 @@ class FigmaFrameLayoutAutoRenderBox extends RenderBox
     for (final child in fixedChildren) {
       final childParentData = child.parentData as FigmaFrameLayoutAutoParentData;
       final childDimensionsSize = Size(childParentData.dimensions!.width, childParentData.dimensions!.height);
-      final (corssAxisMin, crossAxisMax) = _computeChildCrossAxisConstraints(
+      final (crossAxisMin, crossAxisMax) = _computeChildCrossAxisConstraints(
         axisGetters.crossAxisMode(childParentData.dimensions!),
         axisGetters.crossAxis(childDimensionsSize),
         axisGetters.minCrossAxis(childParentData.dimensions!.sizeConstraints),
@@ -169,7 +169,7 @@ class FigmaFrameLayoutAutoRenderBox extends RenderBox
         // fixed can be assumed here for the main axis
         fixedMainAxisSize,
         fixedMainAxisSize,
-        corssAxisMin,
+        crossAxisMin,
         crossAxisMax,
       );
 
@@ -187,7 +187,7 @@ class FigmaFrameLayoutAutoRenderBox extends RenderBox
     for (final child in hugChildren) {
       final childParentData = child.parentData as FigmaFrameLayoutAutoParentData;
       final childDimensionsSize = Size(childParentData.dimensions!.width, childParentData.dimensions!.height);
-      final (corssAxisMin, crossAxisMax) = _computeChildCrossAxisConstraints(
+      final (crossAxisMin, crossAxisMax) = _computeChildCrossAxisConstraints(
         axisGetters.crossAxisMode(childParentData.dimensions!),
         axisGetters.crossAxis(childDimensionsSize),
         axisGetters.minCrossAxis(childParentData.dimensions!.sizeConstraints),
@@ -198,7 +198,7 @@ class FigmaFrameLayoutAutoRenderBox extends RenderBox
       final childConstraints = axisGetters.makeConstraints(
         axisGetters.minMainAxis(childParentData.dimensions!.sizeConstraints),
         axisGetters.maxMainAxis(childParentData.dimensions!.sizeConstraints),
-        corssAxisMin,
+        crossAxisMin,
         crossAxisMax,
       );
 
@@ -406,7 +406,7 @@ class FigmaFrameLayoutAutoRenderBox extends RenderBox
       }
 
       final childDimensionsSize = Size(childParentData.dimensions!.width, childParentData.dimensions!.height);
-      final (corssAxisMin, crossAxisMax) = _computeChildCrossAxisConstraints(
+      final (crossAxisMin, crossAxisMax) = _computeChildCrossAxisConstraints(
         axisGetters.crossAxisMode(childParentData.dimensions!),
         axisGetters.crossAxis(childDimensionsSize),
         axisGetters.minCrossAxis(childParentData.dimensions!.sizeConstraints),
@@ -418,7 +418,7 @@ class FigmaFrameLayoutAutoRenderBox extends RenderBox
       final childConstraints = axisGetters.makeConstraints(
         mainAxisConstraint,
         mainAxisConstraint,
-        corssAxisMin,
+        crossAxisMin,
         crossAxisMax,
       );
 
@@ -437,7 +437,7 @@ class FigmaFrameLayoutAutoRenderBox extends RenderBox
     for (final child in nonTriggeredChildren) {
       final childParentData = child.parentData as FigmaFrameLayoutAutoParentData;
       final childDimensionsSize = Size(childParentData.dimensions!.width, childParentData.dimensions!.height);
-      final (corssAxisMin, crossAxisMax) = _computeChildCrossAxisConstraints(
+      final (crossAxisMin, crossAxisMax) = _computeChildCrossAxisConstraints(
         axisGetters.crossAxisMode(childParentData.dimensions!),
         axisGetters.crossAxis(childDimensionsSize),
         axisGetters.minCrossAxis(childParentData.dimensions!.sizeConstraints),
@@ -448,7 +448,7 @@ class FigmaFrameLayoutAutoRenderBox extends RenderBox
       final childConstraints = axisGetters.makeConstraints(
         fillMainAxisLength,
         fillMainAxisLength,
-        corssAxisMin,
+        crossAxisMin,
         crossAxisMax,
       );
 

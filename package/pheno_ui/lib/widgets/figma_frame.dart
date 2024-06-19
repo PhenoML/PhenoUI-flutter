@@ -2,9 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/widgets.dart';
 import 'package:pheno_ui/models/figma_frame_model.dart';
+import '../layout/figma_frame_layout_auto.dart';
+import '../layout/figma_frame_layout_none.dart';
 import '../tools/figma_dimensions.dart';
 import '../tools/figma_enum.dart';
-import '../layout/figma_frame_layout_none.dart';
 import '../models/figma_dimensions_model.dart';
 import '../models/figma_layout_model.dart';
 import 'figma_node.dart';
@@ -22,6 +23,18 @@ Widget? _buildNoneContainer(FigmaDimensionsModel dimensions, List<Widget> childr
   }
 
   return FigmaFrameLayoutNone.layoutWithChildren(dimensions, children);
+}
+
+Widget? _buildAutoContainer(FigmaDimensionsModel dimensions, FigmaLayoutModel layout, List<Widget> children) {
+  if (children.isEmpty) {
+    return null;
+  }
+
+  return FigmaFrameLayoutAuto(
+    dimensions: dimensions,
+    layout: layout,
+    children: children,
+  );
 }
 
 List<Widget> _addSpacers(List<Widget> widgets, double width, double height) {
@@ -50,67 +63,7 @@ Widget? _buildChildrenContainer(List<Widget> children, FigmaFrameModel model, Bu
   if (model.layout.mode == FigmaLayoutMode.none) {
     return _buildNoneContainer(model.dimensions, children);
   }
-
-  children = children.map((c) {
-    if (c is FigmaNode) {
-      return dimensionWrapWidget(c, c.model.dimensions, model.layout);
-    }
-    return c;
-  }).toList();
-
-  // Future Dario:
-  // This does not align rows and columns properly when the screen is smaller
-  // than the content. This is because the children are not allowed to overflow
-  // the parent container. This is a problem with how row and column behave in
-  // combination with OverflowBox. A possible solution is to use a custom layout
-  // delegate that allows children to overflow the parent container while
-  // maintaining the proper alignment and dimensions.
-  switch (model.layout.mode) {
-    case FigmaLayoutMode.vertical:
-      var layout = model.layout;
-      if (layout.itemSpacing != 0.0) {
-        children = _addSpacers(children, 0.0, layout.itemSpacing);
-      }
-
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.values.convertDefault(
-            layout.mainAxisAlignItems, MainAxisAlignment.start),
-        crossAxisAlignment: CrossAxisAlignment.values.convertDefault(
-            layout.crossAxisAlignItems, CrossAxisAlignment.start),
-        children: children,
-      );
-
-    case FigmaLayoutMode.horizontal:
-      var layout = model.layout;
-      if (layout.wrap == FigmaLayoutWrap.wrap) {
-        return Wrap(
-          alignment: WrapAlignment.values
-              .convertDefault(layout.mainAxisAlignItems, WrapAlignment.start),
-          crossAxisAlignment: WrapCrossAlignment.values.convertDefault(
-              layout.crossAxisAlignItems, WrapCrossAlignment.start),
-          runAlignment: WrapAlignment.values.convertDefault(
-              layout.crossAxisAlignContent, WrapAlignment.start),
-          spacing: layout.itemSpacing,
-          runSpacing: layout.crossAxisSpacing ?? 0.0,
-          children: children,
-        );
-      } else {
-        if (layout.itemSpacing != 0.0) {
-          children = _addSpacers(children, layout.itemSpacing, 0.0);
-        }
-
-        return Row(
-          mainAxisAlignment: MainAxisAlignment.values.convertDefault(
-              layout.mainAxisAlignItems, MainAxisAlignment.start),
-          crossAxisAlignment: CrossAxisAlignment.values.convertDefault(
-              layout.crossAxisAlignItems, CrossAxisAlignment.start),
-          children: children,
-        );
-      }
-
-    default:
-      throw 'Layout mode ${model.layout.mode} not implemented';
-  }
+  return _buildAutoContainer(model.dimensions, model.layout, children);
 }
 
 typedef FigmaFrameConstructor<F extends FigmaNode, M extends FigmaFrameModel> = F Function({

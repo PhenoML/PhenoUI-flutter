@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../models/figma_dimensions_model.dart';
 import '../tools/figma_enum.dart';
 import '../models/figma_text_model.dart';
 import 'figma_component.dart';
@@ -81,6 +82,8 @@ class FigmaText extends StatelessFigmaNode<FigmaTextModel> {
     }
 
     return Align(
+      widthFactor: dimensions.widthMode == FigmaDimensionsSizing.hug ? 1.0 : null,
+      heightFactor: dimensions.heightMode == FigmaDimensionsSizing.hug ? 1.0 : null,
       alignment: alignment,
       child: widget,
     );

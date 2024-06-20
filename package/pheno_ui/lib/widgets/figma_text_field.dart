@@ -94,6 +94,7 @@ class FigmaTextFieldState extends StatefulFigmaNodeState<FigmaTextField> {
         controller: _controller,
         keyboardType: widget.keyboardType.value,
         focusNode: focusNode,
+        maxLines: widget.model.userData.maybeGet('isMultiline', context: context) == true ? null : 1,
         onTapOutside: (_) => focusNode?.unfocus(),
         style: segments[0].style,
         obscureText: widget.model.userData.maybeGet('isPasswordField', context: context) ?? false,
@@ -107,6 +108,7 @@ class FigmaTextFieldState extends StatefulFigmaNodeState<FigmaTextField> {
           form!.inputSubmitted(_id, value);
         },
         decoration: InputDecoration(
+          isDense: true,
           contentPadding: EdgeInsets.zero,
           border: const OutlineInputBorder(borderSide: BorderSide.none),
           hintText: segments[0].text,

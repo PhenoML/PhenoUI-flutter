@@ -109,7 +109,7 @@ class FigmaTextFieldState extends StatefulFigmaNodeState<FigmaTextField> {
         },
         decoration: InputDecoration(
           isDense: true,
-          contentPadding: EdgeInsets.zero,
+          contentPadding: const EdgeInsets.fromLTRB(0, 4, 0, 4),
           border: const OutlineInputBorder(borderSide: BorderSide.none),
           hintText: segments[0].text,
           // hintStyle: segments[0].style,

@@ -118,12 +118,12 @@ class Strapi {
     return entry;
   }
 
-  Future<List<PhenoDataEntry>> getCategoryList() async {
+  Future<List<PhenoDataEntry>> getCategoryList([String collection = 'screen-categories']) async {
     Uri url = Uri(
       scheme: _server.scheme,
       host: _server.host,
       port: _server.port,
-      path: 'api/screen-categories',
+      path: 'api/$collection',
     );
 
     var response = await http.get(url);
@@ -133,7 +133,10 @@ class Strapi {
     return result;
   }
 
-  Future<List<PhenoDataEntry>> getScreenList(int id) async {
+  Future<List<PhenoDataEntry>> getScreenList([dynamic category]) async {
+    category ??= this.category;
+    int id = category is int ? category : (await getCategory(category)).id;
+
     Uri url = Uri(
       scheme: _server.scheme,
       host: _server.host,
@@ -149,8 +152,57 @@ class Strapi {
     var result = List<PhenoDataEntry>.from(entries);
     return result;
   }
+  
+  Future<List<PhenoDataEntry>> getComponentList([dynamic category]) async {
+    category ??= this.category;
+    int id = category is int ? category : (await getCategory(category, 'figma-widget-categories')).id;
 
-  Future<PhenoScreenSpec> loadScreenLayout(int id) async {
+    Uri url = Uri(
+      scheme: _server.scheme,
+      host: _server.host,
+      port: _server.port,
+      path: 'api/figma-widget-categories/$id',
+      query: 'populate[figma_widgets][fields][0]=name',
+    );
+    var response = await http.get(url);
+    var body = jsonDecode(response.body) as Map<String, dynamic>;
+    var components = body['data']['attributes']['figma_widgets']['data'];
+    var entries = components.map((e) =>
+        PhenoDataEntry(e['id'], e['attributes']['name']));
+    var result = List<PhenoDataEntry>.from(entries);
+    return result;
+  }
+
+  Future<PhenoScreenSpec> loadScreenLayout(dynamic nameOrId, String? category) async {
+    if (nameOrId is String && category != null) {
+      return loadScreenLayoutByName(nameOrId, category);
+    } else if (nameOrId is int) {
+      return loadScreenLayoutById(nameOrId);
+    }
+    throw Exception('Invalid name or id');
+  }
+
+  Future<PhenoScreenSpec> loadScreenLayoutByName(String name, String category) async {
+    PhenoDataEntry entry = await getCategory(category);
+
+    Uri url = Uri(
+      scheme: _server.scheme,
+      host: _server.host,
+      port: _server.port,
+      path: 'api/screens',
+      queryParameters: {
+        'filters[name][\$eq]': name,
+        'populate': 'category',
+        'filters[category][id][\$eq]': entry.id.toString(),
+      }
+    );
+
+    var response = await http.get(url);
+    var json = jsonDecode(response.body) as Map<String, dynamic>;
+    return PhenoScreenSpec.fromJson(json['data'][0]);
+  }
+
+  Future<PhenoScreenSpec> loadScreenLayoutById(int id) async {
     Uri url = Uri(
       scheme: _server.scheme,
       host: _server.host,
@@ -179,23 +231,45 @@ class Strapi {
     );
   }
 
-  Future<PhenoComponentSpec> loadComponentSpec(String category, String name) async {
+  Future<PhenoComponentSpec> loadComponentSpec(dynamic nameOrId, String? category) async {
+    if (nameOrId is String && category != null) {
+      return loadComponentSpecByName(nameOrId, category);
+    } else if (nameOrId is int) {
+      return loadComponentSpecById(nameOrId);
+    }
+    throw Exception('Invalid name or id');
+  }
+
+  Future<PhenoComponentSpec> loadComponentSpecByName(String name, String category) async {
     PhenoDataEntry entry = await getCategory(category, 'figma-widget-categories');
 
     Uri url = Uri(
-      scheme: _server.scheme,
-      host: _server.host,
-      port: _server.port,
-      path: 'api/figma-widgets',
-      queryParameters: {
-        'filters[name][\$eq]': name,
-        'populate': 'category',
-        'filters[category][id][\$eq]': entry.id.toString(),
-      }
+        scheme: _server.scheme,
+        host: _server.host,
+        port: _server.port,
+        path: 'api/figma-widgets',
+        queryParameters: {
+          'filters[name][\$eq]': name,
+          'populate': 'category',
+          'filters[category][id][\$eq]': entry.id.toString(),
+        }
     );
 
     var response = await http.get(url);
     var json = jsonDecode(response.body) as Map<String, dynamic>;
     return PhenoComponentSpec.fromJson(json['data'][0]);
+  }
+
+  Future<PhenoComponentSpec> loadComponentSpecById(int id) async {
+    Uri url = Uri(
+      scheme: _server.scheme,
+      host: _server.host,
+      port: _server.port,
+      path: 'api/figma-widgets/$id',
+    );
+
+    var response = await http.get(url);
+    var json = jsonDecode(response.body) as Map<String, dynamic>;
+    return PhenoComponentSpec.fromJson(json['data']);
   }
 }

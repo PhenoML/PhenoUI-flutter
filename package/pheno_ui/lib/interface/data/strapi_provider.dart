@@ -37,18 +37,17 @@ class StrapiDataProvider extends PhenoDataProvider {
 
   @override
   Future<List<PhenoDataEntry>> doGetScreenList() async {
-    var category = await Strapi().getCategory(this.category);
-    return await Strapi().getScreenList(category.id);
+    return await Strapi().getScreenList(category);
   }
 
   @override
   Future<PhenoScreenSpec> doLoadScreenLayout(int id) async {
-    return await Strapi().loadScreenLayout(id);
+    return await Strapi().loadScreenLayoutById(id);
   }
 
   @override
   Future<PhenoComponentSpec> doLoadComponentSpec(String name) async {
-    return await Strapi().loadComponentSpec(category, name);
+    return await Strapi().loadComponentSpecByName(name, category);
   }
 
   @override

@@ -236,7 +236,7 @@ class FigmaFrameLayoutAutoRenderBox extends RenderBox
 
     switch (axisGetters.mainAxisMode(figmaDimensions)) {
       case FigmaDimensionsSizing.hug:
-        mainAxisLength = min(sumMainAxis + sumGap, axisGetters.maxMainAxis(constraints));
+        mainAxisLength = max(min(sumMainAxis + sumGap, axisGetters.maxMainAxis(constraints)), axisGetters.minMainAxis(constraints));
         break;
 
       case FigmaDimensionsSizing.fixed:
@@ -247,7 +247,7 @@ class FigmaFrameLayoutAutoRenderBox extends RenderBox
 
     switch (axisGetters.crossAxisMode(figmaDimensions)) {
       case FigmaDimensionsSizing.hug:
-        crossAxisLength = min(maxCrossAxis, axisGetters.maxCrossAxis(constraints));
+        crossAxisLength = max(min(maxCrossAxis, axisGetters.maxCrossAxis(constraints)), axisGetters.minCrossAxis(constraints));
         break;
 
       case FigmaDimensionsSizing.fill:
@@ -301,7 +301,7 @@ class FigmaFrameLayoutAutoRenderBox extends RenderBox
 
     for (final child in absChildren) {
       final childParentData = child.parentData as FigmaFrameLayoutAutoParentData;
-      final parentSize = size + Offset(padding.left, padding.top);
+      final parentSize = size + Offset(padding.left + padding.right, padding.top + padding.bottom);
       Rect rect = computeChildExportRect(figmaDimensions, childParentData.dimensions!);
       Rect childRect = computeChildLayoutRect(figmaDimensions, childParentData.dimensions!, parentSize, rect);
       child.layout(BoxConstraints.tight(childRect.size), parentUsesSize: false);

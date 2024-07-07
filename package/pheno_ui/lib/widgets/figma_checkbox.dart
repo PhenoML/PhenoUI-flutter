@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 
 import '../models/figma_component_model.dart';
 import '../tools/figma_form_types.dart';
+import '../tools/figma_user_data.dart';
 import 'figma_component.dart';
 import 'figma_form.dart';
 
@@ -22,12 +23,13 @@ class FigmaCheckboxState extends FigmaComponentState {
   FocusNode? focusNode;
   String _state = 'unchecked';
   bool _hasInitialValue = false;
-  late final String _id = userData.get('id', context: context, listen: false);
+  late final FigmaUserData widgetUserData = widget.model.userData;
+  late final String _id = widgetUserData.get('id', context: context, listen: false);
 
   bool get checked => _state == 'checked';
   set checked(bool value) {
     _state = value ? 'checked' : 'unchecked';
-    setVariant(userData.get('state'), userData.get(_state));
+    setVariant(widgetUserData.get('state'), widgetUserData.get(_state));
     if (form != null) {
       form!.inputValueChanged(_id, checked);
     }
@@ -37,6 +39,11 @@ class FigmaCheckboxState extends FigmaComponentState {
   void initState() {
     super.initState();
     form = FigmaForm.maybeOf(context, listen: false);
+  }
+
+  @override
+  void initVariantData() {
+    super.initVariantData();
     if (form != null) {
       form!.registerInput(_id, checked).then((value) {
         focusNode = value.$1;
@@ -48,7 +55,7 @@ class FigmaCheckboxState extends FigmaComponentState {
 
   @override
   void initVariant() {
-    setVariant(userData.get('state'), userData.get(_state));
+    setVariant(widgetUserData.get('state'), widgetUserData.get(_state));
   }
 
   @override

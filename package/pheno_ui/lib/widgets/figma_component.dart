@@ -122,8 +122,6 @@ class FigmaComponentState extends StatefulFigmaNodeState<FigmaComponent> impleme
 
   @override
   void initState() {
-    userData = widget.model.userData;
-    userData.delegate = this;
     loadContent();
     super.initState();
   }
@@ -135,13 +133,6 @@ class FigmaComponentState extends StatefulFigmaNodeState<FigmaComponent> impleme
     var component = await FigmaScreens().provider!.loadComponentSpec(widget.model.widgetType);
     variants = component.variants.map((k, v) => MapEntry(k, FigmaComponentVariant.fromJson(v)));
 
-    userData.map!.forEach((key, value) {
-      var components = key.split(RegExp('#(?!.*#)'));
-      if (components.length == 2 && components.last == 'variant') {
-        variantValues[components.first] = value;
-      }
-    });
-
     var initialVariant = _getVariant(null, null);
     if (initialVariant != null) {
       variantScale = Size(
@@ -151,7 +142,34 @@ class FigmaComponentState extends StatefulFigmaNodeState<FigmaComponent> impleme
     }
 
     loaded = true;
+    initVariantData();
     initVariant();
+  }
+
+  void initVariantData() {
+    // deal with nested components
+    Element? rootElement;
+    context.visitAncestorElements((element) {
+      if (element.widget is FigmaComponentData) {
+        rootElement = element;
+      }
+      return true;
+    });
+
+    if (rootElement != null && widget.model.userData.maybeGet('overrideComponentProperties') == true) {
+      var parent = FigmaComponentData.of(rootElement!);
+      userData = parent.userData;
+    } else {
+      userData = widget.model.userData;
+      userData.delegate = this;
+    }
+
+    userData.map!.forEach((key, value) {
+      var components = key.split(RegExp('#(?!.*#)'));
+      if (components.length == 2 && components.last == 'variant') {
+        variantValues[components.first] = value;
+      }
+    });
   }
 
   // this can be overridden by the child class to set its own initial variant

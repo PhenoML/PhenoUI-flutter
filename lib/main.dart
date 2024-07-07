@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:pheno_ui/pheno_ui.dart';
@@ -16,6 +17,19 @@ void main() async {
   runApp(const AppPhenoUI());
 }
 
+
+class EmulateMobileScrollBehavior extends MaterialScrollBehavior {
+  const EmulateMobileScrollBehavior();
+
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+    PointerDeviceKind.touch,
+    PointerDeviceKind.mouse,
+    PointerDeviceKind.stylus,
+    PointerDeviceKind.unknown,
+  };
+}
+
 class AppPhenoUI extends StatelessWidget {
   const AppPhenoUI({super.key});
 
@@ -24,6 +38,7 @@ class AppPhenoUI extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       title: 'Pheno UI',
+      scrollBehavior: EmulateMobileScrollBehavior(),
       home: Login(),
     );
   }

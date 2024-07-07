@@ -16,7 +16,8 @@ class FigmaRectangle extends StatelessFigmaNode<FigmaSimpleStyleModel> {
     return Container(
       decoration: BoxDecoration(
         color: model.style.color,
-        backgroundBlendMode: model.style.color == null ? null : BlendMode.values.convertDefault(model.style.blendMode, BlendMode.srcOver),
+        gradient: model.style.gradient,
+        backgroundBlendMode: model.style.color == null || model.style.gradient != null ? null : BlendMode.values.convertDefault(model.style.blendMode, BlendMode.srcOver),
         border: model.style.border,
         borderRadius: model.style.borderRadius,
       ),

@@ -102,12 +102,13 @@ class FigmaFrame<T extends FigmaFrameModel> extends StatelessFigmaNode<T> {
     Widget? childrenContainer = _buildChildrenContainer(model.children, model, context);
     var padding = model.layout.mode == FigmaLayoutMode.none ? null : model.layout.padding;
     var border = model.style.border;
-    var blend = model.style.color == null ? null : BlendMode.values.convertDefault(model.style.blendMode, BlendMode.srcOver);
+    var blend = model.style.color == null || model.style.gradient != null ? null : BlendMode.values.convertDefault(model.style.blendMode, BlendMode.srcOver);
 
     return Container(
       padding:  padding,
       decoration: BoxDecoration(
         color: model.style.color,
+        gradient: model.style.gradient,
         backgroundBlendMode: blend,
         border: border,
         borderRadius: model.style.borderRadius,

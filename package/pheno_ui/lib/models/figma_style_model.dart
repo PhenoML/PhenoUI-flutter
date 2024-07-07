@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vector_math/vector_math_64.dart';
 import '../tools/figma_enum.dart';
 
 enum FigmaStyleBlendMode with FigmaEnum {
@@ -61,17 +62,12 @@ class FigmaStyleBorder extends Border {
 
 class FigmaStyleModel {
   final Color? color;
+  final Gradient? gradient;
   final BorderRadius? borderRadius;
   final Border? border;
   final FigmaStyleBlendMode blendMode;
 
-  FigmaStyleModel._fromJson(Map<String, dynamic> json) :
-    color = json['fill']['color'] == null ? null : Color.fromRGBO(
-      (json['fill']['color']['r'] * 255.0).round(),
-      (json['fill']['color']['g'] * 255.0).round(),
-      (json['fill']['color']['b'] * 255.0).round(),
-      (json['fill']['opacity'] ?? 1.0).toDouble(),
-    ),
+  FigmaStyleModel._fromJson(Map<String, dynamic> json, this.color, this.gradient) :
     borderRadius = json['border']['radius']['tl'] == null ? null : BorderRadius.only(
       topLeft: Radius.circular(json['border']['radius']['tl'].toDouble()),
       topRight: Radius.circular(json['border']['radius']['tr'].toDouble()),
@@ -80,15 +76,129 @@ class FigmaStyleModel {
     ),
     border = json['border']['color'] == null ? null : FigmaStyleBorder.all(
       color: Color.fromRGBO(
-        (json['border']['color']['r'] * 255.0).round(),
-        (json['border']['color']['g'] * 255.0).round(),
-        (json['border']['color']['b'] * 255.0).round(),
+        (json['border']['color']['r'] * 0xff ~/ 1),
+        (json['border']['color']['g'] * 0xff ~/ 1),
+        (json['border']['color']['b'] * 0xff ~/ 1),
         (json['border']['opacity'] ?? 1.0).toDouble(),
       ),
       width: json['border']['width'].toDouble()
     ),
     blendMode = FigmaStyleBlendMode.values.byNameDefault(json['blendMode'], FigmaStyleBlendMode.passThrough);
 
-  factory FigmaStyleModel.fromJson(Map<String, dynamic> json) =>
-    FigmaStyleModel._fromJson(json);
+  factory FigmaStyleModel.fromJson(Map<String, dynamic> json) {
+    Color? color;
+    Gradient? gradient;
+    if (json['fill'] != null) {
+      final fill = json['fill'];
+      if (fill['type'] == 'SOLID') {
+        final fillColor = fill['color'];
+        color = Color.fromRGBO(
+          (fillColor['r'] * 0xff ~/ 1),
+          (fillColor['g'] * 0xff ~/ 1),
+          (fillColor['b'] * 0xff ~/ 1),
+          (fill['opacity'] ?? 1.0).toDouble(),
+        );
+      } else if (fill['type'] == 'GRADIENT_LINEAR') {
+        /*
+        {
+          "type": "GRADIENT_LINEAR",
+          "visible": true,
+          "opacity": 1,
+          "blendMode": "NORMAL",
+          "gradientStops": [
+            {
+              "color": {
+                "r": 0.7400000095367432,
+                "g": 0,
+                "b": 1,
+                "a": 1
+              },
+              "position": 0,
+              "boundVariables": {}
+            },
+            {
+              "color": {
+                "r": 1,
+                "g": 0,
+                "b": 0,
+                "a": 1
+              },
+              "position": 0.5,
+              "boundVariables": {}
+            },
+            {
+              "color": {
+                "r": 1,
+                "g": 0.8999999165534973,
+                "b": 0,
+                "a": 1
+              },
+              "position": 1,
+              "boundVariables": {}
+            }
+          ],
+          "gradientTransform": [
+            [
+                6.123234262925839e-17,
+                1,
+                0
+            ],
+            [
+                -1,
+                6.123234262925839e-17,
+                1
+            ]
+          ]
+        }
+         */
+        final colors = <Color>[];
+        final stops = <double>[];
+
+        for (final stop in fill['gradientStops']) {
+          final stopColor = stop['color'];
+          colors.add(Color.fromRGBO(
+            (stopColor['r'] * 0xff ~/ 1),
+            (stopColor['g'] * 0xff ~/ 1),
+            (stopColor['b'] * 0xff ~/ 1),
+            (stopColor['a'] ?? 1.0).toDouble(),
+          ));
+          stops.add(stop['position'].toDouble());
+        }
+
+        gradient = LinearGradient(
+          colors: colors,
+          stops: stops,
+          // tileMode: TileMode.decal,
+          transform: FigmaGradientTransform.fromJson(fill['gradientTransform']),
+        );
+      }
+    }
+    return FigmaStyleModel._fromJson(json, color, gradient);
+  }
+}
+
+class FigmaGradientTransform extends GradientTransform {
+  final Matrix4 matrix4;
+
+  const FigmaGradientTransform({
+    required this.matrix4,
+  });
+
+  factory FigmaGradientTransform.fromJson(List<dynamic> json) {
+    Matrix4 matrix = Matrix4.identity();
+    matrix.setRow(0, Vector4(json[0][0].toDouble(), json[0][1].toDouble(), json[0][2].toDouble(), 0));
+    matrix.setRow(1, Vector4(json[1][0].toDouble(), json[1][1].toDouble(), json[1][2].toDouble(), 0));
+    matrix.invert();
+    return FigmaGradientTransform(matrix4: matrix);
+  }
+
+  @override
+  Matrix4? transform(Rect bounds, {TextDirection? textDirection}) {
+    final anchor = bounds.center;
+    final anchorMatrix = Matrix4.identity()..translate(-anchor.dx, -anchor.dy);
+    final centerMatrix = Matrix4.identity()..translate(anchor.dx, anchor.dy);
+    final matrix = centerMatrix * matrix4 * anchorMatrix;
+
+    return matrix;
+  }
 }

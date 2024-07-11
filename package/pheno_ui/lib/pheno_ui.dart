@@ -1,6 +1,7 @@
 library pheno_ui;
 
 import 'package:flutter/widgets.dart';
+import 'package:pheno_ui/widgets/figma_slider.dart';
 
 import 'widgets/figma_auto_navigation.dart';
 import 'widgets/figma_button.dart';
@@ -17,6 +18,11 @@ import 'widgets/figma_radio_button_group.dart';
 import 'widgets/figma_rectangle.dart';
 import 'widgets/figma_safe_area.dart';
 import 'widgets/figma_scroll_view.dart';
+import 'widgets/figma_slider_bar.dart';
+import 'widgets/figma_slider_handle.dart';
+import 'widgets/figma_slider_input_area.dart';
+import 'widgets/figma_slider_label.dart';
+import 'widgets/figma_slider_ticks.dart';
 import 'widgets/figma_submit_button.dart';
 import 'widgets/figma_text.dart';
 import 'interface/log.dart';
@@ -75,6 +81,12 @@ class PhenoUi {
         'figma-button': FigmaButton.fromJson,
         'figma-auto-navigation': FigmaAutoNavigation.fromJson,
         'figma-radio-button-group': FigmaRadioButtonGroup.fromJson,
+        'figma-slider': FigmaSlider.fromJson,
+        'figma-slider-bar': FigmaSliderBar.fromJson,
+        'figma-slider-handle': FigmaSliderHandle.fromJson,
+        'figma-slider-input-area': FigmaSliderInputArea.fromJson,
+        'figma-slider-ticks': FigmaSliderTicks.fromJson,
+        'figma-slider-label': FigmaSliderLabel.fromJson,
       };
 
       // merge the parsers giving priority to the ones passed as argument

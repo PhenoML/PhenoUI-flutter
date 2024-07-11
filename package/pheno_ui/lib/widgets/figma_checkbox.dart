@@ -20,11 +20,25 @@ class FigmaCheckbox extends FigmaComponent with FigmaFormWidget {
 
 class FigmaCheckboxState extends FigmaComponentState {
   FigmaFormInterface? form;
-  FocusNode? focusNode;
+
   String _state = 'unchecked';
   bool _hasInitialValue = false;
   late final FigmaUserData widgetUserData = widget.model.userData;
   late final String _id = widgetUserData.get('id', context: context, listen: false);
+
+  FocusNode? _focusNode;
+  FocusNode? get focusNode => _focusNode;
+  set focusNode(FocusNode? value) {
+    if (_focusNode != value) {
+      if (_focusNode != null) {
+        _focusNode!.dispose();
+      }
+      _focusNode = value;
+      if (_focusNode != null) {
+        _focusNode!.attach(context);
+      }
+    }
+  }
 
   bool get checked => _state == 'checked';
   set checked(bool value) {

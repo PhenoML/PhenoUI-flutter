@@ -48,7 +48,7 @@ class FigmaForm extends StatefulFigmaNode<FigmaFrameModel> {
   StatefulFigmaNodeState createState() => FigmaFormState();
 }
 
-class FigmaFormState extends StatefulFigmaNodeState<FigmaForm> {
+class FigmaFormState<F extends StatefulFigmaNode<FigmaFrameModel>> extends StatefulFigmaNodeState<F> {
   late final FigmaFormHandler handler;
   Map<String, FigmaFormInput> inputs = {};
 

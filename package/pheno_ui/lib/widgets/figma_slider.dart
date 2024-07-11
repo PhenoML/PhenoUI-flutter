@@ -45,6 +45,7 @@ class FigmaSliderState extends FigmaComponentState {
   late final double minValue = widget.model.userData.get('minValue', context: context, listen: false).toDouble();
   late final double maxValue = widget.model.userData.get('maxValue', context: context, listen: false).toDouble();
   late final double increment = widget.model.userData.get('increment', context: context, listen: false).toDouble();
+  late final bool smoothSliding = widget.model.userData.maybeGet('smoothSliding', context: context, listen: false) ?? true;
   late final Map<String, dynamic>? labels = widget.model.userData.get('labels', context: context, listen: false);
 
   final Matrix4 _transform = Matrix4.identity();
@@ -63,9 +64,15 @@ class FigmaSliderState extends FigmaComponentState {
       value = _xMax;
     }
 
-    _x = value;
-    _transform.setTranslationRaw(-(_xMax - x), 0, 0);
-    setValuePercent(x / _xMax);
+    if (smoothSliding) {
+      _x = value;
+      _transform.setTranslationRaw(-(_xMax - x), 0, 0);
+      setValuePercent(x / _xMax);
+    } else {
+      setValuePercent(value / _xMax);
+      _x = (this.value - minValue) / (maxValue - minValue) * _xMax;
+      _transform.setTranslationRaw(-(_xMax - x), 0, 0);
+    }
   }
 
   double? _value;

@@ -13,6 +13,7 @@ import 'widgets/figma_keep_aspect_ratio.dart';
 import 'widgets/figma_lottie_animation.dart';
 import 'widgets/figma_nav_button.dart';
 import 'widgets/figma_props_from_route.dart';
+import 'widgets/figma_radio_button_group.dart';
 import 'widgets/figma_rectangle.dart';
 import 'widgets/figma_safe_area.dart';
 import 'widgets/figma_scroll_view.dart';
@@ -73,6 +74,7 @@ class PhenoUi {
         'figma-tile-child': FigmaTileChild.fromJson,
         'figma-button': FigmaButton.fromJson,
         'figma-auto-navigation': FigmaAutoNavigation.fromJson,
+        'figma-radio-button-group': FigmaRadioButtonGroup.fromJson,
       };
 
       // merge the parsers giving priority to the ones passed as argument

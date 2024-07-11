@@ -13,7 +13,7 @@ class FigmaTextFromRoute extends FigmaText {
   }
 
   @override
-  List<FigmaTextSegmentModel> getTextSegments(BuildContext context) {
+  String? getCharacters(BuildContext context) {
     String? key = model.userData.maybeGet('key');
     if (key is String) {
       var arguments = ModalRoute.of(context)?.settings.arguments;
@@ -22,12 +22,11 @@ class FigmaTextFromRoute extends FigmaText {
         if (data != null) {
           var text = data[key];
           if (text is String) {
-            var segment = model.segments.first;
-            return [FigmaTextSegmentModel.copy(segment, characters: text)];
+            return text;
           }
         }
       }
     }
-    return super.getTextSegments(context);
+    return super.getCharacters(context);
   }
 }

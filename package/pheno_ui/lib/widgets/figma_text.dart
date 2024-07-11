@@ -13,27 +13,39 @@ class FigmaText extends StatelessFigmaNode<FigmaTextModel> {
     return FigmaText(model: model);
   }
 
-  static List<FigmaTextSegmentModel> textSegmentsFromModel(BuildContext context, FigmaTextModel model) {
+  static List<FigmaTextSegmentModel> textSegmentsFromModel(BuildContext context, FigmaTextModel model, String? Function(BuildContext) getCharacters) {
+    final characters = getCharacters(context);
+    if (characters is String) {
+      var segment = model.segments.first;
+      return [FigmaTextSegmentModel.copy(segment, characters: characters)];
+    }
+    return model.segments;
+  }
+
+  static String? getCharactersFromModel(BuildContext context, FigmaTextModel model) {
     if (model.componentRefs != null &&
         model.componentRefs!.containsKey('characters')) {
       String key = model.componentRefs!['characters']!;
       var data = FigmaComponentData.of(context);
       var characters = data.userData.maybeGet(key);
       if (characters is String) {
-        var segment = model.segments.first;
-        return [FigmaTextSegmentModel.copy(segment, characters: characters)];
+        return characters;
       }
     }
-    return model.segments;
+    return null;
   }
 
-  List<FigmaTextSegmentModel> getTextSegments(BuildContext context) {
-    return textSegmentsFromModel(context, model);
+  List<FigmaTextSegmentModel> getTextSegments(BuildContext context, String? Function(BuildContext) getCharacters) {
+    return textSegmentsFromModel(context, model, getCharacters);
+  }
+
+  String? getCharacters(BuildContext context) {
+    return getCharactersFromModel(context, model);
   }
 
   @override
   Widget buildFigmaNode(BuildContext context) {
-    var modelSegments = getTextSegments(context);
+    var modelSegments = getTextSegments(context, getCharacters);
     List<TextSpan> segments = modelSegments.map((m) => m.span).toList();
 
     var alignment = Alignment(

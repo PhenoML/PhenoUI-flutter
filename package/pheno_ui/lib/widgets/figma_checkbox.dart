@@ -28,10 +28,13 @@ class FigmaCheckboxState extends FigmaComponentState {
 
   bool get checked => _state == 'checked';
   set checked(bool value) {
-    _state = value ? 'checked' : 'unchecked';
-    setVariant(widgetUserData.get('state'), widgetUserData.get(_state));
-    if (form != null) {
-      form!.inputValueChanged(_id, checked);
+    String newState = value ? 'checked' : 'unchecked';
+    if (_state != newState) {
+      _state = newState;
+      setVariant(widgetUserData.get('state'), widgetUserData.get(_state));
+      if (form != null) {
+        form!.inputValueChanged(_id, checked);
+      }
     }
   }
 

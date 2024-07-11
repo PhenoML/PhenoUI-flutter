@@ -13,11 +13,8 @@ import 'stateful_figma_node.dart';
 // stateless but exposes all of its important functionality through static
 // methods
 class FigmaForm extends StatefulFigmaNode<FigmaFrameModel> {
-  final Widget? childrenContainer;
-
   const FigmaForm({
     required super.model,
-    this.childrenContainer,
     super.key
   });
 

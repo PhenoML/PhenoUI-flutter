@@ -72,6 +72,10 @@ class FigmaFormState<F extends StatefulFigmaNode<FigmaFrameModel>> extends State
   @override
   void initState() {
     super.initState();
+    initFormState();
+  }
+
+  void initFormState() {
     var formId = widget.model.userData.maybeGet('form');
     handler = FigmaFormHandlerRegistry().getHandler(formId);
     handler.onInit(this);

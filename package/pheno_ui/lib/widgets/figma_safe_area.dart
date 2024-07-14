@@ -15,6 +15,8 @@ class FigmaSafeArea extends StatefulFigmaNode<FigmaFrameModel> {
     return FigmaFrame.fromJson(json, FigmaSafeArea.new);
   }
 
+  static EdgeInsets minimumPadding = EdgeInsets.zero;
+
   @override
   StatefulFigmaNodeState createState() => FigmaSafeAreaState();
 }
@@ -127,6 +129,7 @@ class FigmaSafeAreaState extends StatefulFigmaNodeState<FigmaSafeArea>
     return Transform(
       transform: offset,
       child: SafeArea(
+        minimum: FigmaSafeArea.minimumPadding,
         maintainBottomViewPadding: true,
         child: FigmaFrame.buildFigmaFrame(context, widget.model),
       ),

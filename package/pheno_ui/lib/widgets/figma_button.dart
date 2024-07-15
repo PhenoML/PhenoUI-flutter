@@ -13,7 +13,7 @@ class FigmaButton extends FigmaFrame {
 
   @override
   Widget buildFigmaNode(BuildContext context) {
-    String id = model.userData.maybeGet('id') ?? model.info.name!;
+    String id = model.userData.maybeGet('id', context: context) ?? model.info.name!;
 
     onTap() {
       final notification = ButtonNotification(id, model.userData.get('context'));

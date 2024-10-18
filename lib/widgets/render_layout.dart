@@ -2,18 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:pheno_ui/interface/data/entry.dart';
 import 'package:pheno_ui/interface/data/strapi_provider.dart';
 import 'package:pheno_ui/pheno_ui.dart';
+import 'package:pheno_ui_tester/widgets/picker_state.dart';
 import 'package:pheno_ui_tester/widgets/top_bar.dart';
 
 class RenderLayout extends StatefulWidget {
-  final String category;
+  final String tagId;
   final String initialRoute;
-  final List<PhenoDataEntry> entries;
 
   const RenderLayout({
     super.key,
-    required this.category,
+    required this.tagId,
     required this.initialRoute,
-    required this.entries,
   });
 
   @override
@@ -32,7 +31,7 @@ class RenderLayoutState extends State<RenderLayout> {
   @override
   void initState() {
     super.initState();
-    var dataProvider = StrapiDataProvider(sourceId: Strapi().server, category: widget.category);
+    var dataProvider = StrapiDataProvider(sourceId: Strapi().server, category: widget.tagId);
     FigmaScreens().setProvider(dataProvider).then((_) => setState(() {
       _initialized = true;
     }));

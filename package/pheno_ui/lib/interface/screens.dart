@@ -43,8 +43,8 @@ class FigmaScreens {
     }
     var screens = await _provider!.getScreenList(true);
     for (var screen in screens) {
-      print('id:${screen.id} uid:${screen.uid}');
-      this.screens[screen.uid] = screen;
+      print('id:${screen.id} uid:${screen.uid} name:${screen.name}');
+      this.screens[screen.name] = screen;
     }
   }
 

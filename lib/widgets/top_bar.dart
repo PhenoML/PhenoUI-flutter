@@ -36,13 +36,16 @@ Widget topBar(BuildContext context, [String? title, void Function()? refresh, Bo
   var centerChildren = <Widget>[];
 
   if (title != null) {
-    centerChildren.add(Text(
-      title,
-      textAlign: TextAlign.center,
-      style: const TextStyle(
-        color: Colors.white,
-        fontSize: 21,
-        overflow: TextOverflow.ellipsis,
+    centerChildren.add(FittedBox(
+      fit: BoxFit.fitWidth,
+      child: Text(
+        title,
+        textAlign: TextAlign.center,
+        style: const TextStyle(
+          color: Colors.white,
+          fontSize: 21,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
     ));
   }

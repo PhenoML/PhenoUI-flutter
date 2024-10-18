@@ -4,6 +4,8 @@ import 'package:pheno_ui/interface/strapi.dart';
 import 'package:pheno_ui_tester/widgets/picker_state.dart';
 import 'package:pheno_ui_tester/widgets/screen_picker.dart';
 
+import 'render_layout.dart';
+
 class LayoutPicker extends PickerWidget {
   @override
   get getList => _getList;
@@ -19,7 +21,13 @@ class LayoutPicker extends PickerWidget {
   const LayoutPicker({ super.key, this.entry });
 
   Widget _builder(PickerEntry entry, BuildContext context, _) {
-    return LayoutPicker(entry: entry);
+    if (entry.type == PickerEntryType.tag) {
+      return LayoutPicker(entry: entry);
+    }
+    return RenderLayout(
+        tagId: this.entry!.id,
+        initialRoute: entry.name,
+    );
   }
 
   Future<List<PickerEntry>> _getList() async {

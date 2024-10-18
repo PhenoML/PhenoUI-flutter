@@ -1,5 +1,5 @@
 class PhenoScreenSpec {
-  final int id;
+  final String id;
   final String name;
   final String slug;
   final Map<String, dynamic> spec;
@@ -8,10 +8,10 @@ class PhenoScreenSpec {
 
   factory PhenoScreenSpec.fromJson(Map<String, dynamic> json) {
     return PhenoScreenSpec(
-        json['id'].toInt(),
-        json['attributes']['name'],
-        json['attributes']['slug'],
-        json['attributes']['spec']
+        json['id'],
+        json['name'],
+        json['tag']['path'] + '/' + json['name'],
+        json['data']
     );
   }
 }

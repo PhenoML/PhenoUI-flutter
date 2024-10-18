@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pheno_ui/interface/data/entry.dart';
 import 'package:pheno_ui/interface/strapi.dart';
 import 'package:pheno_ui_tester/widgets/picker_state.dart';
-import 'package:pheno_ui_tester/widgets/screen_picker.dart';
 
 import 'render_layout.dart';
 

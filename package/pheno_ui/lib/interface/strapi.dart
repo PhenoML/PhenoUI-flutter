@@ -25,7 +25,7 @@ class Strapi {
     return _singleton;
   }
 
-  Strapi._internal() : _server = Uri.parse('http://127.0.0.1:1337');
+  Strapi._internal() : _server = Uri.parse('http://127.0.0.1:8090');
 
   Future<String> login(Uri server, String user, String password) async {
     if (user.isNotEmpty && password.isNotEmpty) {
@@ -34,7 +34,7 @@ class Strapi {
         scheme: _server.scheme,
         host: _server.host,
         port: _server.port,
-        path: '/api/auth/local',
+        path: '/api/admins/auth-with-password',
       );
 
       var response = await http.post(
@@ -43,15 +43,15 @@ class Strapi {
           'Content-Type': 'application/json',
         },
         body: jsonEncode({
-          'identifier': user,
+          'identity': user,
           'password': password,
         })
       );
 
       var body = jsonDecode(response.body) as Map<String, dynamic>;
-      if (body.containsKey('jwt')) {
+      if (body.containsKey('token')) {
         _user = user;
-        _jwt = body['jwt'];
+        _jwt = body['token'];
         return _jwt!;
       } else if (body.containsKey('error')) {
         throw Exception(body['error']['message']);
@@ -73,11 +73,11 @@ class Strapi {
       scheme: _server.scheme,
       host: _server.host,
       port: _server.port,
-      path: '/api/users/me',
+      path: '/api/admins/auth-refresh',
     );
 
     try {
-      var response = await http.get(
+      var response = await http.post(
           url,
           headers: {
             'Authorization': 'Bearer $jwt',
@@ -85,9 +85,9 @@ class Strapi {
       );
 
       var body = jsonDecode(response.body) as Map<String, dynamic>;
-      if (body.containsKey('username')) {
-        _user = body['username'];
-        _jwt = jwt;
+      if (body.containsKey('token')) {
+        _user = body['admin']['email'];
+        _jwt = body['token'];
         return true;
       }
     } catch (e) {
@@ -102,7 +102,7 @@ class Strapi {
     _jwt = null;
   }
 
-  Future<PhenoDataEntry> getCategory(String name, [String collection = 'screen-categories']) async {
+  Future<PhenoDataEntry> _getCategory_(String name, [String collection = 'screen-categories']) async {
     Uri url = Uri(
       scheme: _server.scheme,
       host: _server.host,
@@ -114,108 +114,85 @@ class Strapi {
     var response = await http.get(url);
     var body = jsonDecode(response.body) as Map<String, dynamic>;
     var data = body['data'][0];
-    var entry = PhenoDataEntry(data['id'], data['attributes']['uid']);
+    var entry = PhenoDataEntry(data);
     return entry;
   }
 
-  Future<List<PhenoDataEntry>> getCategoryList([String collection = 'screen-categories']) async {
+  Future<List<PhenoDataEntry>> _getEntryList(String path) async {
     Uri url = Uri(
       scheme: _server.scheme,
       host: _server.host,
       port: _server.port,
-      path: 'api/$collection',
+      path: path,
     );
 
     var response = await http.get(url);
+    if (response.statusCode != 200) {
+      throw Exception('Failed to load list');
+    }
+
     var body = jsonDecode(response.body) as Map<String, dynamic>;
-    var entries = body['data'].map((e) => PhenoDataEntry(e['id'], e['attributes']['uid']));
+    var entries = body['items'].map((e) => PhenoDataEntry(e));
     var result = List<PhenoDataEntry>.from(entries);
     return result;
   }
 
-  Future<List<PhenoDataEntry>> getScreenList([dynamic category]) async {
-    category ??= this.category;
-    int id = category is int ? category : (await getCategory(category)).id;
+  Future<List<PhenoDataEntry>> getCategoryList([String? parentId]) async {
+    return _getEntryList('phui/tag/list${parentId != null ? '/$parentId' : ''}');
+  }
 
-    Uri url = Uri(
-      scheme: _server.scheme,
-      host: _server.host,
-      port: _server.port,
-      path: 'api/screen-categories/$id',
-      query: 'populate[screens][fields][0]=name',
-    );
-
-    var response = await http.get(url);
-    var body = jsonDecode(response.body) as Map<String, dynamic>;
-    var screens = body['data']['attributes']['screens']['data'];
-    var entries = screens.map((e) => PhenoDataEntry(e['id'], e['attributes']['name']));
-    var result = List<PhenoDataEntry>.from(entries);
-    return result;
+  Future<List<PhenoDataEntry>> getScreenList(String tagId) async {
+    return _getEntryList('phui/layout/list/$tagId');
   }
   
-  Future<List<PhenoDataEntry>> getComponentList([dynamic category]) async {
-    category ??= this.category;
-    int id = category is int ? category : (await getCategory(category, 'figma-widget-categories')).id;
-
-    Uri url = Uri(
-      scheme: _server.scheme,
-      host: _server.host,
-      port: _server.port,
-      path: 'api/figma-widget-categories/$id',
-      query: 'populate[figma_widgets][fields][0]=name',
-    );
-    var response = await http.get(url);
-    var body = jsonDecode(response.body) as Map<String, dynamic>;
-    var components = body['data']['attributes']['figma_widgets']['data'];
-    var entries = components.map((e) =>
-        PhenoDataEntry(e['id'], e['attributes']['name']));
-    var result = List<PhenoDataEntry>.from(entries);
-    return result;
+  Future<List<PhenoDataEntry>> getComponentList(String tagId) async {
+    return _getEntryList('phui/widget/list/$tagId');
   }
 
   Future<PhenoScreenSpec> loadScreenLayout(dynamic nameOrId, String? category) async {
     if (nameOrId is String && category != null) {
       return loadScreenLayoutByName(nameOrId, category);
-    } else if (nameOrId is int) {
+    } else if (nameOrId is String) {
       return loadScreenLayoutById(nameOrId);
     }
     throw Exception('Invalid name or id');
   }
 
   Future<PhenoScreenSpec> loadScreenLayoutByName(String name, String category) async {
-    PhenoDataEntry entry = await getCategory(category);
-
     Uri url = Uri(
       scheme: _server.scheme,
       host: _server.host,
       port: _server.port,
-      path: 'api/screens',
-      queryParameters: {
-        'filters[name][\$eq]': name,
-        'populate': 'category',
-        'filters[category][id][\$eq]': entry.id.toString(),
-      }
+      path: 'phui/layout/tag/$category/$name',
     );
 
     var response = await http.get(url);
+    if (response.statusCode != 200) {
+      throw Exception('Failed to load list');
+    }
+
     var json = jsonDecode(response.body) as Map<String, dynamic>;
-    return PhenoScreenSpec.fromJson(json['data'][0]);
+    return PhenoScreenSpec.fromJson(json);
   }
 
-  Future<PhenoScreenSpec> loadScreenLayoutById(int id) async {
+  Future<PhenoScreenSpec> loadScreenLayoutById(String id) async {
     Uri url = Uri(
       scheme: _server.scheme,
       host: _server.host,
       port: _server.port,
-      path: 'api/screens/$id',
+      path: 'phui/layout/id/$id',
     );
 
     var response = await http.get(url);
+    if (response.statusCode != 200) {
+      throw Exception('Failed to load list');
+    }
     var json = jsonDecode(response.body) as Map<String, dynamic>;
-    return PhenoScreenSpec.fromJson(json['data']);
+    return PhenoScreenSpec.fromJson(json);
   }
 
-  Future<void> deleteScreen(int id) async {
+  Future<void> deleteScreen(String id) async {
+    throw Exception('Not implemented');
     Uri url = Uri(
       scheme: _server.scheme,
       host: _server.host,
@@ -241,23 +218,19 @@ class Strapi {
   }
 
   Future<PhenoComponentSpec> loadComponentSpecByName(String name, String category) async {
-    PhenoDataEntry entry = await getCategory(category, 'figma-widget-categories');
-
     Uri url = Uri(
         scheme: _server.scheme,
         host: _server.host,
         port: _server.port,
-        path: 'api/figma-widgets',
-        queryParameters: {
-          'filters[name][\$eq]': name,
-          'populate': 'category',
-          'filters[category][id][\$eq]': entry.id.toString(),
-        }
+        path: 'phui/widget/tag/$category/$name',
     );
 
     var response = await http.get(url);
+    if (response.statusCode != 200) {
+      throw Exception('Failed to load list');
+    }
     var json = jsonDecode(response.body) as Map<String, dynamic>;
-    return PhenoComponentSpec.fromJson(json['data'][0]);
+    return PhenoComponentSpec.fromJson(json);
   }
 
   Future<PhenoComponentSpec> loadComponentSpecById(int id) async {
@@ -265,11 +238,14 @@ class Strapi {
       scheme: _server.scheme,
       host: _server.host,
       port: _server.port,
-      path: 'api/figma-widgets/$id',
+      path: 'phui/widget/id/$id',
     );
 
     var response = await http.get(url);
+    if (response.statusCode != 200) {
+      throw Exception('Failed to load list');
+    }
     var json = jsonDecode(response.body) as Map<String, dynamic>;
-    return PhenoComponentSpec.fromJson(json['data']);
+    return PhenoComponentSpec.fromJson(json);
   }
 }

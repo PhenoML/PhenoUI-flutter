@@ -12,7 +12,7 @@ abstract class PhenoDataProvider {
   final String sourceId;
   final String category;
 
-  final Map<int, Future<PhenoScreenSpec>> _screenSpecCache = {};
+  final Map<String, Future<PhenoScreenSpec>> _screenSpecCache = {};
   final Map<String, Future<PhenoComponentSpec>> _componentSpecCache = {};
   final Map<String, Future<LottieComposition>> _animationCache = {};
   List<PhenoDataEntry>? _screenList;
@@ -39,7 +39,7 @@ abstract class PhenoDataProvider {
   }
 
   @nonVirtual
-  Future<PhenoScreenSpec> loadScreenLayout(int id) async {
+  Future<PhenoScreenSpec> loadScreenLayout(String id) async {
     if (_screenSpecCache.containsKey(id)) {
       return await _screenSpecCache[id]!;
     }
@@ -69,10 +69,10 @@ abstract class PhenoDataProvider {
   }
 
   Future<List<PhenoDataEntry>> doGetScreenList();
-  Future<PhenoScreenSpec> doLoadScreenLayout(int id);
+  Future<PhenoScreenSpec> doLoadScreenLayout(String id);
   Future<PhenoComponentSpec> doLoadComponentSpec(String name);
-  Future<LottieComposition> doLoadAnimation(String path);
+  Future<LottieComposition> doLoadAnimation(String id);
 
-  Image loadImage(String path, { required BoxFit fit });
-  SvgPicture loadSvg(String path, { required BoxFit fit });
+  Image loadImage(String id, { required BoxFit fit });
+  SvgPicture loadSvg(String id, { required BoxFit fit });
 }

@@ -3,7 +3,7 @@ import 'package:pheno_ui/interface/strapi.dart';
 import 'package:pheno_ui_tester/widgets/loading_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'category_picker.dart';
+import 'layout_picker.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -183,7 +183,7 @@ class LoginState extends State<Login> {
                 settings: const RouteSettings(name: 'category_picker'),
                 transitionDuration: Duration.zero,
                 reverseTransitionDuration: Duration.zero,
-                pageBuilder: (context, _, __) => const CategoryPicker(),
+                pageBuilder: (context, _, __) => const LayoutPicker(),
               ));
             },
             child: const Text('Continue'),

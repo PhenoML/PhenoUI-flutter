@@ -41,7 +41,7 @@ class StrapiDataProvider extends PhenoDataProvider {
   }
 
   @override
-  Future<PhenoScreenSpec> doLoadScreenLayout(int id) async {
+  Future<PhenoScreenSpec> doLoadScreenLayout(String id) async {
     return await Strapi().loadScreenLayoutById(id);
   }
 
@@ -51,47 +51,38 @@ class StrapiDataProvider extends PhenoDataProvider {
   }
 
   @override
-  Image loadImage(String path, { required BoxFit fit }) {
-    // make sure that the path is retrieving the image from the server
-    // configured in the strapi class
-    Uri uri = Uri.parse(path);
-    Uri strapiServer = Uri.parse(Strapi().server);
-    Uri newUri = Uri(
-      scheme: strapiServer.scheme,
-      host: strapiServer.host,
-      port: strapiServer.port,
-      path: uri.path,
+  Image loadImage(String id, { required BoxFit fit }) {
+    Uri server = Uri.parse(Strapi().server);
+    Uri url = Uri(
+      scheme: server.scheme,
+      host: server.host,
+      port: server.port,
+      path: 'phui/media/file/id/$id',
     );
-    return Image.network(newUri.toString(), fit: fit);
+    return Image.network(url.toString(), fit: fit);
   }
 
   @override
-  SvgPicture loadSvg(String path, { required BoxFit fit }) {
-    // make sure that the path is retrieving the image from the server
-    // configured in the strapi class
-    Uri uri = Uri.parse(path);
-    Uri strapiServer = Uri.parse(Strapi().server);
-    Uri newUri = Uri(
-      scheme: strapiServer.scheme,
-      host: strapiServer.host,
-      port: strapiServer.port,
-      path: uri.path,
+  SvgPicture loadSvg(String id, { required BoxFit fit }) {
+    Uri server = Uri.parse(Strapi().server);
+    Uri url = Uri(
+      scheme: server.scheme,
+      host: server.host,
+      port: server.port,
+      path: 'phui/media/file/id/$id',
     );
-    return SvgPicture.network(newUri.toString(), fit: fit);
+    return SvgPicture.network(url.toString(), fit: fit);
   }
 
   @override
-  Future<LottieComposition> doLoadAnimation(String path) async {
-    // make sure that the path is retrieving the image from the server
-    // configured in the strapi class
-    Uri uri = Uri.parse(path);
-    Uri strapiServer = Uri.parse(Strapi().server);
-    Uri newUri = Uri(
-      scheme: strapiServer.scheme,
-      host: strapiServer.host,
-      port: strapiServer.port,
-      path: uri.path,
+  Future<LottieComposition> doLoadAnimation(String id) async {
+    Uri server = Uri.parse(Strapi().server);
+    Uri url = Uri(
+      scheme: server.scheme,
+      host: server.host,
+      port: server.port,
+      path: 'phui/media/file/id/$id',
     );
-    return NetworkLottie(newUri.toString()).load();
+    return NetworkLottie(url.toString()).load();
   }
 }

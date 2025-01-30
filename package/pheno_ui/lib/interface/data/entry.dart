@@ -1,6 +1,7 @@
 class PhenoDataEntry {
-  final int id;
-  final String uid;
-  const PhenoDataEntry(this.id, this.uid);
-  String get name => uid;
+  final Map<String, dynamic> data;
+  const PhenoDataEntry(this.data);
+  String get id => data['id'];
+  String get uid => data['path'];
+  String get name => data['name'];
 }
